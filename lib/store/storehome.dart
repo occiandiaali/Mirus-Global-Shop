@@ -25,6 +25,9 @@ class _StoreHomeState extends State<StoreHome> {
     width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
+        body: Center(
+          child: Text('Welcome to your Home Screen'),
+        ),
       ),
     );
   }
