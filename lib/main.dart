@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mirus_global/authentication/auth_screen.dart';
 import 'package:mirus_global/config/config.dart';
@@ -10,7 +11,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   EshopApp.auth = FirebaseAuth.instance;
+  EshopApp.sharedPreferences = await SharedPreferences.getInstance();
+  EshopApp.firestore = FirebaseFirestore.instance;
+
   runApp(MG());
 }
 
@@ -44,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   displaySplash() {
     Timer(Duration(seconds: 5), () async {
-      if (await EshopApp.auth.currentUser() != null) {
+      if (EshopApp.auth.currentUser != null) {
         Route route = MaterialPageRoute(builder: (_) => StoreHome());
         Navigator.pushReplacement(context, route);
       } else {
