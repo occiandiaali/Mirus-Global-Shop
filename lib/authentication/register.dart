@@ -189,7 +189,7 @@ void _registerUser() async {
 }
 
 Future saveUserInfoToFireStore(User fUser) async {
-  await FirebaseFirestore.instance.collection("users").add({
+  FirebaseFirestore.instance.collection("users").add({
     "uid": fUser.uid,
     "name": _nameEditingController.text,
     "email": fUser.email,

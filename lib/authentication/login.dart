@@ -15,9 +15,9 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailEditingController = TextEditingController();
-  final TextEditingController _passwordEditingController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _emailEditingController = TextEditingController();
+  final _passwordEditingController = TextEditingController();
 
 
   @override
@@ -32,15 +32,15 @@ class _LoginState extends State<Login> {
             Container(
               alignment: Alignment.bottomCenter,
               child: Image.asset(
-                  'images/login.png',
+                  'images/welcome.png',
               height: 240.0,
               width: 240.0,),
             ),
             Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                'Login to account',
-                style: TextStyle(color: Colors.white),
+                'Sign in to your account',
+                style: TextStyle(color: Colors.white, fontSize: 24.0),
               ),
             ),
             Form(
@@ -110,7 +110,7 @@ class _LoginState extends State<Login> {
  void loginUser() async {
     showDialog(
       context: context,
-      builder: (c) => LoadingAlertDialog(message: 'Relax, checking your creds...')
+      builder: (c) => LoadingAlertDialog(message: 'Checking your credentials...')
     );
     User firebaseUser;
     await _auth.signInWithEmailAndPassword(
@@ -152,5 +152,28 @@ class _LoginState extends State<Login> {
      await EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, cartList);
    });
  }
+
+Future dummyData(User fUser) async {
+  FirebaseFirestore.instance.collection("users")
+      .doc(fUser.uid)
+      .get()
+      .then((value) async {
+          EshopApp.sharedPreferences.getString("uid");
+          EshopApp.sharedPreferences.getString(EshopApp.userEmail);
+          EshopApp.sharedPreferences.getString(EshopApp.userName);
+          EshopApp.sharedPreferences.getString(EshopApp.userAvatarUrl);
+
+         // List<String> cartList = value.data()[EshopApp.userCartList].cast<String>();
+          EshopApp.sharedPreferences.getStringList(EshopApp.userCartList).cast<String>();
+
+  }).catchError((error) {
+    showDialog(
+        context: context,
+        builder: (c) {
+          return ErrorAlertDialog(message: error.toString());
+        }
+    );
+  });
+}
 
 } // class
