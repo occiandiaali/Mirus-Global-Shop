@@ -91,14 +91,7 @@ class _RegisterState extends State<Register> {
             SizedBox(
               height: 30.0,
             ),
-            Container(
-              height: 4.0,
-              width: _screenWidth * 0.8,
-              color: Colors.green,
-            ),
-            SizedBox(
-              height: 15.0,
-            ),
+
           ],
         ),
       ),

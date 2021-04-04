@@ -75,16 +75,9 @@ class _LoginState extends State<Login> {
               child: Text('Sign In'),
             ),
             SizedBox(
-              height: 50.0,
+              height: 30.0,
             ),
-            Container(
-              height: 4.0,
-              width: _screenWidth * 0.8,
-              color: Colors.green,
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
+
             TextButton.icon(
               onPressed: () => Navigator.push(
                 context,
@@ -94,7 +87,7 @@ class _LoginState extends State<Login> {
                   Icons.admin_panel_settings_outlined,
               color: Colors.white,),
               label: Text(
-                  'Admin signin',
+                  'Are you Admin?',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
