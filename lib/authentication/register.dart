@@ -38,7 +38,7 @@ class _RegisterState extends State<Register> {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            SizedBox(height: 8.0,),
+            SizedBox(height: 32.0,),
             InkWell(
               onTap: _imageSelectAndPick,
             child: CircleAvatar(
