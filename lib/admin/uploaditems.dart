@@ -22,7 +22,10 @@ class UploadPage extends StatefulWidget {
 
 class _UploadPageState extends State<UploadPage>
     with AutomaticKeepAliveClientMixin<UploadPage> {
+
   bool get wantKeepAlive => true;
+
+  File imageFile; // storage place for captured image
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +128,7 @@ class _UploadPageState extends State<UploadPage>
                         color: Colors.white,
                       ),
                     ),
-                    onPressed: () => print('Upload button clicked'),
+                    onPressed: () => selectImage(context),
                   ),
                 ),
               ],
@@ -224,5 +227,77 @@ class _UploadPageState extends State<UploadPage>
   //     ),
   //   );
   // }
+
+  takePhotoWithCamera() async {
+    Navigator.pop(context);
+    final picker = ImagePicker();
+    PickedFile photoFile = await picker
+        .getImage(
+        source: ImageSource.camera,
+    maxHeight: 680.0,
+    maxWidth: 970.0,
+    );
+    setState(() {
+      imageFile = File(photoFile.path);
+    });
+  }
+
+  selectGalleryPhoto() async {
+    Navigator.pop(context);
+    final picker = ImagePicker();
+    PickedFile photoFile = await picker
+        .getImage(
+      source: ImageSource.gallery,
+    );
+    setState(() {
+      imageFile = File(photoFile.path);
+    });
+  }
+
+
+  selectImage(mContext) {
+    return showDialog(
+        context: mContext,
+    builder: (context) {
+          return SimpleDialog(
+            title: Text(
+              'What do you want to do?',
+              style: TextStyle(
+                color: Colors.pink,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            children: [
+              SimpleDialogOption(
+                child: Text(
+                    'Take a photo',
+                  style: TextStyle(
+                      color: Colors.pink,
+                  ),
+                ),
+                onPressed: () => takePhotoWithCamera(),
+              ),
+              SimpleDialogOption(
+                child: Text(
+                  'Select from gallery',
+                  style: TextStyle(
+                    color: Colors.pink,
+                  ),
+                ),
+                onPressed: () => selectGalleryPhoto(),
+              ),
+              SimpleDialogOption(
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.pink,
+                  ),
+                ),
+                onPressed: () => Navigator.pop(context)
+              ),
+            ],
+          );
+    });
+  }
 
 } // class
