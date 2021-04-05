@@ -73,14 +73,14 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
           mainAxisSize: MainAxisSize.max,
           children: [
             SizedBox(
-              height: 20.0,
+              height: 41.0,
             ),
             Container(
               alignment: Alignment.bottomCenter,
               child: Image.asset(
                 'images/admin.png',
-                height: 240.0,
-                width: 240.0,),
+                height: 150.0,
+                width: 150.0,),
             ),
             Padding(
               padding: EdgeInsets.all(8.0),
@@ -124,7 +124,7 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
               child: Text('Log In'),
             ),
             SizedBox(
-              height: 150.0,
+              height: 250.0,
             ),
 
           ],
@@ -142,15 +142,16 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
             } else if (result.data()["password"] != _passwordEditingController.text.trim()) {
               Scaffold.of(context).showBottomSheet((context) => Text('Invalid password'));
             } else {
-              Scaffold.of(context).showBottomSheet((context) => Text('Welcome, ${result.data()['name']}!'));
-
+             // Scaffold.of(context).showBottomSheet((context) => Text('Welcome, ${result.data()['name']}!'));
+              String adminUser = result.data()['name'].toString(); // get string value admin name
               setState(() {
                 _adminIDEditingController.text = "";
                 _passwordEditingController.text = "";
               });
 
-              Route route = MaterialPageRoute(builder: (c) => UploadPage());
-              Navigator.pushReplacement(context, route);
+              Route route = MaterialPageRoute(builder: (c) => UploadPage(adminUser));
+             // Navigator.pushReplacement(context, route);
+              Navigator.push(context, route);
             }
           });
     });
