@@ -32,6 +32,7 @@ class _AuthScreenState extends State<AuthScreen> {
             'MG Shop',
             style: TextStyle(
               fontSize: 35.0,
+              fontWeight: FontWeight.bold,
               color: Colors.white,
               fontFamily: 'Ubuntu-Regular',
             ),
