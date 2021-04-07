@@ -41,6 +41,7 @@ class _StoreHomeState extends State<StoreHome> {
             'MG Shop',
             style: TextStyle(
               fontSize: 35.0,
+              fontWeight: FontWeight.bold,
               color: Colors.white,
               fontFamily: 'Dancing Script',
             ),
@@ -53,7 +54,7 @@ class _StoreHomeState extends State<StoreHome> {
                   icon: Icon(Icons.shopping_cart_outlined, color: Colors.white,),
                   onPressed: () {
                     Route route = MaterialPageRoute(builder: (c) => CartPage());
-                    Navigator.pushReplacement(context, route);
+                    Navigator.push(context, route);
                   },
                 ),
                 Positioned(
@@ -62,24 +63,33 @@ class _StoreHomeState extends State<StoreHome> {
                       Icon(
                         Icons.brightness_1,
                         size: 20.0,
-                        color: Colors.blue,
+                        color: Colors.deepPurple,
                       ),
                       Positioned(
                         top: 3.0,
                         bottom: 4.0,
-                        child: Consumer<CartItemCounter>(
-                          builder: (context, counter, _) {
-                            return Text(
-                              counter.count.toString(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12.0,
-                              ),
-                            );
-                          },
-                        ),
+                        left: 7.0,
+                        child: Text(
+                            '0',
+                        style: TextStyle(color: Colors.white, fontSize: 12.0),),
                       ),
+                      // Positioned(
+                      //   top: 3.0,
+                      //   bottom: 4.0,
+                      //   left: 5.0,
+                      //   child: Consumer<CartItemCounter>(
+                      //     builder: (context, counter, _) {
+                      //       return Text(
+                      //         counter.count.toString(), // bug area
+                      //         style: TextStyle(
+                      //           color: Colors.white,
+                      //           fontWeight: FontWeight.w500,
+                      //           fontSize: 12.0,
+                      //         ),
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -88,29 +98,181 @@ class _StoreHomeState extends State<StoreHome> {
           ],
         ),
         drawer: MyDrawer(),
-        body: Center(
-          child: Text(
-            'Welcome to your Home Screen',
-            style: TextStyle(
-              fontSize: 25.0
+        body: CustomScrollView(
+          slivers: [
+            SliverPersistentHeader(
+              delegate: SearchBoxDelegate(),
             ),
-          ),
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection("items")
+              .limit(15).orderBy("publishedDate", descending: true).snapshots(),
+              builder: (context, dataSnapshot) {
+                return !dataSnapshot.hasData ?
+                    SliverToBoxAdapter(child: Center(child: circularProgress(),))
+                    : SliverStaggeredGrid.countBuilder(
+                  crossAxisCount: 1,
+                  itemCount: dataSnapshot.data.docs.length,
+                  staggeredTileBuilder: (c) => StaggeredTile.fit(1),
+                  itemBuilder: (context, index) {
+                    ItemModel model = ItemModel.fromJson(dataSnapshot.data.docs[index].data());
+                    return sourceInfo(model, context);
+                  },
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-
-
 Widget sourceInfo(ItemModel model, BuildContext context,
     {Color background, removeCartFunction}) {
-  return InkWell();
+  return InkWell(
+    splashColor: Colors.pink,
+    child: Padding(
+      padding: EdgeInsets.all(6.0),
+      child: Container(
+        height: 190.0,
+        width: width,
+        child: Row(
+          children: [
+            Image.network(
+              model.thumbnailUrl,
+              width: 140.0,
+              height: 140.0,
+            ),
+            SizedBox(width: 4.0,),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 15.0),
+                  Container(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            model.title,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14.0,
+                            ),),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 5.0,),
+                  Container(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            model.shortInfo,
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 12.0,
+                            ),),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 5.0,),
+                  Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: Colors.pink,
+                        ),
+                        alignment: Alignment.topLeft,
+                        width: 40.0,
+                        height: 43.0,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('50%', style: TextStyle(fontSize: 15.0),),
+                              Text('OFF', style: TextStyle(fontSize: 12.0),),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10.0,),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 0.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                    'Original price: =N=',
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.grey,
+                                  decoration: TextDecoration.lineThrough,
+                                ),),
+                                Text(
+                                  (model.price + model.price).toString(),
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: Colors.grey,
+                                    decoration: TextDecoration.lineThrough,
+                                  ),),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 5.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'New price: ',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.grey,
+                                  ),),
+                                Text(
+                                  '=N=',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                Text(
+                                  (model.price).toString(),
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: Colors.grey,
+                                  ),),
+                              ],
+                            ),
+                          ),
+
+                        ],
+                      ),
+                    ],
+                  ),
+                  Flexible(
+                    child: Container(),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }
 
 
 
-Widget card({Color primaryColor = Colors.redAccent, String imgPath}) {
+Widget card({Color primaryColor = Colors.pinkAccent, String imgPath}) {
   return Container();
 }
 
