@@ -1,9 +1,22 @@
 import 'package:flutter/foundation.dart';
 import 'package:mirus_global/config/config.dart';
 
-class CartItemCounter extends ChangeNotifier{
+class CartItemCounter extends ChangeNotifier {
+
   int _counter = EshopApp
       .sharedPreferences
       .getStringList(EshopApp.userCartList).length - 1;
+
   int get count => _counter;
+
+  Future<void> displayResult() async {
+    // int _counter = EshopApp
+    //     .sharedPreferences
+    //     .getStringList(EshopApp.userCartList).length - 1;
+    await Future.delayed(const Duration(milliseconds: 100), () {
+      notifyListeners();
+    });
+  }
+
+
 }
