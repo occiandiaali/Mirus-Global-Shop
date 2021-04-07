@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mirus_global/config/config.dart';
 //import 'package:mirus_global/address/address.dart';
-import 'package:mirus_global/widgets/loadingWidget.dart';
+import 'package:mirus_global/Widgets/loadingWidget.dart';
 import 'package:mirus_global/models/item.dart';
 import 'package:mirus_global/counters/cartitemcounter.dart';
 //import 'package:mirus_global/counters/totalMoney.dart';

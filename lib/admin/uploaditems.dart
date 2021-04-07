@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mirus_global/authentication/auth_screen.dart';
 //import 'package:mirus_global/admin/adminShiftOrders.dart';
-import 'package:mirus_global/widgets/loadingWidget.dart';
+import 'package:mirus_global/Widgets/loadingWidget.dart';
 import 'package:mirus_global/main.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';

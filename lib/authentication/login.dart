@@ -6,7 +6,7 @@ import 'package:mirus_global/config/config.dart';
 import 'package:mirus_global/dialog_box/error_dialog.dart';
 import 'package:mirus_global/dialog_box/loading_dialog.dart';
 import 'package:mirus_global/store/storehome.dart';
-import 'package:mirus_global/widgets/customTextField.dart';
+import 'package:mirus_global/Widgets/customTextField.dart';
 
 class Login extends StatefulWidget {
   @override

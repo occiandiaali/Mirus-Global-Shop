@@ -8,7 +8,7 @@ import 'package:mirus_global/config/config.dart';
 import 'package:mirus_global/dialog_box/error_dialog.dart';
 import 'package:mirus_global/dialog_box/loading_dialog.dart';
 import 'package:mirus_global/store/storehome.dart';
-import 'package:mirus_global/widgets/customTextField.dart';
+import 'package:mirus_global/Widgets/customTextField.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Register extends StatefulWidget {
@@ -22,8 +22,8 @@ class _RegisterState extends State<Register> {
   final _emailEditingController = TextEditingController();
   final _passwordEditingController = TextEditingController();
   final _confirmPassEditingController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String userImageUrl = '';
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String userImageUrl = 'images/silhouette.png';
   File _imageFile;
 
 
@@ -187,7 +187,7 @@ Future saveUserInfoToFireStore(User fUser) async {
     "name": _nameEditingController.text,
     "email": fUser.email,
     "url": userImageUrl,
-    "userCart": ["garbageValue"] // EshopApp.userCartList: ["garbageValue"],
+    EshopApp.userCartList: ["garbageValue"],
   }).then((_) {
     print("Collection created...");
   }).catchError((error) {

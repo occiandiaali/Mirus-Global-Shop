@@ -1,4 +1,4 @@
-import 'package:mirus_global/widgets/loadingWidget.dart';
+import 'package:mirus_global/Widgets/loadingWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

@@ -11,8 +11,8 @@ class EshopApp {
   static FirebaseAuth auth;
   static FirebaseFirestore firestore;
 
-  static String collectionUser = 'users';
-  static String collectionOrders = 'orders';
+  static String collectionUser = "users";
+  static String collectionOrders = "orders";
   static String userCartList = 'userCart';
   static String subCollectionAddress = 'userAddress';
 

@@ -4,7 +4,7 @@ import 'package:mirus_global/authentication/auth_screen.dart';
 import 'package:mirus_global/dialog_box/error_dialog.dart';
 //import 'package:mirus_global/admin/uploadItems.dart';
 //import 'package:mirus_global/authentication/authenication.dart';
-import 'package:mirus_global/widgets/customTextField.dart';
+import 'package:mirus_global/Widgets/customTextField.dart';
 //import 'package:mirus_global/dialogBox/errorDialog.dart';
 import 'package:flutter/material.dart';
 

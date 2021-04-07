@@ -7,9 +7,9 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:mirus_global/config/config.dart';
-import '../widgets/loadingWidget.dart';
-import '../widgets/myDrawer.dart';
-import '../widgets/searchBox.dart';
+import '../Widgets/loadingWidget.dart';
+import '../Widgets/myDrawer.dart';
+import '../Widgets/searchBox.dart';
 import '../models/item.dart';
 
 double width;
@@ -102,6 +102,7 @@ class _StoreHomeState extends State<StoreHome> {
           slivers: [
             SliverPersistentHeader(
               delegate: SearchBoxDelegate(),
+              pinned: true,
             ),
             StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance.collection("items")
@@ -130,6 +131,10 @@ class _StoreHomeState extends State<StoreHome> {
 Widget sourceInfo(ItemModel model, BuildContext context,
     {Color background, removeCartFunction}) {
   return InkWell(
+    onTap: () {
+      Route route = MaterialPageRoute(builder: (c) => ProductPage());
+      Navigator.push(context, route);
+    },
     splashColor: Colors.pink,
     child: Padding(
       padding: EdgeInsets.all(6.0),
@@ -186,7 +191,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                       Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
-                          color: Colors.pink,
+                          color: Colors.green,
                         ),
                         alignment: Alignment.topLeft,
                         width: 40.0,
@@ -195,8 +200,16 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('50%', style: TextStyle(fontSize: 15.0),),
-                              Text('OFF', style: TextStyle(fontSize: 12.0),),
+                              Text(
+                                '50%',
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                color: Colors.white),),
+                              Text(
+                                'OFF',
+                                style: TextStyle(
+                                    fontSize: 12.0,
+                                color: Colors.white),),
                             ],
                           ),
                         ),
@@ -210,7 +223,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                             child: Row(
                               children: [
                                 Text(
-                                    'Original price: =N=',
+                                    'Original price: =N= ',
                                 style: TextStyle(
                                   fontSize: 14.0,
                                   color: Colors.grey,
@@ -237,10 +250,10 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                                     color: Colors.grey,
                                   ),),
                                 Text(
-                                  '=N=',
+                                  '=N= ',
                                   style: TextStyle(
                                     fontSize: 16.0,
-                                    color: Colors.red,
+                                    color: Colors.green,
                                   ),
                                 ),
                                 Text(
@@ -268,7 +281,8 @@ Widget sourceInfo(ItemModel model, BuildContext context,
       ),
     ),
   );
-}
+
+} // source info
 
 
 
