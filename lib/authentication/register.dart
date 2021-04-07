@@ -187,7 +187,7 @@ Future saveUserInfoToFireStore(User fUser) async {
     "name": _nameEditingController.text,
     "email": fUser.email,
     "url": userImageUrl,
-    EshopApp.userCartList: ["garbageValue"],
+    "userCart": ["garbageValue"] // EshopApp.userCartList: ["garbageValue"],
   }).then((_) {
     print("Collection created...");
   }).catchError((error) {
