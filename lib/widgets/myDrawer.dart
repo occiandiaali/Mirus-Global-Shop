@@ -47,7 +47,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 SizedBox(height: 10.0,),
                 Text(
-                  EshopApp.sharedPreferences.getString(EshopApp.userEmail) ?? 'you@email.com',
+                  EshopApp.sharedPreferences.getString(EshopApp.userName) ?? 'you@email.com',
                   style: TextStyle(color: Colors.white),
                 ),
                 // Text(
@@ -91,7 +91,7 @@ class MyDrawer extends StatelessWidget {
 
                 ListTile(
                   leading: Icon(Icons.list_outlined, color: Colors.white,),
-                  title: Text('My Orders', style: TextStyle(color: Colors.white),),
+                  title: Text('Orders', style: TextStyle(color: Colors.white),),
                   onTap: () {
                     Route route = MaterialPageRoute(builder: (c) => MyOrders());
                     Navigator.pushReplacement(context, route);
@@ -104,7 +104,7 @@ class MyDrawer extends StatelessWidget {
 
                 ListTile(
                   leading: Icon(Icons.shopping_bag_outlined, color: Colors.white,),
-                  title: Text('My Cart', style: TextStyle(color: Colors.white),),
+                  title: Text('Cart', style: TextStyle(color: Colors.white),),
                   onTap: () {
                     Route route = MaterialPageRoute(builder: (c) => CartPage());
                     Navigator.pushReplacement(context, route);
