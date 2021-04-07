@@ -150,8 +150,8 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
               });
 
               Route route = MaterialPageRoute(builder: (c) => UploadPage(adminUser));
-             // Navigator.pushReplacement(context, route);
-              Navigator.push(context, route);
+              Navigator.pushReplacement(context, route);
+             // Navigator.push(context, route);
             }
           });
     });
