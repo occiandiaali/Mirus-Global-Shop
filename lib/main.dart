@@ -4,10 +4,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mirus_global/authentication/auth_screen.dart';
 import 'package:mirus_global/config/config.dart';
+import 'package:mirus_global/counters/address_changer.dart';
+import 'package:mirus_global/counters/item_quantity.dart';
+import 'package:mirus_global/counters/total_amt.dart';
 import 'package:mirus_global/store/storehome.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'counters/cartitemcounter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,14 +27,31 @@ Future<void> main() async {
 class MG extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'MG Shop',
-      debugShowCheckedModeBanner: true,
-      theme: ThemeData(
-        primaryColor: Colors.red,
-        fontFamily: 'Ubuntu',
-      ),
-      home: SplashScreen(),
+    // return MaterialApp(
+    //   title: 'MG Shop',
+    //   debugShowCheckedModeBanner: true,
+    //   theme: ThemeData(
+    //     primaryColor: Colors.red,
+    //     fontFamily: 'Ubuntu',
+    //   ),
+    //   home: SplashScreen(),
+    // );
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (c) => CartItemCounter()),
+        ChangeNotifierProvider(create: (c) => ItemQuantity()),
+        ChangeNotifierProvider(create: (c) => TotalAmount()),
+        ChangeNotifierProvider(create: (c) => AddressChanger()),
+      ],
+        child: MaterialApp(
+          title: 'MG Shop',
+          debugShowCheckedModeBanner: true,
+          theme: ThemeData(
+            primaryColor: Colors.red,
+            fontFamily: 'Ubuntu',
+          ),
+          home: SplashScreen(),
+        ),
     );
   }
 } // main class
