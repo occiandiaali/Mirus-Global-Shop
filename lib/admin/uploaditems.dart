@@ -170,7 +170,7 @@ class _UploadPageState extends State<UploadPage>
               onPressed: () {
                 Route route =
                 MaterialPageRoute(builder: (c) => AdminShiftOrders());
-                Navigator.pushReplacement(context, route);
+                Navigator.push(context, route);
               },
             ),
 
@@ -319,7 +319,7 @@ class _UploadPageState extends State<UploadPage>
 
           ListTile(
             leading: Icon(
-              Icons.perm_device_information_outlined,
+              Icons.title_outlined,
               color: Colors.pink,),
             title: Container(
               width: 250.0,
@@ -338,7 +338,7 @@ class _UploadPageState extends State<UploadPage>
 
           ListTile(
             leading: Icon(
-              Icons.perm_device_information_outlined,
+              Icons.info_outline,
               color: Colors.pink,),
             title: Container(
               width: 250.0,
@@ -357,7 +357,7 @@ class _UploadPageState extends State<UploadPage>
 
           ListTile(
             leading: Icon(
-              Icons.perm_device_information_outlined,
+              Icons.money_outlined,
               color: Colors.pink,),
             title: Container(
               width: 250.0,
@@ -409,7 +409,7 @@ class _UploadPageState extends State<UploadPage>
     itemsRef.doc(itemId).set({
       "shortInfo": _searchInfoEditingController.text.trim(),
       "longDescription": _itemDescEditingController.text.trim(),
-      "price": _itemPriceEditingController.text.trim(),
+      "price": int.parse(_itemPriceEditingController.text),
       "publishedDate": DateTime.now(),
       "status": "available",
       "thumbnailUrl": imgUrl,
