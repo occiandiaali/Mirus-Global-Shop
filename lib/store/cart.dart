@@ -21,6 +21,12 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('User cart'),
+      ),
+      body: Center(
+        child: Text('Your Cart is EMPTY'),
+      ),
     );
   }
 }
