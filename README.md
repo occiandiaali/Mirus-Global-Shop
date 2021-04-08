@@ -1,6 +1,6 @@
 # mirus_global
 
-A new Flutter project.
+A new Flutter project for the mobile ecommerce arm of a supplies company.  
 
 ## Getting Started
 
