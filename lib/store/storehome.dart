@@ -275,14 +275,36 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                   Flexible(
                     child: Container(),
                   ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: removeCartFunction == null ?
+                    IconButton(
+                      onPressed: () {
+                        checkItemInCart(model.shortInfo, context);
+                      },
+                      icon: Icon(
+                          Icons.add_shopping_cart,
+                      color: Colors.pinkAccent),
+                    )
+                    : IconButton(
+                      onPressed: () => null,
+                      icon: Icon(Icons.remove_shopping_cart),
+                    ),
+                  ),
+                  Divider(
+                    height: 10.0,
+                    color: Colors.pinkAccent,
+                    thickness: 0.5,),
                 ],
               ),
             ),
           ],
         ),
       ),
+
     ),
   );
+
 
 } // source info
 
@@ -292,8 +314,30 @@ Widget card({Color primaryColor = Colors.pinkAccent, String imgPath}) {
   return Container();
 }
 
+addItemToCart(String productid, BuildContext context) {
+  List tempCartList = EshopApp.sharedPreferences
+      .getStringList(EshopApp.userCartList);
+  tempCartList.add(productid);
+
+  EshopApp.firestore.collection(EshopApp.collectionUser)
+      .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
+      .update({
+    EshopApp.userCartList: tempCartList,
+  }).then((v) {
+    EshopApp.sharedPreferences
+        .setStringList(EshopApp.userCartList, tempCartList);
+    Fluttertoast.showToast(msg: 'Item added to cart!');
+
+  //  Provider.of<CartItemCounter>(context, listen: false).displayResult();
+  });
+}
 
 
-void checkItemInCart(String productID, BuildContext context)
-{
+
+void checkItemInCart(String productID, BuildContext context) {
+  EshopApp.sharedPreferences
+      .getStringList(EshopApp.userCartList)
+      .contains(productID) ?
+      Fluttertoast.showToast(msg: 'Item already in cart') :
+      addItemToCart(productID, context);
 }
