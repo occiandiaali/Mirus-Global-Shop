@@ -51,7 +51,9 @@ class _StoreHomeState extends State<StoreHome> {
             Stack(
               children: [
                 IconButton(
-                  icon: Icon(Icons.shopping_cart_outlined, color: Colors.white,),
+                  icon: Icon(
+                    Icons.shopping_cart_outlined,
+                    color: Colors.white,),
                   onPressed: () {
                     Route route = MaterialPageRoute(builder: (c) => CartPage());
                     Navigator.push(context, route);
@@ -101,23 +103,23 @@ class _StoreHomeState extends State<StoreHome> {
         body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
-              delegate: SearchBoxDelegate(),
               pinned: true,
+              delegate: SearchBoxDelegate(),
             ),
             StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance.collection("items")
               .limit(15).orderBy("publishedDate", descending: true).snapshots(),
-              builder: (context, dataSnapshot) {
-                return !dataSnapshot.hasData ?
+              builder: (context, snapshot) {
+                return !snapshot.hasData ?
                     SliverToBoxAdapter(child: Center(child: circularProgress(),))
                     : SliverStaggeredGrid.countBuilder(
                   crossAxisCount: 1,
-                  itemCount: dataSnapshot.data.docs.length,
                   staggeredTileBuilder: (c) => StaggeredTile.fit(1),
                   itemBuilder: (context, index) {
-                    ItemModel model = ItemModel.fromJson(dataSnapshot.data.docs[index].data());
+                    ItemModel model = ItemModel.fromJson(snapshot.data.docs[index].data());
                     return sourceInfo(model, context);
                   },
+                  itemCount: snapshot.data.docs.length,
                 );
               },
             ),
@@ -132,10 +134,10 @@ Widget sourceInfo(ItemModel model, BuildContext context,
     {Color background, removeCartFunction}) {
   return InkWell(
     onTap: () {
-      Route route = MaterialPageRoute(builder: (c) => ProductPage());
+      Route route = MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,));
       Navigator.push(context, route);
     },
-    splashColor: Colors.pink,
+    splashColor: Colors.grey,
     child: Padding(
       padding: EdgeInsets.all(6.0),
       child: Container(

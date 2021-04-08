@@ -14,6 +14,7 @@ class SearchBoxDelegate extends SliverPersistentHeaderDelegate {
       InkWell(
         onTap: () {
           Route route = MaterialPageRoute(builder: (c) => SearchProduct());
+          Navigator.push(context, route);
         },
         child: Container(
           decoration: BoxDecoration(

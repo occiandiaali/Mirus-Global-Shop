@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ItemModel {
-  String title = 'Store Item';
-  String shortInfo = 'Item Tag';
+  String title;
+  String shortInfo;
   Timestamp publishedDate;
-  String thumbnailUrl = 'images/mglogo.png';
-  String longDescription = 'A longer description of the store item';
+  String thumbnailUrl;
+  String longDescription;
   String status;
   int price;
 

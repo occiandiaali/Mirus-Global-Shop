@@ -56,8 +56,8 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double _screenWidth = MediaQuery.of(context).size.width;
-    double _screenHeight = MediaQuery.of(context).size.height;
+   // double _screenWidth = MediaQuery.of(context).size.width;
+   // double _screenHeight = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
       child: Container(
         decoration: BoxDecoration(
@@ -155,7 +155,7 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
             }
           });
     });
-  }
+  } // login admin
 
 
 } // class
