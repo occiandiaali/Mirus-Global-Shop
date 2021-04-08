@@ -89,7 +89,7 @@ class _ProductPageState extends State<ProductPage> {
                         child: Container(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              colors: [Colors.black12, Colors.blueGrey],
+                              colors: [Colors.pink, Colors.blueGrey],
                               begin: const FractionalOffset(0.0, 0.0),
                               end: const FractionalOffset(1.0, 0.0),
                               stops: [0.0, 1.0],
