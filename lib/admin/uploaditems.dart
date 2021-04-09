@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mirus_global/admin/admin_manage.dart';
 import 'package:mirus_global/authentication/auth_screen.dart';
 //import 'package:mirus_global/admin/adminShiftOrders.dart';
 import 'package:mirus_global/Widgets/loadingWidget.dart';
@@ -7,6 +8,7 @@ import 'package:mirus_global/main.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as ImD;
 
@@ -110,7 +112,7 @@ class _UploadPageState extends State<UploadPage>
                 ),
                 Icon(
                   Icons.shop_two_outlined,
-                  color: Colors.pink,
+                  color: Colors.purple,
                   size: 200.0,
                 ),
                 Padding(
@@ -148,7 +150,10 @@ class _UploadPageState extends State<UploadPage>
                         color: Colors.white,
                       ),
                     ),
-                    onPressed: () => print('Manage items in store'),
+                    onPressed: () {
+                      Route route = MaterialPageRoute(builder: (c) => AdminManage());
+                      Navigator.push(context, route);
+                    },
                   ),
                 ),
               ],
