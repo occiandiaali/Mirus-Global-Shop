@@ -5,6 +5,8 @@ import '../store/search.dart';
 
 
 class SearchBoxDelegate extends SliverPersistentHeaderDelegate {
+
+
   @override
   Widget build(
       BuildContext context,
@@ -51,6 +53,7 @@ class SearchBoxDelegate extends SliverPersistentHeaderDelegate {
                     padding: EdgeInsets.only(left: 5.0),
                     child: Text('Find items...'),
                   ),
+
                 ],
               ),
             ),
