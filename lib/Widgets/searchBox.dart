@@ -14,10 +14,7 @@ class SearchBoxDelegate extends SliverPersistentHeaderDelegate {
       bool overlapsContent
       ) =>
       InkWell(
-        onTap: () {
-          Route route = MaterialPageRoute(builder: (c) => SearchProduct());
-          Navigator.push(context, route);
-        },
+        onTap: () => print('Tapped search field...'),
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -37,22 +34,22 @@ class SearchBoxDelegate extends SliverPersistentHeaderDelegate {
               width: MediaQuery.of(context).size.width,
               height: 50.0,
               decoration: BoxDecoration(
-                color: Colors.white,
+               // color: Colors.white,
                 borderRadius: BorderRadius.circular(6.0),
               ),
               child: Row(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 5.0),
-                    child: Icon(
-                      Icons.search,
-                      color: Colors.blueGrey,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 5.0),
-                    child: Text('Find items...'),
-                  ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(left: 5.0),
+                  //   child: Icon(
+                  //     Icons.search,
+                  //     color: Colors.blueGrey,
+                  //   ),
+                  // ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(left: 5.0),
+                  //   child: Text('Find items...'),
+                  // ),
 
                 ],
               ),
