@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class MyDrawer extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -38,16 +39,17 @@ class MyDrawer extends StatelessWidget {
                     width: 160.0,
                     child: CircleAvatar(
                       backgroundImage: NetworkImage(
-                          EshopApp.sharedPreferences.getString(EshopApp.userAvatarUrl) ??
-                             'https://vc.bridgew.edu/context/hoba/article/1008/type/native/viewcontent'
-                      ),
-                    //  NetworkImage('https://vc.bridgew.edu/context/hoba/article/1008/type/native/viewcontent'),
+                        EshopApp.sharedPreferences.getString(EshopApp.userAvatarUrl) ??
+                            'https://vc.bridgew.edu/context/hoba/article/1008/type/native/viewcontent',
+                    ),
+
                     ),
                   ),
                 ),
                 SizedBox(height: 10.0,),
                 Text(
-                  EshopApp.sharedPreferences.getString(EshopApp.userName) ?? 'you@email.com',
+                  EshopApp.sharedPreferences.getString(EshopApp.userEmail) ??
+                      'user@emailaddress.com',
                   style: TextStyle(color: Colors.white),
                 ),
                 // Text(

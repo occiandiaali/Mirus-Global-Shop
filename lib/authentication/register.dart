@@ -8,7 +8,7 @@ import 'package:mirus_global/config/config.dart';
 import 'package:mirus_global/dialog_box/error_dialog.dart';
 import 'package:mirus_global/dialog_box/loading_dialog.dart';
 import 'package:mirus_global/store/storehome.dart';
-import 'package:mirus_global/widgets/customTextField.dart';
+import 'package:mirus_global/Widgets/customTextField.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Register extends StatefulWidget {
@@ -22,8 +22,8 @@ class _RegisterState extends State<Register> {
   final _emailEditingController = TextEditingController();
   final _passwordEditingController = TextEditingController();
   final _confirmPassEditingController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String userImageUrl = '';
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String userImageUrl = "";
   File _imageFile;
 
 
@@ -40,7 +40,7 @@ class _RegisterState extends State<Register> {
           children: [
             SizedBox(height: 32.0,),
             InkWell(
-              onTap: _imageSelectAndPick,
+              onTap: () => _imageSelectAndPick(),
             child: CircleAvatar(
               radius: _screenWidth * 0.15,
               backgroundColor: Colors.white,
@@ -85,7 +85,7 @@ class _RegisterState extends State<Register> {
               ),
             ),
             ElevatedButton(
-              onPressed: () { uploadAndSaveImg(); },
+              onPressed: () => uploadAndSaveImg(),
               child: Text('Register'),
             ),
             SizedBox(
@@ -184,11 +184,11 @@ void _registerUser() async {
 Future saveUserInfoToFireStore(User fUser) async {
   FirebaseFirestore.instance.collection("users").add({
     "uid": fUser.uid,
-    "name": _nameEditingController.text,
+    "name": _nameEditingController.text.trim(),
     "email": fUser.email,
     "url": userImageUrl,
-    "userCart": ["garbageValue"] // EshopApp.userCartList: ["garbageValue"],
-  }).then((_) {
+    EshopApp.userCartList: ["garbageValue"],
+  }).then((s) {
     print("Collection created...");
   }).catchError((error) {
     print("Error adding document: $error");
@@ -206,7 +206,7 @@ Future saveUserInfoToFireStore(User fUser) async {
   await EshopApp.sharedPreferences.setString(EshopApp.userName, _nameEditingController.text);
   await EshopApp.sharedPreferences.setString(EshopApp.userAvatarUrl, userImageUrl);
   await EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, ["garbageValue"]);
-}
+} // save user info to fire store
 
 
 } // class

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mirus_global/config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../widgets/loadingWidget.dart';
+import '../Widgets/loadingWidget.dart';
 //import '../widgets/orderCard.dart';
 
 class AdminShiftOrders extends StatefulWidget {

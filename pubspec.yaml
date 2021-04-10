@@ -76,6 +76,7 @@ flutter:
     - images/mglogo.png
     - images/login.png
     - images/admin.png
+    - images/silhouette.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

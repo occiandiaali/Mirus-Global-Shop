@@ -6,7 +6,7 @@ import 'package:mirus_global/config/config.dart';
 import 'package:mirus_global/dialog_box/error_dialog.dart';
 import 'package:mirus_global/dialog_box/loading_dialog.dart';
 import 'package:mirus_global/store/storehome.dart';
-import 'package:mirus_global/widgets/customTextField.dart';
+import 'package:mirus_global/Widgets/customTextField.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -22,8 +22,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    double _screenWidth = MediaQuery.of(context).size.width;
-    double _screenHeight = MediaQuery.of(context).size.height;
+    //double _screenWidth = MediaQuery.of(context).size.width;
+    //double _screenHeight = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
       child: Container(
         child: Column(
@@ -66,10 +66,10 @@ class _LoginState extends State<Login> {
               onPressed: () {
                 _emailEditingController.text.isNotEmpty &&
                     _passwordEditingController.text.isNotEmpty
-                    ? loginUser()
+                    ? loginUserToo()
                     : showDialog(
                   context: context,
-                  builder: (c) => ErrorAlertDialog(message: 'email AND password required',)
+                  builder: (c) => ErrorAlertDialog(message: 'Valid email AND password required',)
                 );
               },
               child: Text('Sign In'),
@@ -100,6 +100,7 @@ class _LoginState extends State<Login> {
   }
 
   FirebaseAuth _auth = FirebaseAuth.instance;
+
  void loginUser() async {
     showDialog(
       context: context,
@@ -144,29 +145,54 @@ class _LoginState extends State<Login> {
      List<String> cartList = dataSnapshot.data()[EshopApp.userCartList].cast<String>();
      await EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, cartList);
    });
- }
+ } // read data
 
-Future dummyData(User fUser) async {
-  FirebaseFirestore.instance.collection("users")
-      .doc(fUser.uid)
-      .get()
-      .then((value) async {
-          EshopApp.sharedPreferences.getString("uid");
-          EshopApp.sharedPreferences.getString(EshopApp.userEmail);
-          EshopApp.sharedPreferences.getString(EshopApp.userName);
-          EshopApp.sharedPreferences.getString(EshopApp.userAvatarUrl);
+  Future readInfoData(User fUser) async {
+    FirebaseFirestore.instance.collection("users")
+        .doc(fUser.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) async {
+          if (documentSnapshot.exists) {
+           await EshopApp.sharedPreferences.setString(
+               EshopApp.userUID, documentSnapshot.data()[EshopApp.userUID]);
+           await EshopApp.sharedPreferences.setString(
+                EshopApp.userAvatarUrl, documentSnapshot.data()[EshopApp.userAvatarUrl]);
+           await EshopApp.sharedPreferences.setString(
+                EshopApp.userEmail, documentSnapshot.data()[EshopApp.userEmail]);
+          }
+    });
+  } // read info data
 
-         // List<String> cartList = value.data()[EshopApp.userCartList].cast<String>();
-          EshopApp.sharedPreferences.getStringList(EshopApp.userCartList).cast<String>();
 
-  }).catchError((error) {
+  loginUserToo() async {
     showDialog(
         context: context,
-        builder: (c) {
-          return ErrorAlertDialog(message: error.toString());
-        }
+        builder: (c) => LoadingAlertDialog(message: 'Verifying you...')
     );
-  });
-}
+    User firebaseUser;
+    await _auth.signInWithEmailAndPassword(
+      email: _emailEditingController.text.trim(),
+      password: _passwordEditingController.text.trim(),
+    ).then((authUser) {
+      firebaseUser = authUser.user;
+    }).catchError((error) {
+      Navigator.pop(context);
+      showDialog(
+          context: context,
+          builder: (c) {
+            return ErrorAlertDialog(message: error.toString());
+          }
+      );
+    });
+    if (firebaseUser != null) {
+      readInfoData(firebaseUser)
+        .then((s) {
+        Navigator.pop(context);
+        Route route = MaterialPageRoute(builder: (c) => StoreHome());
+        Navigator.pushReplacement(context, route);
+        });
+    }
+
+  } // login user too
 
 } // class

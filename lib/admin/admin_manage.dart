@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:mirus_global/store/cart.dart';
+import 'package:mirus_global/store/edit_product_page.dart';
 import 'package:mirus_global/store/product_page.dart';
 import 'package:mirus_global/counters/cartitemcounter.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -15,18 +15,12 @@ import '../models/item.dart';
 
 double width;
 
-class StoreHome extends StatefulWidget {
+class AdminManage extends StatefulWidget {
   @override
-  _StoreHomeState createState() => _StoreHomeState();
+  _AdminManageState createState() => _AdminManageState();
 }
 
-class _StoreHomeState extends State<StoreHome> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _AdminManageState extends State<AdminManage> {
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
@@ -45,12 +39,12 @@ class _StoreHomeState extends State<StoreHome> {
             ),
           ),
           title: Text(
-            'MG Shop',
+            'Management',
             style: TextStyle(
-              fontSize: 35.0,
+              fontSize: 25.0,
               fontWeight: FontWeight.bold,
               color: Colors.white,
-              fontFamily: 'Dancing Script',
+             // fontFamily: 'Dancing Script',
             ),
           ),
           centerTitle: true,
@@ -59,76 +53,31 @@ class _StoreHomeState extends State<StoreHome> {
               children: [
                 IconButton(
                   icon: Icon(
-                    Icons.shopping_cart_outlined,
+                    Icons.settings_applications_outlined,
                     color: Colors.white,),
                   onPressed: () {
                     Route route = MaterialPageRoute(builder: (c) => CartPage());
                     Navigator.push(context, route);
                   },
                 ),
-                Positioned(
-                  child: Stack(
-                    children: [
-                      Icon(
-                        Icons.brightness_1,
-                        size: 20.0,
-                        color: Colors.deepPurple,
-                      ),
-                      Positioned(
-                        top: 3.0,
-                        bottom: 4.0,
-                        left: 7.0,
-                        child: Text(
-                            '0',
-                        style: TextStyle(color: Colors.white, fontSize: 12.0),),
-                      ),
-                      // Positioned(
-                      //   top: 3.0,
-                      //   bottom: 4.0,
-                      //   left: 5.0,
-                      //   child: Consumer<CartItemCounter>(
-                      //     builder: (context, counter, _) {
-                      //       return Text(
-                      //         counter.count.toString(), // bug area
-                      //         style: TextStyle(
-                      //           color: Colors.white,
-                      //           fontWeight: FontWeight.w500,
-                      //           fontSize: 12.0,
-                      //         ),
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                ),
+
               ],
             ),
           ],
         ),
-        drawer: MyDrawer(),
+       // drawer: MyDrawer(),
         body: CustomScrollView(
           slivers: [
-            // SliverPersistentHeader(
-            //   pinned: true,
-            //   delegate: SearchBoxDelegate(),
-            // ),
-            // SliverAppBar(
-            //   pinned: false,
-            //   actions: [
-            //     IconButton(
-            //       onPressed: () {},
-            //       icon: Icon(Icons.search),
-            //     ),
-            //   ],
-            // ),
-
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: SearchBoxDelegate(),
+            ),
             StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance.collection("items")
-              .limit(15).orderBy("publishedDate", descending: true).snapshots(),
+                  .limit(15).orderBy("publishedDate", descending: true).snapshots(),
               builder: (context, snapshot) {
                 return !snapshot.hasData ?
-                    SliverToBoxAdapter(child: Center(child: circularProgress(),))
+                SliverToBoxAdapter(child: Center(child: circularProgress(),))
                     : SliverStaggeredGrid.countBuilder(
                   crossAxisCount: 1,
                   staggeredTileBuilder: (c) => StaggeredTile.fit(1),
@@ -145,14 +94,15 @@ class _StoreHomeState extends State<StoreHome> {
       ),
     );
   }
+}
 
-} // class
 
 Widget sourceInfo(ItemModel model, BuildContext context,
     {Color background, removeCartFunction}) {
+  int timesOrdered = 12;
   return InkWell(
     onTap: () {
-      Route route = MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,));
+      Route route = MaterialPageRoute(builder: (c) => EditProductPage(itemModel: model));
       Navigator.push(context, route);
     },
     splashColor: Colors.grey,
@@ -192,7 +142,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                   SizedBox(height: 5.0,),
                   Container(
                     child: Row(
-                      mainAxisSize: MainAxisSize.max,
+                      mainAxisSize: MainAxisSize.min, // changed this
                       children: [
                         Expanded(
                           child: Text(
@@ -224,12 +174,12 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                                 '50%',
                                 style: TextStyle(
                                     fontSize: 15.0,
-                                color: Colors.white),),
+                                    color: Colors.white),),
                               Text(
                                 'OFF',
                                 style: TextStyle(
                                     fontSize: 12.0,
-                                color: Colors.white),),
+                                    color: Colors.white),),
                             ],
                           ),
                         ),
@@ -243,12 +193,12 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                             child: Row(
                               children: [
                                 Text(
-                                    'Original price: =N= ',
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.grey,
-                                  decoration: TextDecoration.lineThrough,
-                                ),),
+                                  'Original price: =N= ',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.grey,
+                                    decoration: TextDecoration.lineThrough,
+                                  ),),
                                 Text(
                                   (model.price + model.price).toString(),
                                   style: TextStyle(
@@ -293,22 +243,23 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                   Flexible(
                     child: Container(),
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: removeCartFunction == null ?
-                    IconButton(
-                      onPressed: () {
-                        checkItemInCart(model.shortInfo, context);
-                      },
-                      icon: Icon(
-                          Icons.add_shopping_cart,
-                      color: Colors.pinkAccent),
-                    )
-                    : IconButton(
-                      onPressed: () => null,
-                      icon: Icon(Icons.remove_shopping_cart),
-                    ),
-                  ),
+                  // Align(
+                  //   alignment: Alignment.centerRight,
+                  //   child: removeCartFunction == null ?
+                  //   IconButton(
+                  //     onPressed: () {
+                  //       checkItemInCart(model.shortInfo, context);
+                  //     },
+                  //     icon: Icon(
+                  //         Icons.add_shopping_cart,
+                  //         color: Colors.pinkAccent),
+                  //   )
+                  //       : IconButton(
+                  //     onPressed: () => null,
+                  //     icon: Icon(Icons.remove_shopping_cart),
+                  //   ),
+                  // ),
+                  Text('Ordered $timesOrdered time(s)'),
                   Divider(
                     height: 10.0,
                     color: Colors.pinkAccent,
@@ -332,30 +283,30 @@ Widget card({Color primaryColor = Colors.pinkAccent, String imgPath}) {
   return Container();
 }
 
-addItemToCart(String productid, BuildContext context) {
-  List tempCartList = EshopApp.sharedPreferences
-      .getStringList(EshopApp.userCartList);
-  tempCartList.add(productid);
-
-  EshopApp.firestore.collection(EshopApp.collectionUser)
-      .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
-      .update({
-    EshopApp.userCartList: tempCartList,
-  }).then((v) {
-    EshopApp.sharedPreferences
-        .setStringList(EshopApp.userCartList, tempCartList);
-    Fluttertoast.showToast(msg: 'Item added to cart!');
-
-  //  Provider.of<CartItemCounter>(context, listen: false).displayResult();
-  });
-}
-
-
-
-void checkItemInCart(String productID, BuildContext context) {
-  EshopApp.sharedPreferences
-      .getStringList(EshopApp.userCartList)
-      .contains(productID) ?
-      Fluttertoast.showToast(msg: 'Item already in cart') :
-      addItemToCart(productID, context);
-}
+// addItemToCart(String productid, BuildContext context) {
+//   List tempCartList = EshopApp.sharedPreferences
+//       .getStringList(EshopApp.userCartList);
+//   tempCartList.add(productid);
+//
+//   EshopApp.firestore.collection(EshopApp.collectionUser)
+//       .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
+//       .update({
+//     EshopApp.userCartList: tempCartList,
+//   }).then((v) {
+//     EshopApp.sharedPreferences
+//         .setStringList(EshopApp.userCartList, tempCartList);
+//     Fluttertoast.showToast(msg: 'Item added to cart!');
+//
+//     //  Provider.of<CartItemCounter>(context, listen: false).displayResult();
+//   });
+// }
+//
+//
+//
+// void checkItemInCart(String productID, BuildContext context) {
+//   EshopApp.sharedPreferences
+//       .getStringList(EshopApp.userCartList)
+//       .contains(productID) ?
+//   Fluttertoast.showToast(msg: 'Item already in cart') :
+//   addItemToCart(productID, context);
+// }

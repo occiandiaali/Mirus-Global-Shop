@@ -47,7 +47,7 @@ class MG extends StatelessWidget {
           title: 'MG Shop',
           debugShowCheckedModeBanner: true,
           theme: ThemeData(
-            primaryColor: Colors.red,
+            primaryColor: Colors.purple,
             fontFamily: 'Ubuntu',
           ),
           home: SplashScreen(),
@@ -102,7 +102,11 @@ class _SplashScreenState extends State<SplashScreen> {
               SizedBox(height: 20.0,),
               Text(
                 'Africa\'s largest On-line supplier',
-              style: TextStyle(color: Colors.white),)
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                fontFamily: 'Dancing Script',
+              ),)
             ],
           ),
         ),

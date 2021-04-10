@@ -34,7 +34,7 @@ class _AuthScreenState extends State<AuthScreen> {
               fontSize: 35.0,
               fontWeight: FontWeight.bold,
               color: Colors.white,
-              fontFamily: 'Ubuntu-Regular',
+              fontFamily: 'Dancing Script',
             ),
           ),
           centerTitle: true,
