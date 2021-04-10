@@ -109,10 +109,10 @@ class _StoreHomeState extends State<StoreHome> {
         drawer: MyDrawer(),
         body: CustomScrollView(
           slivers: [
-            // SliverPersistentHeader(
-            //   pinned: true,
-            //   delegate: SearchBoxDelegate(),
-            // ),
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: SearchBoxDelegate(),
+            ),
             // SliverAppBar(
             //   pinned: false,
             //   actions: [
