@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:mirus_global/store/cart.dart';
 import 'package:mirus_global/store/product_page.dart';
 import 'package:mirus_global/counters/cartitemcounter.dart';
@@ -20,6 +21,12 @@ class StoreHome extends StatefulWidget {
 }
 
 class _StoreHomeState extends State<StoreHome> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
@@ -102,10 +109,20 @@ class _StoreHomeState extends State<StoreHome> {
         drawer: MyDrawer(),
         body: CustomScrollView(
           slivers: [
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: SearchBoxDelegate(),
-            ),
+            // SliverPersistentHeader(
+            //   pinned: true,
+            //   delegate: SearchBoxDelegate(),
+            // ),
+            // SliverAppBar(
+            //   pinned: false,
+            //   actions: [
+            //     IconButton(
+            //       onPressed: () {},
+            //       icon: Icon(Icons.search),
+            //     ),
+            //   ],
+            // ),
+
             StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance.collection("items")
               .limit(15).orderBy("publishedDate", descending: true).snapshots(),
@@ -128,7 +145,8 @@ class _StoreHomeState extends State<StoreHome> {
       ),
     );
   }
-}
+
+} // class
 
 Widget sourceInfo(ItemModel model, BuildContext context,
     {Color background, removeCartFunction}) {
