@@ -9,11 +9,8 @@ class CartItemCounter extends ChangeNotifier {
 
   int get count => _counter;
 
-  Future<void> displayResult() async {
-    // int _counter = EshopApp
-    //     .sharedPreferences
-    //     .getStringList(EshopApp.userCartList).length - 1;
-    count;
+  Future<void> displayResult(int v) async {
+    _counter = v;
     await Future.delayed(const Duration(milliseconds: 100), () {
       notifyListeners();
     });
