@@ -336,9 +336,10 @@ addItemToCart(String shortInfoAsId, BuildContext context) {
 
   userDocRef.set({
     EshopApp.userCartList: tempCartList,
-  }, SetOptions(merge: true)).then((_) {
+  }).then((v) {
     Fluttertoast.showToast(msg: 'Item added to cart!');
-    Provider.of<CartItemCounter>(context, listen: false).displayResult();
+    EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, tempCartList);
+    Provider.of<CartItemCounter>(context, listen: false).displayResult(EshopApp.userCartList.length);
   }).catchError((e) => print("Error updating document: $e"));
 } // add item to cart
 
