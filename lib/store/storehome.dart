@@ -78,27 +78,19 @@ class _StoreHomeState extends State<StoreHome> {
                         top: 3.0,
                         bottom: 4.0,
                         left: 7.0,
-                        child: Text(
-                            '0',
-                        style: TextStyle(color: Colors.white, fontSize: 12.0),),
+                        child: Consumer<CartItemCounter>(
+                          builder: (context, counter, _) {
+                            return Text(
+                              counter.count.toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w500
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                      // Positioned(
-                      //   top: 3.0,
-                      //   bottom: 4.0,
-                      //   left: 5.0,
-                      //   child: Consumer<CartItemCounter>(
-                      //     builder: (context, counter, _) {
-                      //       return Text(
-                      //         counter.count.toString(), // bug area
-                      //         style: TextStyle(
-                      //           color: Colors.white,
-                      //           fontWeight: FontWeight.w500,
-                      //           fontSize: 12.0,
-                      //         ),
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
@@ -113,15 +105,6 @@ class _StoreHomeState extends State<StoreHome> {
               pinned: true,
               delegate: SearchBoxDelegate(),
             ),
-            // SliverAppBar(
-            //   pinned: false,
-            //   actions: [
-            //     IconButton(
-            //       onPressed: () {},
-            //       icon: Icon(Icons.search),
-            //     ),
-            //   ],
-            // ),
 
             StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance.collection("items")
@@ -306,7 +289,8 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                     )
                     : IconButton(
                       onPressed: () => null,
-                      icon: Icon(Icons.remove_shopping_cart),
+                      icon: Icon(Icons.delete_forever,
+                          color: Colors.pinkAccent),
                     ),
                   ),
                   Divider(
@@ -332,27 +316,36 @@ Widget card({Color primaryColor = Colors.pinkAccent, String imgPath}) {
   return Container();
 }
 
-addItemToCart(String productid, BuildContext context) {
+addItemToCart(String shortInfoAsId, BuildContext context) {
   List tempCartList = EshopApp.sharedPreferences
       .getStringList(EshopApp.userCartList);
-  tempCartList.add(productid);
+  tempCartList.add(shortInfoAsId);
+  var userDocRef = EshopApp.firestore.collection(EshopApp.collectionUser)
+      .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID));
 
-  EshopApp.firestore.collection(EshopApp.collectionUser)
-      .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
-      .update({
+  // EshopApp.firestore.collection(EshopApp.collectionUser)
+  //     .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
+  //     .update({
+  //   EshopApp.userCartList: tempCartList,
+  // }).then((_) {
+  //   EshopApp.sharedPreferences
+  //       .setStringList(EshopApp.userCartList, tempCartList);
+  //   Fluttertoast.showToast(msg: 'Item added to cart!');
+  //   Provider.of<CartItemCounter>(context, listen: false).displayResult();
+  // });
+
+  userDocRef.set({
     EshopApp.userCartList: tempCartList,
-  }).then((v) {
-    EshopApp.sharedPreferences
-        .setStringList(EshopApp.userCartList, tempCartList);
+  }, SetOptions(merge: true)).then((_) {
     Fluttertoast.showToast(msg: 'Item added to cart!');
-
-  //  Provider.of<CartItemCounter>(context, listen: false).displayResult();
-  });
-}
+    Provider.of<CartItemCounter>(context, listen: false).displayResult();
+  }).catchError((e) => print("Error updating document: $e"));
+} // add item to cart
 
 
 
 void checkItemInCart(String productID, BuildContext context) {
+  print('Checked cart');
   EshopApp.sharedPreferences
       .getStringList(EshopApp.userCartList)
       .contains(productID) ?
