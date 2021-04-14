@@ -14,14 +14,17 @@ class SearchBoxDelegate extends SliverPersistentHeaderDelegate {
       bool overlapsContent
       ) =>
       InkWell(
-        onTap: () => print('Tapped search field...'),
+        onTap: () {
+          Route route = MaterialPageRoute(builder: (_) => SearchProduct());
+          Navigator.push(context, route);
+        },
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.black12, Colors.blueGrey],
-              begin: const FractionalOffset(0.0, 0.0),
-              end: const FractionalOffset(1.0, 0.0),
-              stops: [0.0, 1.0],
+              colors: [Colors.deepPurple, Colors.blueGrey,Colors.orangeAccent],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              stops: [0.4, 0.6, 1],
               tileMode: TileMode.clamp,
             ),
           ),
@@ -34,23 +37,22 @@ class SearchBoxDelegate extends SliverPersistentHeaderDelegate {
               width: MediaQuery.of(context).size.width,
               height: 50.0,
               decoration: BoxDecoration(
-               // color: Colors.white,
+               color: Colors.white,
                 borderRadius: BorderRadius.circular(6.0),
               ),
               child: Row(
                 children: [
-                  // Padding(
-                  //   padding: EdgeInsets.only(left: 5.0),
-                  //   child: Icon(
-                  //     Icons.search,
-                  //     color: Colors.blueGrey,
-                  //   ),
-                  // ),
-                  // Padding(
-                  //   padding: EdgeInsets.only(left: 5.0),
-                  //   child: Text('Find items...'),
-                  // ),
-
+                  Padding(
+                    padding: EdgeInsets.only(left: 8.0),
+                    child: Icon(
+                      Icons.search,
+                      color: Colors.blueGrey,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 8.0),
+                    child: Text('Search catalogue...'),
+                  ),
                 ],
               ),
             ),
