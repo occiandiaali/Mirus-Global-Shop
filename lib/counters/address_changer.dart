@@ -5,7 +5,7 @@ class AddressChanger extends ChangeNotifier {
 
   int get count => _counter;
 
-  displayResult(int v) {
+  display(int v) {
     _counter = v;
     notifyListeners();
   }

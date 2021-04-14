@@ -13,6 +13,7 @@ class CartItemCounter extends ChangeNotifier {
     // int _counter = EshopApp
     //     .sharedPreferences
     //     .getStringList(EshopApp.userCartList).length - 1;
+    count;
     await Future.delayed(const Duration(milliseconds: 100), () {
       notifyListeners();
     });
