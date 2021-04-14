@@ -18,13 +18,22 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
 
-  final _nameEditingController = TextEditingController();
-  final _emailEditingController = TextEditingController();
-  final _passwordEditingController = TextEditingController();
-  final _confirmPassEditingController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPassController = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String userImageUrl = "";
   File _imageFile;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPassController.dispose();
+    super.dispose();
+  }
 
 
   @override
@@ -58,25 +67,25 @@ class _RegisterState extends State<Register> {
               child: Column(
                 children: [
                   CustomTextField(
-                    controller: _nameEditingController,
+                    controller: _nameController,
                     data: Icons.person,
                     hintText: 'Name',
                     isObscured: false,
                   ),
                   CustomTextField(
-                    controller: _emailEditingController,
+                    controller: _emailController,
                     data: Icons.email,
                     hintText: 'Email',
                     isObscured: false,
                   ),
                   CustomTextField(
-                    controller: _passwordEditingController,
+                    controller: _passwordController,
                     data: Icons.lock,
                     hintText: 'Password',
                     isObscured: true,
                   ),
                   CustomTextField(
-                    controller: _confirmPassEditingController,
+                    controller: _confirmPassController,
                     data: Icons.lock,
                     hintText: 'Confirm Password',
                     isObscured: true,
@@ -114,11 +123,11 @@ Future<void> uploadAndSaveImg() async {
           )
       );
     } else {
-      _passwordEditingController.text == _confirmPassEditingController.text
-          ? _emailEditingController.text.isNotEmpty &&
-          _passwordEditingController.text.isNotEmpty &&
-          _confirmPassEditingController.text.isNotEmpty &&
-          _nameEditingController.text.isNotEmpty
+      _passwordController.text == _confirmPassController.text
+          ? _emailController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty &&
+          _confirmPassController.text.isNotEmpty &&
+          _nameController.text.isNotEmpty
           ? uploadToStorage()
           : _displayDialog('Provide ALL credentials')
           : _displayDialog('Password confirm does not match');
@@ -158,8 +167,8 @@ void _registerUser() async {
   User firebaseUser;
   
   await _auth.createUserWithEmailAndPassword(
-    email: _emailEditingController.text.trim(),
-    password: _passwordEditingController.text.trim()
+    email: _emailController.text.trim(),
+    password: _passwordController.text.trim()
   ).then((auth) {
     firebaseUser = auth.user;
   }).catchError((error) {
@@ -184,7 +193,7 @@ void _registerUser() async {
 Future saveUserInfoToFireStore(User fUser) async {
   FirebaseFirestore.instance.collection("users").add({
     "uid": fUser.uid,
-    "name": _nameEditingController.text.trim(),
+    "name": _nameController.text.trim(),
     "email": fUser.email,
     "url": userImageUrl,
     EshopApp.userCartList: ["garbageValue"],
@@ -193,17 +202,10 @@ Future saveUserInfoToFireStore(User fUser) async {
   }).catchError((error) {
     print("Error adding document: $error");
   });
-  // FirebaseFirestore.instance.collection("users").doc(fUser.uid).set({
-  //   "uid": fUser.uid,
-  //   "name": _nameEditingController,
-  //   "email": fUser.email,
-  //   "url": userImageUrl,
-  //   EshopApp.userCartList: ["garbageValue"],
-  // });
 
   await EshopApp.sharedPreferences.setString("uid", fUser.uid);
   await EshopApp.sharedPreferences.setString(EshopApp.userEmail, fUser.email);
-  await EshopApp.sharedPreferences.setString(EshopApp.userName, _nameEditingController.text);
+  await EshopApp.sharedPreferences.setString(EshopApp.userName, _nameController.text);
   await EshopApp.sharedPreferences.setString(EshopApp.userAvatarUrl, userImageUrl);
   await EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, ["garbageValue"]);
 } // save user info to fire store
