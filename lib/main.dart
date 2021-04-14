@@ -87,10 +87,10 @@ class _SplashScreenState extends State<SplashScreen> {
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.black12, Colors.blueGrey],
-            begin: const FractionalOffset(0.0, 0.0),
-            end: const FractionalOffset(1.0, 0.0),
-            stops: [0.0, 1.0],
+            colors: [Colors.deepPurple, Colors.blueGrey,Colors.orangeAccent],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            stops: [0.4, 0.6, 1],
             tileMode: TileMode.clamp,
           ),
         ),
