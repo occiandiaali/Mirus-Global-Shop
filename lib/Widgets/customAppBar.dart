@@ -1,3 +1,4 @@
+import 'package:mirus_global/config/config.dart';
 import 'package:mirus_global/store/cart.dart';
 import 'package:mirus_global/counters/cartitemcounter.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +17,10 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget
       flexibleSpace: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.black12, Colors.blueGrey],
-            begin: const FractionalOffset(0.0, 0.0),
-            end: const FractionalOffset(1.0, 0.0),
-            stops: [0.0, 1.0],
+            colors: [Colors.deepPurple, Colors.blueGrey,Colors.orangeAccent],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            stops: [0.4, 0.6, 1],
             tileMode: TileMode.clamp,
           ),
         ),
@@ -40,26 +41,28 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget
           children: [
             IconButton(
               icon: Icon(Icons.shopping_cart_outlined, color: Colors.white,),
-              onPressed: () {
-                Route route = MaterialPageRoute(builder: (c) => CartPage());
-                Navigator.push(context, route);
-              },
+              // onPressed: () {
+              //   Route route = MaterialPageRoute(builder: (c) => CartPage());
+              //   Navigator.push(context, route);
+              // },
+              onPressed: () {},
             ),
             Positioned(
               child: Stack(
                 children: [
                   Icon(
                     Icons.brightness_1,
-                    size: 20.0,
+                    size: 27.0,
                     color: Colors.deepPurple,
                   ),
                   Positioned(
-                    top: 3.0,
-                    bottom: 4.0,
-                    left: 7.0,
-                    child: Text(
-                      '0',
-                      style: TextStyle(color: Colors.white, fontSize: 12.0),),
+                    top: 2.0,
+                    bottom: 3.0,
+                    left: 1.0,
+                    child: Icon(Icons.star_half),
+                    // child: Text(
+                    //   '0',
+                    //   style: TextStyle(color: Colors.white, fontSize: 12.0),),
                   ),
                 ],
               ),
