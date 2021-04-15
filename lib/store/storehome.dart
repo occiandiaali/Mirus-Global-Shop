@@ -324,8 +324,28 @@ Widget sourceInfo(ItemModel model, BuildContext context,
 
 
 
-Widget card({Color primaryColor = Colors.pinkAccent, String imgPath}) {
-  return Container();
+Widget card({Color primaryColor = Colors.purpleAccent, String imgPath}) {
+  return Container(
+    height: 150.0,
+    width: width * 0.34,
+    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+    decoration: BoxDecoration(
+      color: Colors.indigoAccent,
+      borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(20.0),
+        bottomRight: Radius.circular(20.0),
+      ),
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+      child: Image.network(
+        imgPath,
+        height: 150.0,
+        width: width * 0.34,
+        fit: BoxFit.fill,
+      ),
+    ),
+  );
 }
 
 addItemToCart(String shortInfoAsId, BuildContext context) {
