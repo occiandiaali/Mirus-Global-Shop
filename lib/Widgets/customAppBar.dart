@@ -17,7 +17,10 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget
       flexibleSpace: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.deepPurple, Colors.blueGrey,Colors.orangeAccent],
+            colors: [
+              Colors.deepPurple,
+              Colors.blueGrey,
+              Colors.orangeAccent],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             stops: [0.4, 0.6, 1],
@@ -52,17 +55,19 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget
                 children: [
                   Icon(
                     Icons.brightness_1,
-                    size: 27.0,
+                    size: 20.0,
                     color: Colors.deepPurple,
                   ),
                   Positioned(
-                    top: 2.0,
+                    top: 3.0,
                     bottom: 3.0,
-                    left: 1.0,
-                    child: Icon(Icons.star_half),
-                    // child: Text(
-                    //   '0',
-                    //   style: TextStyle(color: Colors.white, fontSize: 12.0),),
+                    left: 6.5,
+                   // child: Icon(Icons.star_half),
+                    child: Text(
+                      (EshopApp.sharedPreferences
+                          .getStringList(EshopApp.userCartList)
+                          .length - 1).toString(),
+                      style: TextStyle(color: Colors.white, fontSize: 12.0),),
                   ),
                 ],
               ),
