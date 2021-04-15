@@ -44,12 +44,12 @@ class _CartPageState extends State<CartPage> {
                 Fluttertoast.showToast(msg: 'Your Cart is empty');
               } else {
                 Route route = MaterialPageRoute(
-                  builder: (_) => Address(totalAmount: totalAmount)
+                  builder: (c) => Address(totalAmount: totalAmount)
                 );
                 Navigator.push(context, route);
               }
             },
-        label: Text('Check Out'),
+        label: Text('Place Order'),
         backgroundColor: Colors.deepPurpleAccent,
         icon: Icon(Icons.navigate_next),),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
