@@ -35,24 +35,27 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            if(EshopApp.sharedPreferences.getStringList(
-              EshopApp.userCartList
-            ).length == 1) {
-              Fluttertoast.showToast(msg: 'Your Cart is empty');
-            } else {
-              Route route = MaterialPageRoute(
-                builder: (_) => Address(totalAmount: totalAmount)
-              );
-              Navigator.push(context, route);
-            }
-          },
-      label: Text('Check Out'),
-      backgroundColor: Colors.deepPurpleAccent,
-      icon: Icon(Icons.navigate_next),),
+        floatingActionButton: FloatingActionButton.extended(
+          elevation: 10.0,
+            onPressed: () {
+              if(EshopApp.sharedPreferences.getStringList(
+                EshopApp.userCartList
+              ).length == 1) {
+                Fluttertoast.showToast(msg: 'Your Cart is empty');
+              } else {
+                Route route = MaterialPageRoute(
+                  builder: (_) => Address(totalAmount: totalAmount)
+                );
+                Navigator.push(context, route);
+              }
+            },
+        label: Text('Check Out'),
+        backgroundColor: Colors.deepPurpleAccent,
+        icon: Icon(Icons.navigate_next),),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: MyAppBar(),
       body: CustomScrollView(
+        scrollDirection: Axis.vertical,
         slivers: [
           SliverToBoxAdapter(
             child: Consumer2<TotalAmount, CartItemCounter>(
@@ -124,8 +127,48 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  beginBuildingCart() {}
+  beginBuildingCart() {
+    return SliverToBoxAdapter(
+      child: Card(
+       // color: Theme.of(context).primaryColor.withOpacity(0.5),
+        child: Container(
+          height: 300.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.remove_shopping_cart_rounded,
+                color: Colors.purple,
+              size: 50.0,),
+              Text(
+                  'Your cart is empty!',
+                style: TextStyle(
+                  fontSize: 19.0,
+                  color: Colors.purple,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
-  removeItemFromUserCart(String shortInfoAsId) {}
+  removeItemFromUserCart(String shortInfoAsId) {
+    List tempCartList = EshopApp.sharedPreferences
+        .getStringList(EshopApp.userCartList);
+    tempCartList.remove(shortInfoAsId);
+    var userDocRef = EshopApp.firestore.collection(EshopApp.collectionUser)
+        .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID));
+    userDocRef.set({
+      EshopApp.userCartList: tempCartList,
+    }).then((v) {
+      Fluttertoast.showToast(msg: 'Item removed from cart!');
+      EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, tempCartList);
+      Provider.of<CartItemCounter>(context, listen: false).displayResult(EshopApp.userCartList.length);
+      totalAmount = 0;
+    }).catchError((e) => print("Error updating document: $e"));
+  }
 
 } // class
