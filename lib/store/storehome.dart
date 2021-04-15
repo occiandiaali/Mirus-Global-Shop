@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:mirus_global/store/cart.dart';
 import 'package:mirus_global/store/product_page.dart';
 import 'package:mirus_global/counters/cartitemcounter.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
+
 import 'package:mirus_global/config/config.dart';
 import '../Widgets/loadingWidget.dart';
 import '../Widgets/myDrawer.dart';
@@ -34,12 +35,16 @@ class _StoreHomeState extends State<StoreHome> {
       child: Scaffold(
         appBar: AppBar(
           flexibleSpace: Container(
+            //
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.black12, Colors.blueGrey],
-                begin: const FractionalOffset(0.0, 0.0),
-                end: const FractionalOffset(1.0, 0.0),
-                stops: [0.0, 1.0],
+                colors: [
+                  Colors.deepPurple,
+                  Colors.blueGrey,
+                  Colors.orangeAccent],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: [0.4, 0.6, 1],
                 tileMode: TileMode.clamp,
               ),
             ),
@@ -81,7 +86,10 @@ class _StoreHomeState extends State<StoreHome> {
                         child: Consumer<CartItemCounter>(
                           builder: (context, counter, _) {
                             return Text(
-                              counter.count.toString(),
+                             // counter.count.toString(),
+                                (EshopApp.sharedPreferences
+                                .getStringList(EshopApp.userCartList)
+                                .length - 1).toString(),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 12.0,
@@ -285,17 +293,21 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                       },
                       icon: Icon(
                           Icons.add_shopping_cart,
-                      color: Colors.pinkAccent),
+                      color: Colors.purpleAccent),
                     )
                     : IconButton(
-                      onPressed: () => null,
+                      onPressed: () {
+                        removeCartFunction();
+                        Route route = MaterialPageRoute(builder: (c) => StoreHome());
+                        Navigator.push(context, route);
+                      },
                       icon: Icon(Icons.delete_forever,
-                          color: Colors.pinkAccent),
+                          color: Colors.purpleAccent),
                     ),
                   ),
                   Divider(
                     height: 10.0,
-                    color: Colors.pinkAccent,
+                    color: Colors.purpleAccent,
                     thickness: 0.5,),
                 ],
               ),
@@ -322,18 +334,6 @@ addItemToCart(String shortInfoAsId, BuildContext context) {
   tempCartList.add(shortInfoAsId);
   var userDocRef = EshopApp.firestore.collection(EshopApp.collectionUser)
       .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID));
-
-  // EshopApp.firestore.collection(EshopApp.collectionUser)
-  //     .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
-  //     .update({
-  //   EshopApp.userCartList: tempCartList,
-  // }).then((_) {
-  //   EshopApp.sharedPreferences
-  //       .setStringList(EshopApp.userCartList, tempCartList);
-  //   Fluttertoast.showToast(msg: 'Item added to cart!');
-  //   Provider.of<CartItemCounter>(context, listen: false).displayResult();
-  // });
-
   userDocRef.set({
     EshopApp.userCartList: tempCartList,
   }).then((v) {
