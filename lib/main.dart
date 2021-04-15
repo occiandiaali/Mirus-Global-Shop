@@ -27,15 +27,6 @@ Future<void> main() async {
 class MG extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // return MaterialApp(
-    //   title: 'MG Shop',
-    //   debugShowCheckedModeBanner: true,
-    //   theme: ThemeData(
-    //     primaryColor: Colors.red,
-    //     fontFamily: 'Ubuntu',
-    //   ),
-    //   home: SplashScreen(),
-    // );
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (c) => CartItemCounter()),
@@ -87,7 +78,10 @@ class _SplashScreenState extends State<SplashScreen> {
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.deepPurple, Colors.blueGrey,Colors.orangeAccent],
+            colors: [
+              Colors.deepPurple,
+              Colors.blueGrey,
+              Colors.orangeAccent],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             stops: [0.4, 0.6, 1],
