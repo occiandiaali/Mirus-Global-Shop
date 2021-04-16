@@ -1,4 +1,4 @@
-package com.example.mirus_global
+package com.qoboqo.mg
 
 import io.flutter.embedding.android.FlutterActivity
 

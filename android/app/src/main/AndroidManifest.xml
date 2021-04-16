@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mirus_global">
+    package="com.qoboqo.mg">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="mirus_global"
+        android:label="Mirus Global Shop"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
