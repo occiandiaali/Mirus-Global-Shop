@@ -103,7 +103,7 @@ class MyDrawer extends StatelessWidget {
                   title: Text('Orders', style: TextStyle(color: Colors.white),),
                   onTap: () {
                     Route route = MaterialPageRoute(builder: (c) => MyOrders());
-                    Navigator.pushReplacement(context, route);
+                    Navigator.push(context, route);
                   },
                 ),
                 Divider(
@@ -116,7 +116,7 @@ class MyDrawer extends StatelessWidget {
                   title: Text('Cart', style: TextStyle(color: Colors.white),),
                   onTap: () {
                     Route route = MaterialPageRoute(builder: (c) => CartPage());
-                    Navigator.pushReplacement(context, route);
+                    Navigator.push(context, route);
                   },
                 ),
                 Divider(
@@ -126,10 +126,10 @@ class MyDrawer extends StatelessWidget {
 
                 ListTile(
                   leading: Icon(Icons.search_outlined, color: Colors.white,),
-                  title: Text('Catalogue', style: TextStyle(color: Colors.white),),
+                  title: Text('Search', style: TextStyle(color: Colors.white),),
                   onTap: () {
                     Route route = MaterialPageRoute(builder: (c) => SearchProduct());
-                    Navigator.pushReplacement(context, route);
+                    Navigator.push(context, route);
                   },
                 ),
                 Divider(
@@ -139,10 +139,10 @@ class MyDrawer extends StatelessWidget {
 
                 ListTile(
                   leading: Icon(Icons.add_location_outlined, color: Colors.white,),
-                  title: Text('Address', style: TextStyle(color: Colors.white),),
+                  title: Text('Add address', style: TextStyle(color: Colors.white),),
                   onTap: () {
                     Route route = MaterialPageRoute(builder: (c) => AddAddress());
-                    Navigator.pushReplacement(context, route);
+                    Navigator.push(context, route);
                   },
                 ),
                 Divider(
