@@ -51,7 +51,7 @@ class SearchBoxDelegate extends SliverPersistentHeaderDelegate {
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 8.0),
-                    child: Text('Search catalogue...'),
+                    child: Text('Search for items...'),
                   ),
                 ],
               ),
