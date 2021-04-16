@@ -108,7 +108,8 @@ class _AddressState extends State<Address> {
             Icon(
                 Icons.add_location_alt_outlined,
             color: Colors.white,),
-            Text('Please add your address for delivery'),
+            SizedBox(height: 8.0,),
+            Text('Please add an address for delivery'),
           ],
         ),
       ),
