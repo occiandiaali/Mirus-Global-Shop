@@ -285,7 +285,7 @@ class ShippingDetails extends StatelessWidget {
                 height: 50.0,
                 child: Center(
                   child: Text(
-                    "Have you received the order?",
+                    "I confirm order is received",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 15.0,

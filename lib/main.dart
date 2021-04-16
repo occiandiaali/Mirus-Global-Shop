@@ -99,7 +99,7 @@ class _SplashScreenState extends State<SplashScreen> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
-                fontFamily: 'Dancing Script',
+                fontFamily: 'Ubuntu',
               ),)
             ],
           ),
