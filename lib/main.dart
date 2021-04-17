@@ -36,7 +36,7 @@ class MG extends StatelessWidget {
       ],
         child: MaterialApp(
           title: 'MG Shop',
-          debugShowCheckedModeBanner: true,
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
             primaryColor: Colors.purple,
             fontFamily: 'Ubuntu',
