@@ -147,7 +147,15 @@ class _CartPageState extends State<CartPage> {
                   color: Colors.purple,
                   fontWeight: FontWeight.bold,
                 ),
-              )
+              ),
+              Text(
+                'Select items from the store...',
+                style: TextStyle(
+                  fontSize: 19.0,
+                  color: Colors.purple,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
         ),
