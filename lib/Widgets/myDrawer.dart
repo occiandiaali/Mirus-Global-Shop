@@ -38,6 +38,8 @@ class MyDrawer extends StatelessWidget {
                     height: 160.0,
                     width: 160.0,
                     child: CircleAvatar(
+                      backgroundColor: Colors.deepPurple,
+                      radius: 16.0,
                       backgroundImage: NetworkImage(
                         EshopApp.sharedPreferences.getString(EshopApp.userAvatarUrl) ??
                             'https://vc.bridgew.edu/context/hoba/article/1008/type/native/viewcontent',
