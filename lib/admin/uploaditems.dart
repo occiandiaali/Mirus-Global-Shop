@@ -38,6 +38,15 @@ class _UploadPageState extends State<UploadPage>
   bool uploading = false;
 
   @override
+  void dispose() {
+    _itemNameEditingController.dispose();
+    _itemDescEditingController.dispose();
+    _itemPriceEditingController.dispose();
+    _searchInfoEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return imageFile == null ? displayAdminScreen() : displayUploadForm();
 
@@ -232,7 +241,7 @@ class _UploadPageState extends State<UploadPage>
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _searchInfoEditingController,
                 decoration: InputDecoration(
-                  hintText: 'Tags (for searching) e.g. "Phone", "Shoes", "Laptop"...',
+                  hintText: 'Tag e.g. "Phone", or "Shoes"...',
                   hintStyle: TextStyle(color: Colors.deepPurpleAccent),
                   border: InputBorder.none,
                 ),
@@ -338,17 +347,17 @@ class _UploadPageState extends State<UploadPage>
       "status": "available",
       "thumbnailUrl": imgUrl,
       "title": _itemNameEditingController.text.trim()
-    });
-
-    setState(() {
-      imageFile = null;
-      uploading = false;
-      itemId = DateTime.now().millisecondsSinceEpoch.toString();
-      _itemNameEditingController.clear();
-      _itemDescEditingController.clear();
-      _itemPriceEditingController.clear();
-      _searchInfoEditingController.clear();
-    });
+    }).then((v) {
+      setState(() {
+        imageFile = null;
+        uploading = false;
+        itemId = DateTime.now().millisecondsSinceEpoch.toString();
+        _itemNameEditingController.clear();
+        _itemDescEditingController.clear();
+        _itemPriceEditingController.clear();
+        _searchInfoEditingController.clear();
+      });
+    }).catchError((e) => print("Error: $e"));
 
   } // save item info
 

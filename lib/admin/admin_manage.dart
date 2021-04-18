@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mirus_global/store/cart.dart';
-import 'package:mirus_global/store/edit_product_page.dart';
+import 'package:mirus_global/admin/edit_product_page.dart';
 import 'package:mirus_global/store/product_page.dart';
 import 'package:mirus_global/counters/cartitemcounter.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -14,13 +14,13 @@ import '../Widgets/searchBox.dart';
 import '../models/item.dart';
 
 double width;
-
 class AdminManage extends StatefulWidget {
   @override
   _AdminManageState createState() => _AdminManageState();
 }
 
 class _AdminManageState extends State<AdminManage> {
+
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
@@ -83,7 +83,8 @@ class _AdminManageState extends State<AdminManage> {
                   staggeredTileBuilder: (c) => StaggeredTile.fit(1),
                   itemBuilder: (context, index) {
                     ItemModel model = ItemModel.fromJson(snapshot.data.docs[index].data());
-                    return sourceInfo(model, context);
+                    String snapID = snapshot.data.docs[index].id;
+                    return sourceInfo(model, context, snapID);
                   },
                   itemCount: snapshot.data.docs.length,
                 );
@@ -97,12 +98,12 @@ class _AdminManageState extends State<AdminManage> {
 }
 
 
-Widget sourceInfo(ItemModel model, BuildContext context,
+Widget sourceInfo(ItemModel model, BuildContext context, String id,
     {Color background, removeCartFunction}) {
   int timesOrdered = 12;
   return InkWell(
     onTap: () {
-      Route route = MaterialPageRoute(builder: (c) => EditProductPage(itemModel: model));
+      Route route = MaterialPageRoute(builder: (c) => EditProductPage(itemModel: model, docID: id,));
       Navigator.push(context, route);
     },
     splashColor: Colors.grey,
@@ -146,7 +147,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                       children: [
                         Expanded(
                           child: Text(
-                            model.shortInfo,
+                            model.status,
                             style: TextStyle(
                               color: Colors.black54,
                               fontSize: 12.0,
@@ -158,32 +159,32 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                   SizedBox(height: 5.0,),
                   Row(
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          color: Colors.green,
-                        ),
-                        alignment: Alignment.topLeft,
-                        width: 40.0,
-                        height: 43.0,
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '50%',
-                                style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: Colors.white),),
-                              Text(
-                                'OFF',
-                                style: TextStyle(
-                                    fontSize: 12.0,
-                                    color: Colors.white),),
-                            ],
-                          ),
-                        ),
-                      ),
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //     shape: BoxShape.rectangle,
+                      //     color: Colors.green,
+                      //   ),
+                      //   alignment: Alignment.topLeft,
+                      //   width: 40.0,
+                      //   height: 43.0,
+                      //   child: Center(
+                      //     child: Column(
+                      //       mainAxisAlignment: MainAxisAlignment.center,
+                      //       children: [
+                      //         Text(
+                      //           '50%',
+                      //           style: TextStyle(
+                      //               fontSize: 15.0,
+                      //               color: Colors.white),),
+                      //         Text(
+                      //           'OFF',
+                      //           style: TextStyle(
+                      //               fontSize: 12.0,
+                      //               color: Colors.white),),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                       SizedBox(width: 10.0,),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

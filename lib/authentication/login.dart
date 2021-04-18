@@ -39,7 +39,7 @@ class _LoginState extends State<Login> {
             Container(
               alignment: Alignment.bottomCenter,
               child: Image.asset(
-                  'images/welcome.png',
+                  'images/mglogo.png',
               height: 240.0,
               width: 240.0,),
             ),
@@ -56,13 +56,13 @@ class _LoginState extends State<Login> {
                 children: [
                   CustomTextField(
                     controller: _emailController,
-                    data: Icons.email,
+                    data: Icons.mail_outlined,
                     hintText: 'Email',
                     isObscured: false,
                   ),
                   CustomTextField(
                     controller: _passwordController,
-                    data: Icons.lock,
+                    data: Icons.security_outlined,
                     hintText: 'Password',
                     isObscured: true,
                   ),

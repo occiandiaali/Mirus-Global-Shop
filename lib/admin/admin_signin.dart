@@ -55,6 +55,13 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
   final _passwordEditingController = TextEditingController();
 
   @override
+  void dispose() {
+    _adminIDEditingController.dispose();
+    _passwordEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
    // double _screenWidth = MediaQuery.of(context).size.width;
    // double _screenHeight = MediaQuery.of(context).size.height;
@@ -78,7 +85,7 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
             Container(
               alignment: Alignment.bottomCenter,
               child: Image.asset(
-                'images/admin.png',
+                'images/adminlogo.png',
                 height: 150.0,
                 width: 150.0,),
             ),

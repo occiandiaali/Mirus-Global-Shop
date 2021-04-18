@@ -79,6 +79,7 @@ class _StoreHomeState extends State<StoreHome> {
                         size: 20.0,
                         color: Colors.deepPurple,
                       ),
+
                       Positioned(
                         top: 3.0,
                         bottom: 4.0,
@@ -86,10 +87,11 @@ class _StoreHomeState extends State<StoreHome> {
                         child: Consumer<CartItemCounter>(
                           builder: (context, counter, _) {
                             return Text(
-                             // counter.count.toString(),
+                             //counter.count.toString(),
+                              counter.count != null ?
                                 (EshopApp.sharedPreferences
                                 .getStringList(EshopApp.userCartList)
-                                .length - 1).toString(),
+                                .length - 1).toString() : circularProgress(),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 12.0,
@@ -202,83 +204,93 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                       Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
-                          color: Colors.green,
+                          color: Colors.deepPurple,
                         ),
                         alignment: Alignment.topLeft,
                         width: 40.0,
                         height: 43.0,
                         child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '50%',
-                                style: TextStyle(
-                                    fontSize: 15.0,
-                                color: Colors.white),),
-                              Text(
-                                'OFF',
-                                style: TextStyle(
-                                    fontSize: 12.0,
-                                color: Colors.white),),
-                            ],
-                          ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                    '50%',
+                                    style: TextStyle(
+                                        fontSize: 15.0,
+                                    color: Colors.white),),
+
+                                Text(
+                                    'OFF',
+                                    style: TextStyle(
+                                        fontSize: 10.0,
+                                    color: Colors.white),
+                                  ),
+
+                              ],
+                            ),
                         ),
                       ),
-                      SizedBox(width: 10.0,),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 0.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                    'Original price: =N= ',
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.grey,
-                                  decoration: TextDecoration.lineThrough,
-                                ),),
-                                Text(
-                                  (model.price + model.price).toString(),
-                                  style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: Colors.grey,
-                                    decoration: TextDecoration.lineThrough,
-                                  ),),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 5.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'New price: ',
-                                  style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: Colors.grey,
-                                  ),),
-                                Text(
-                                  '=N= ',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    color: Colors.green,
-                                  ),
-                                ),
-                                Text(
-                                  (model.price).toString(),
-                                  style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: Colors.grey,
-                                  ),),
-                              ],
-                            ),
-                          ),
+                      SizedBox(width: 7.0,),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                                padding: EdgeInsets.only(top: 0.0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                          '=N=',
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.grey,
+                                        decoration: TextDecoration.lineThrough,
+                                      ),
+                                      ),
 
-                        ],
-                      ),
+                                    Text(
+                                        (model.price + model.price).toString(),
+                                        style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Colors.grey,
+                                          decoration: TextDecoration.lineThrough,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
+
+                            Padding(
+                              padding: EdgeInsets.only(top: 5.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                      '=N=',
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.purple,
+                                      ),
+                                    ),
+                                  // Text(
+                                  //     '=N= ',
+                                  //     style: TextStyle(
+                                  //       fontSize: 14.0,
+                                  //       color: Colors.deepPurple,
+                                  //     ),
+                                  //   ),
+                                    Text(
+                                      (model.price).toString(),
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.purple,
+                                      ),
+                                    ),
+
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+
                     ],
                   ),
                   Flexible(

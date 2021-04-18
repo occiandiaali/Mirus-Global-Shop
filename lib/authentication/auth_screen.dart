@@ -20,10 +20,13 @@ class _AuthScreenState extends State<AuthScreen> {
           flexibleSpace: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.black12, Colors.blueGrey],
-                begin: const FractionalOffset(0.0, 0.0),
-                end: const FractionalOffset(1.0, 0.0),
-                stops: [0.0, 1.0],
+                colors: [
+                  Colors.deepPurple,
+                  Colors.blueGrey,
+                  Colors.orangeAccent],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: [0.4, 0.6, 1],
                 tileMode: TileMode.clamp,
               ),
             ),
@@ -41,11 +44,11 @@ class _AuthScreenState extends State<AuthScreen> {
           bottom: TabBar(
             tabs: [
               Tab(
-                icon: Icon(Icons.lock, color: Colors.white,),
+                icon: Icon(Icons.login_outlined, color: Colors.white,),
                 text: 'Login',
               ),
               Tab(
-                icon: Icon(Icons.person, color: Colors.white,),
+                icon: Icon(Icons.app_registration, color: Colors.white,),
                 text: 'Register',
               ),
             ],
