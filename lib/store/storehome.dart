@@ -166,7 +166,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 15.0),
+                  SizedBox(height: 45.0),
                   Container(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
