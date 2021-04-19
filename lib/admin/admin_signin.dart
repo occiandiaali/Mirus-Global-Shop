@@ -131,7 +131,7 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
               child: Text('Log In'),
             ),
             SizedBox(
-              height: 250.0,
+              height: 450.0,
             ),
 
           ],
