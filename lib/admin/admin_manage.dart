@@ -21,6 +21,22 @@ class AdminManage extends StatefulWidget {
 
 class _AdminManageState extends State<AdminManage> {
 
+  void _show(BuildContext ctx) {
+    showModalBottomSheet(
+        elevation: 10,
+        backgroundColor: Colors.amber,
+        context: ctx,
+        builder: (ctx) => Container(
+          width: 300,
+          height: 250,
+          color: Colors.white54,
+          alignment: Alignment.center,
+          child: Text(
+              'Admin settings will show here...',
+            style: TextStyle(color: Colors.deepPurple, fontSize: 23.0),),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
@@ -55,10 +71,9 @@ class _AdminManageState extends State<AdminManage> {
                   icon: Icon(
                     Icons.settings_applications_outlined,
                     color: Colors.white,),
-                  onPressed: () {
-                    Route route = MaterialPageRoute(builder: (c) => CartPage());
-                    Navigator.push(context, route);
-                  },
+                  onPressed: () => _show(context),
+                    // Route route = MaterialPageRoute(builder: (c) => CartPage());
+                    // Navigator.push(context, route);
                 ),
 
               ],
@@ -100,7 +115,7 @@ class _AdminManageState extends State<AdminManage> {
 
 Widget sourceInfo(ItemModel model, BuildContext context, String id,
     {Color background, removeCartFunction}) {
-  int timesOrdered = 12;
+  int timesOrdered = 12; // placeholder value
   return InkWell(
     onTap: () {
       Route route = MaterialPageRoute(builder: (c) => EditProductPage(itemModel: model, docID: id,));
@@ -110,7 +125,7 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
     child: Padding(
       padding: EdgeInsets.all(6.0),
       child: Container(
-        height: 190.0,
+        height: 170.0,
         width: width,
         child: Row(
           children: [
@@ -124,7 +139,7 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 15.0),
+                  SizedBox(height: 65.0),
                   Container(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -193,20 +208,21 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
                             padding: EdgeInsets.only(top: 0.0),
                             child: Row(
                               children: [
-                                Text(
-                                  'Original price: =N= ',
-                                  style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: Colors.grey,
-                                    decoration: TextDecoration.lineThrough,
-                                  ),),
-                                Text(
-                                  (model.price + model.price).toString(),
-                                  style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: Colors.grey,
-                                    decoration: TextDecoration.lineThrough,
-                                  ),),
+                                Text('Ordered $timesOrdered time(s)'),
+                                // Text(
+                                //   'Original price: =N= ',
+                                //   style: TextStyle(
+                                //     fontSize: 14.0,
+                                //     color: Colors.grey,
+                                //     decoration: TextDecoration.lineThrough,
+                                //   ),),
+                                // Text(
+                                //   (model.price + model.price).toString(),
+                                //   style: TextStyle(
+                                //     fontSize: 15.0,
+                                //     color: Colors.grey,
+                                //     decoration: TextDecoration.lineThrough,
+                                //   ),),
                               ],
                             ),
                           ),
@@ -215,23 +231,23 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
                             child: Row(
                               children: [
                                 Text(
-                                  'New price: ',
+                                  'Price: =N=',
                                   style: TextStyle(
                                     fontSize: 14.0,
-                                    color: Colors.grey,
-                                  ),),
-                                Text(
-                                  '=N= ',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
                                     color: Colors.green,
-                                  ),
-                                ),
+                                  ),),
+                                // Text(
+                                //   '=N= ',
+                                //   style: TextStyle(
+                                //     fontSize: 16.0,
+                                //     color: Colors.green,
+                                //   ),
+                                // ),
                                 Text(
                                   (model.price).toString(),
                                   style: TextStyle(
                                     fontSize: 15.0,
-                                    color: Colors.grey,
+                                    color: Colors.green,
                                   ),),
                               ],
                             ),
@@ -260,7 +276,7 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
                   //     icon: Icon(Icons.remove_shopping_cart),
                   //   ),
                   // ),
-                  Text('Ordered $timesOrdered time(s)'),
+
                   Divider(
                     height: 10.0,
                     color: Colors.pinkAccent,
