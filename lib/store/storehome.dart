@@ -156,10 +156,13 @@ Widget sourceInfo(ItemModel model, BuildContext context,
         width: width,
         child: Row(
           children: [
-            Image.network(
-              model.thumbnailUrl,
-              width: 140.0,
-              height: 140.0,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(15.0),
+              child: Image.network(
+                model.thumbnailUrl,
+                width: 120.0,
+                height: 140.0,
+              ),
             ),
             SizedBox(width: 4.0,),
             Expanded(
