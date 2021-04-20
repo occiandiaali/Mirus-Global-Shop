@@ -110,7 +110,12 @@ class _RegisterState extends State<Register> {
   // this is called to select/load user profile image from device
 Future<void> _imageSelectAndPick() async {
   final picker = ImagePicker();
-  PickedFile pickedFile = await picker.getImage(source: ImageSource.gallery);
+  PickedFile pickedFile = await picker.getImage(
+      source: ImageSource.gallery,
+    imageQuality: 85,
+    maxHeight: 170,
+    maxWidth: 170,
+  );
   _imageFile = File(pickedFile.path);
 }
 
