@@ -83,10 +83,14 @@ class _AdminManageState extends State<AdminManage> {
        // drawer: MyDrawer(),
         body: CustomScrollView(
           slivers: [
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: SearchBoxDelegate(),
+            SliverAppBar(
+              title: Text('Update or Delete store items'),
+              centerTitle: true,
             ),
+            // SliverPersistentHeader(
+            //   pinned: true,
+            //   delegate: SearchBoxDelegate(),
+            // ),
             StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance.collection("items")
                   .limit(15).orderBy("publishedDate", descending: true).snapshots(),
@@ -115,7 +119,7 @@ class _AdminManageState extends State<AdminManage> {
 
 Widget sourceInfo(ItemModel model, BuildContext context, String id,
     {Color background, removeCartFunction}) {
-  int timesOrdered = 12; // placeholder value
+  int timesOrdered = 0; // placeholder value
   return InkWell(
     onTap: () {
       Route route = MaterialPageRoute(builder: (c) => EditProductPage(itemModel: model, docID: id,));
@@ -129,10 +133,13 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
         width: width,
         child: Row(
           children: [
-            Image.network(
-              model.thumbnailUrl,
-              width: 140.0,
-              height: 140.0,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12.0),
+              child: Image.network(
+                model.thumbnailUrl,
+                width: 120.0,
+                height: 140.0,
+              ),
             ),
             SizedBox(width: 4.0,),
             Expanded(
