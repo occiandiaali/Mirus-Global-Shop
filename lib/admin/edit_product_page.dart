@@ -73,23 +73,15 @@ class _EditProductPageState extends State<EditProductPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Stack(
-                    children: [
-                      Center(
-                        child: Image.network(
-                          widget.itemModel.thumbnailUrl,
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 15,
-                        right: 15,
-                        child: GestureDetector(
-                          onTap: () => print('Change image?'),
-                          child: Icon(
-                            Icons.edit_outlined,
-                            color: Colors.white,
+                      GestureDetector(
+                        child: Center(
+                          child: Image.network(
+                            widget.itemModel.thumbnailUrl,
+                            height: 250.0,
+                            width: 680.0,
                           ),
                         ),
+                        onTap: () => selectImage(context),
                       ),
                       Container(
                         color: Colors.grey[300],
@@ -98,8 +90,6 @@ class _EditProductPageState extends State<EditProductPage> {
                           width: double.infinity,
                         ),
                       ),
-                    ],
-                  ),
                   Container(
                     padding: EdgeInsets.all(20.0),
                     child: Center(
@@ -111,9 +101,12 @@ class _EditProductPageState extends State<EditProductPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                widget.itemModel.title,
-                                style: boldTextStyle,
+                              GestureDetector(
+                                child: Text(
+                                  widget.itemModel.title,
+                                  style: boldTextStyle,
+                                ),
+                                onTap: () => print('Edit title'),
                               ),
                               // Icon(Icons.edit_outlined),
                             ],
@@ -137,8 +130,11 @@ class _EditProductPageState extends State<EditProductPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                widget.itemModel.shortInfo,
+                              GestureDetector(
+                                child: Text(
+                                  widget.itemModel.shortInfo,
+                                ),
+                                onTap: () => print('Edit short info'),
                               ),
                               // Icon(Icons.edit_outlined),
                             ],
@@ -151,6 +147,7 @@ class _EditProductPageState extends State<EditProductPage> {
                             children: [
                               Text(
                                 widget.itemModel.longDescription,
+                                style: TextStyle(fontSize: 20.0),
                               ),
                               // Icon(Icons.edit_outlined),
                             ],
@@ -178,14 +175,22 @@ class _EditProductPageState extends State<EditProductPage> {
                     child: Center(
                       child: Column(
                         children: [
-                          ElevatedButton(
-                            onPressed: () => selectImage(context),
-                            child: Text('Update Item'),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.green,
-                              onPrimary: Colors.white,
+                          Text(
+                            'Tap on what you want to edit',
+                            style: TextStyle(
+                              fontSize: 19.0,
+                              color: Colors.deepPurple,
                             ),
                           ),
+                          Text('OR'),
+                          // ElevatedButton(
+                          //   onPressed: () => selectImage(context),
+                          //   child: Text('Update Item'),
+                          //   style: ElevatedButton.styleFrom(
+                          //     primary: Colors.green,
+                          //     onPrimary: Colors.white,
+                          //   ),
+                          // ),
                           ElevatedButton(
                             onPressed: () => deleteItemInfo(),
                             child: Text('Delete Item'),
@@ -560,4 +565,4 @@ class _EditProductPageState extends State<EditProductPage> {
 } // class
 
 const boldTextStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 20);
-const largeTextStyle = TextStyle(fontWeight: FontWeight.normal, fontSize: 20);
+const largeTextStyle = TextStyle(fontWeight: FontWeight.normal, fontSize: 40);
