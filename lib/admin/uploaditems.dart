@@ -216,25 +216,41 @@ class _UploadPageState extends State<UploadPage>
           Container(
             height: 230.0,
             width: MediaQuery.of(context).size.width * 0.8,
-            child: Center(
-              child: AspectRatio(
-                aspectRatio: 16/9,
-                child: Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: FileImage(imageFile),
-                      fit: BoxFit.cover,
+            child: Stack(
+              children: [
+                Center(
+                  child: AspectRatio(
+                    aspectRatio: 16/9,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: FileImage(imageFile),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
+                Positioned(
+                  bottom: 15,
+                  right: 15,
+                  child: GestureDetector(
+                    onTap: () => selectImage(context),
+                    child: Icon(
+                      Icons.edit_outlined,
+                      color: Colors.deepOrange,
+                      size: 40,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Padding(padding: EdgeInsets.only(top: 12.0),),
           ListTile(
             leading: Icon(
                 Icons.perm_device_information_outlined,
-            color: Colors.pink,),
+            color: Colors.deepPurple,),
             title: Container(
               width: 250.0,
               child: TextField(
@@ -248,12 +264,12 @@ class _UploadPageState extends State<UploadPage>
               ),
             ),
           ),
-          Divider(color: Colors.pink,),
+          Divider(color: Colors.deepPurple,),
 
           ListTile(
             leading: Icon(
               Icons.title_outlined,
-              color: Colors.pink,),
+              color: Colors.deepPurple,),
             title: Container(
               width: 250.0,
               child: TextField(
@@ -267,12 +283,12 @@ class _UploadPageState extends State<UploadPage>
               ),
             ),
           ),
-          Divider(color: Colors.pink,),
+          Divider(color: Colors.deepPurple,),
 
           ListTile(
             leading: Icon(
               Icons.info_outline,
-              color: Colors.pink,),
+              color: Colors.deepPurple,),
             title: Container(
               width: 250.0,
               child: TextField(
@@ -286,12 +302,12 @@ class _UploadPageState extends State<UploadPage>
               ),
             ),
           ),
-          Divider(color: Colors.pink,),
+          Divider(color: Colors.deepPurple,),
 
           ListTile(
             leading: Icon(
               Icons.money_outlined,
-              color: Colors.pink,),
+              color: Colors.deepPurple,),
             title: Container(
               width: 250.0,
               child: TextField(
@@ -306,7 +322,7 @@ class _UploadPageState extends State<UploadPage>
               ),
             ),
           ),
-          Divider(color: Colors.pink,),
+          Divider(color: Colors.deepPurple,),
         ],
       ),
     );
@@ -458,8 +474,9 @@ class _UploadPageState extends State<UploadPage>
     PickedFile photoFile = await picker
         .getImage(
         source: ImageSource.camera,
-    maxHeight: 680.0,
-    maxWidth: 970.0,
+    imageQuality: 85,
+    maxHeight: 370.0,
+    maxWidth: 570.0,
     );
     setState(() {
       imageFile = File(photoFile.path);
@@ -472,6 +489,9 @@ class _UploadPageState extends State<UploadPage>
     PickedFile photoFile = await picker
         .getImage(
       source: ImageSource.gallery,
+      imageQuality: 85,
+      maxHeight: 470.0,
+      maxWidth: 670.0,
     );
     setState(() {
       imageFile = File(photoFile.path);
@@ -487,7 +507,7 @@ class _UploadPageState extends State<UploadPage>
             title: Text(
               'What do you want to do?',
               style: TextStyle(
-                color: Colors.pink,
+                color: Colors.deepPurple,
                 fontWeight: FontWeight.bold
               ),
             ),
@@ -496,7 +516,7 @@ class _UploadPageState extends State<UploadPage>
                 child: Text(
                     'Take a photo',
                   style: TextStyle(
-                      color: Colors.pink,
+                      color: Colors.deepPurple,
                   ),
                 ),
                 onPressed: () => takePhotoWithCamera(),
@@ -505,7 +525,7 @@ class _UploadPageState extends State<UploadPage>
                 child: Text(
                   'Select from gallery',
                   style: TextStyle(
-                    color: Colors.pink,
+                    color: Colors.deepPurple,
                   ),
                 ),
                 onPressed: () => selectGalleryPhoto(),
@@ -514,7 +534,7 @@ class _UploadPageState extends State<UploadPage>
                 child: Text(
                   'Cancel',
                   style: TextStyle(
-                    color: Colors.pink,
+                    color: Colors.deepPurple,
                   ),
                 ),
                 onPressed: () => Navigator.pop(context)
