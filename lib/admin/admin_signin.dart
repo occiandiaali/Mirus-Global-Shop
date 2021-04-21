@@ -119,13 +119,24 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
               height: 25.0,
             ),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 40,
+                  vertical: 10
+                ),
+                textStyle: TextStyle(
+                  fontSize: 19,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onPressed: () {
                 _adminIDEditingController.text.isNotEmpty &&
                     _passwordEditingController.text.isNotEmpty
                     ? loginAdmin()
                     : showDialog(
                     context: context,
-                    builder: (c) => ErrorAlertDialog(message: 'email AND password required',)
+                    builder: (c) => ErrorAlertDialog(message: 'adminID AND password required',)
                 );
               },
               child: Text('Log In'),
