@@ -95,7 +95,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Image.asset("images/mglogo.png"),
               SizedBox(height: 20.0,),
               Text(
-                'Africa\'s largest On-line supplier',
+                'Your reliable on-line supplier',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
