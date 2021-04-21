@@ -72,8 +72,6 @@ class _AdminManageState extends State<AdminManage> {
                     Icons.settings_applications_outlined,
                     color: Colors.white,),
                   onPressed: () => _show(context),
-                    // Route route = MaterialPageRoute(builder: (c) => CartPage());
-                    // Navigator.push(context, route);
                 ),
 
               ],
@@ -84,7 +82,8 @@ class _AdminManageState extends State<AdminManage> {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              title: Text('Update or Delete store items'),
+              backgroundColor: Colors.deepOrange,
+              title: Text('Update or Delete items'),
               centerTitle: true,
             ),
             // SliverPersistentHeader(
@@ -181,32 +180,6 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
                   SizedBox(height: 5.0,),
                   Row(
                     children: [
-                      // Container(
-                      //   decoration: BoxDecoration(
-                      //     shape: BoxShape.rectangle,
-                      //     color: Colors.green,
-                      //   ),
-                      //   alignment: Alignment.topLeft,
-                      //   width: 40.0,
-                      //   height: 43.0,
-                      //   child: Center(
-                      //     child: Column(
-                      //       mainAxisAlignment: MainAxisAlignment.center,
-                      //       children: [
-                      //         Text(
-                      //           '50%',
-                      //           style: TextStyle(
-                      //               fontSize: 15.0,
-                      //               color: Colors.white),),
-                      //         Text(
-                      //           'OFF',
-                      //           style: TextStyle(
-                      //               fontSize: 12.0,
-                      //               color: Colors.white),),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
                       SizedBox(width: 10.0,),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,20 +189,6 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
                             child: Row(
                               children: [
                                 Text('Ordered $timesOrdered time(s)'),
-                                // Text(
-                                //   'Original price: =N= ',
-                                //   style: TextStyle(
-                                //     fontSize: 14.0,
-                                //     color: Colors.grey,
-                                //     decoration: TextDecoration.lineThrough,
-                                //   ),),
-                                // Text(
-                                //   (model.price + model.price).toString(),
-                                //   style: TextStyle(
-                                //     fontSize: 15.0,
-                                //     color: Colors.grey,
-                                //     decoration: TextDecoration.lineThrough,
-                                //   ),),
                               ],
                             ),
                           ),
@@ -243,13 +202,6 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
                                     fontSize: 14.0,
                                     color: Colors.green,
                                   ),),
-                                // Text(
-                                //   '=N= ',
-                                //   style: TextStyle(
-                                //     fontSize: 16.0,
-                                //     color: Colors.green,
-                                //   ),
-                                // ),
                                 Text(
                                   (model.price).toString(),
                                   style: TextStyle(
@@ -267,23 +219,6 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
                   Flexible(
                     child: Container(),
                   ),
-                  // Align(
-                  //   alignment: Alignment.centerRight,
-                  //   child: removeCartFunction == null ?
-                  //   IconButton(
-                  //     onPressed: () {
-                  //       checkItemInCart(model.shortInfo, context);
-                  //     },
-                  //     icon: Icon(
-                  //         Icons.add_shopping_cart,
-                  //         color: Colors.pinkAccent),
-                  //   )
-                  //       : IconButton(
-                  //     onPressed: () => null,
-                  //     icon: Icon(Icons.remove_shopping_cart),
-                  //   ),
-                  // ),
-
                   Divider(
                     height: 10.0,
                     color: Colors.pinkAccent,
@@ -306,31 +241,3 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
 Widget card({Color primaryColor = Colors.pinkAccent, String imgPath}) {
   return Container();
 }
-
-// addItemToCart(String productid, BuildContext context) {
-//   List tempCartList = EshopApp.sharedPreferences
-//       .getStringList(EshopApp.userCartList);
-//   tempCartList.add(productid);
-//
-//   EshopApp.firestore.collection(EshopApp.collectionUser)
-//       .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
-//       .update({
-//     EshopApp.userCartList: tempCartList,
-//   }).then((v) {
-//     EshopApp.sharedPreferences
-//         .setStringList(EshopApp.userCartList, tempCartList);
-//     Fluttertoast.showToast(msg: 'Item added to cart!');
-//
-//     //  Provider.of<CartItemCounter>(context, listen: false).displayResult();
-//   });
-// }
-//
-//
-//
-// void checkItemInCart(String productID, BuildContext context) {
-//   EshopApp.sharedPreferences
-//       .getStringList(EshopApp.userCartList)
-//       .contains(productID) ?
-//   Fluttertoast.showToast(msg: 'Item already in cart') :
-//   addItemToCart(productID, context);
-// }
