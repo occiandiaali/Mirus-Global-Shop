@@ -31,6 +31,7 @@ class _EditProductPageState extends State<EditProductPage> {
 
   int qtyOfItems = 1;
   File imageFile; // storage place for captured image
+  
 
   // variables for item uploads
   final _itemNameEditingController = TextEditingController();
@@ -54,198 +55,12 @@ class _EditProductPageState extends State<EditProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    return imageFile == null ? displayEditScreen() : displayUploadForm();
+    return displayUploadForm();
   }
-
-  displayEditScreen() {
-   // Size screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Update Item'),
-        ),
-        //  drawer: MyDrawer(),
-        body: ListView(
-          children: [
-            Container(
-              padding: EdgeInsets.all(8.0),
-              width: MediaQuery.of(context).size.width,
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                      GestureDetector(
-                        child: Center(
-                          child: Image.network(
-                            widget.itemModel.thumbnailUrl,
-                            height: 250.0,
-                            width: 680.0,
-                          ),
-                        ),
-                        onTap: () => selectImage(context),
-                      ),
-                      Container(
-                        color: Colors.grey[300],
-                        child: SizedBox(
-                          height: 1.0,
-                          width: double.infinity,
-                        ),
-                      ),
-                  Container(
-                    padding: EdgeInsets.all(20.0),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              GestureDetector(
-                                child: Text(
-                                  widget.itemModel.title,
-                                  style: boldTextStyle,
-                                ),
-                                onTap: () => print('Edit title'),
-                              ),
-                              // Icon(Icons.edit_outlined),
-                            ],
-                          ),
-
-                          SizedBox(height: 10.0,),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                widget.itemModel.status,
-                              ),
-                              // Icon(Icons.edit_outlined),
-                            ],
-                          ),
-                          SizedBox(height: 10.0,),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              GestureDetector(
-                                child: Text(
-                                  widget.itemModel.shortInfo,
-                                ),
-                                onTap: () => print('Edit short info'),
-                              ),
-                              // Icon(Icons.edit_outlined),
-                            ],
-                          ),
-                          SizedBox(height: 10.0,),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                widget.itemModel.longDescription,
-                                style: TextStyle(fontSize: 20.0),
-                              ),
-                              // Icon(Icons.edit_outlined),
-                            ],
-                          ),
-                          SizedBox(height: 10.0,),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "=N= " + widget.itemModel.price.toString(),
-                                style: boldTextStyle,
-                              ),
-                              // Icon(Icons.edit_outlined),
-                            ],
-                          ),
-                          SizedBox(height: 10.0,),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 8.0),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          Text(
-                            'Tap on what you want to edit',
-                            style: TextStyle(
-                              fontSize: 19.0,
-                              color: Colors.deepPurple,
-                            ),
-                          ),
-                          Text('OR'),
-                          // ElevatedButton(
-                          //   onPressed: () => selectImage(context),
-                          //   child: Text('Update Item'),
-                          //   style: ElevatedButton.styleFrom(
-                          //     primary: Colors.green,
-                          //     onPrimary: Colors.white,
-                          //   ),
-                          // ),
-                          ElevatedButton(
-                            onPressed: () => deleteItemInfo(),
-                            child: Text('Delete Item'),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.green,
-                              onPrimary: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  // Padding(
-                  //   padding: EdgeInsets.only(top: 8.0),
-                  //   child: Center(
-                  //     child: InkWell(
-                  //       onTap: () => selectImage(context),
-                  //       // onTap: () => checkItemInCart(widget.itemModel.shortInfo, context),
-                  //       child: Container(
-                  //         decoration: BoxDecoration(
-                  //           color: Colors.purple,
-                  //           // gradient: LinearGradient(
-                  //           //   colors: [Colors.pink, Colors.blueGrey],
-                  //           //   begin: const FractionalOffset(0.0, 0.0),
-                  //           //   end: const FractionalOffset(1.0, 0.0),
-                  //           //   stops: [0.0, 1.0],
-                  //           //   tileMode: TileMode.clamp,
-                  //           // ),
-                  //         ),
-                  //         width: MediaQuery.of(context).size.width - 40.0,
-                  //         height: 50.0,
-                  //         child: Center(
-                  //           child: Text(
-                  //             'Update',
-                  //             style: TextStyle(
-                  //                 color: Colors.white,
-                  //                 fontWeight: FontWeight.bold,
-                  //                 fontSize: 20.0),),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-  } // Edit screen
 
   // ====================
 
   Future<void> updateItemInfo(String urlImg) async {
-    // String docID = "1617884091033";
     final itemsRef = FirebaseFirestore.instance.collection("items");
     String id = widget.docID;
     await itemsRef.doc(id).set({
@@ -270,31 +85,6 @@ class _EditProductPageState extends State<EditProductPage> {
         Navigator.pop(context);
     }).catchError((e) => print('Failed to update: $e'));
   } // update item info
-
-  // Future<void> saveItemInfo(String urlImg) {
-  //   return FirebaseFirestore.instance.collection("items")
-  //       .doc()
-  //       .set({
-  //     "shortInfo": _searchInfoEditingController.text.trim(),
-  //     "longDescription": _itemDescEditingController.text.trim(),
-  //     "price": int.parse(_itemPriceEditingController.text),
-  //     "publishedDate": DateTime.now(),
-  //     "status": "available",
-  //     "thumbnailUrl": urlImg,
-  //     "title": _itemNameEditingController.text.trim()
-  //   }).then((value) {
-  //   print('Item updated');
-  //   setState(() {
-  //   imageFile = null;
-  //   uploading = false;
-  //   itemId = DateTime.now().millisecondsSinceEpoch.toString();
-  //   _itemNameEditingController.clear();
-  //   _itemDescEditingController.clear();
-  //   _itemPriceEditingController.clear();
-  //   _searchInfoEditingController.clear();
-  //   });
-  //   }).catchError((e) => print('Failed to update: $e'));
-  // } // save item info
 
 
   deleteItemInfo() {
@@ -392,7 +182,6 @@ class _EditProductPageState extends State<EditProductPage> {
       uploading = true;
     });
     String imageDownloadUrl = await uploadItemImage(imageFile);
-    String label = itemId;
 
     updateItemInfo(imageDownloadUrl);
   }
@@ -430,7 +219,7 @@ class _EditProductPageState extends State<EditProductPage> {
           TextButton(
             // child: Icon(Icons.add_rounded, color: Colors.pink,),
             child: Text(
-              'Upload',
+              'Update',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -447,37 +236,18 @@ class _EditProductPageState extends State<EditProductPage> {
       body: ListView(
         children: [
           uploading ? linearProgress() : Text(''),
-          Container(
-            height: 230.0,
-            width: MediaQuery.of(context).size.width * 0.8,
+          Padding(padding: EdgeInsets.only(top: 12.0),),
+          GestureDetector(
             child: Center(
-              child: AspectRatio(
-                aspectRatio: 16/9,
-                child: Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: FileImage(imageFile),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
+              child: Image.network(
+                widget.itemModel.thumbnailUrl,
+                height: 250.0,
+                width: 680.0,
               ),
             ),
+            onTap: () => selectImage(context),
           ),
-          Padding(padding: EdgeInsets.only(top: 12.0),),
-          // ListTile(
-          //   leading: Icon(
-          //     Icons.image_outlined,
-          //     color: Colors.pink,),
-          //   title: Container(
-          //     width: 150.0,
-          //     child: TextButton(
-          //       child: Text('Select image'),
-          //       onPressed: () => selectGalleryPhoto(),
-          //     ),
-          //   ),
-          // ),
-          // Divider(color: Colors.deepPurple,),
+           Divider(color: Colors.deepPurple,),
           ListTile(
             leading: Icon(
               Icons.perm_device_information_outlined,
@@ -488,7 +258,7 @@ class _EditProductPageState extends State<EditProductPage> {
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _searchInfoEditingController,
                 decoration: InputDecoration(
-                  hintText: 'Tag e.g. "Phone", or "Shoes"',
+                  hintText: widget.itemModel.shortInfo,
                   hintStyle: TextStyle(color: Colors.deepPurpleAccent),
                   border: InputBorder.none,
                 ),
@@ -507,7 +277,7 @@ class _EditProductPageState extends State<EditProductPage> {
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _itemNameEditingController,
                 decoration: InputDecoration(
-                  hintText: 'Item name',
+                  hintText: widget.itemModel.title,
                   hintStyle: TextStyle(color: Colors.deepPurpleAccent),
                   border: InputBorder.none,
                 ),
@@ -526,7 +296,7 @@ class _EditProductPageState extends State<EditProductPage> {
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _itemDescEditingController,
                 decoration: InputDecoration(
-                  hintText: 'Item description',
+                  hintText: widget.itemModel.longDescription,
                   hintStyle: TextStyle(color: Colors.deepPurpleAccent),
                   border: InputBorder.none,
                 ),
@@ -546,7 +316,7 @@ class _EditProductPageState extends State<EditProductPage> {
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _itemPriceEditingController,
                 decoration: InputDecoration(
-                  hintText: 'Item price',
+                  hintText: widget.itemModel.price.toString(),
                   hintStyle: TextStyle(color: Colors.deepPurpleAccent),
                   border: InputBorder.none,
                 ),
@@ -555,6 +325,11 @@ class _EditProductPageState extends State<EditProductPage> {
           ),
           Divider(color: Colors.deepPurple,),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.red,
+        child: Icon(Icons.delete_forever),
+        onPressed: () => deleteItemInfo(),
       ),
     );
 
