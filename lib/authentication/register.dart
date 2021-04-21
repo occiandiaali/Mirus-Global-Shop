@@ -94,6 +94,17 @@ class _RegisterState extends State<Register> {
               ),
             ),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.purple,
+                padding: EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 10
+                ),
+                textStyle: TextStyle(
+                  fontSize: 19,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onPressed: () => uploadAndSaveImg(),
               child: Text('Register'),
             ),
