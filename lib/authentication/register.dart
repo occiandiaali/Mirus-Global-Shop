@@ -49,7 +49,8 @@ class _RegisterState extends State<Register> {
           children: [
             SizedBox(height: 32.0,),
             InkWell(
-              onTap: () => _imageSelectAndPick(),
+             // onTap: () => _imageSelectAndPick(),
+              onTap: () => selectImage(context),
             child: CircleAvatar(
               radius: _screenWidth * 0.15,
               backgroundColor: Colors.white,
@@ -119,16 +120,95 @@ class _RegisterState extends State<Register> {
   }
 
   // this is called to select/load user profile image from device
-Future<void> _imageSelectAndPick() async {
-  final picker = ImagePicker();
-  PickedFile pickedFile = await picker.getImage(
+// Future<void> _imageSelectAndPick() async {
+//   final picker = ImagePicker();
+//   PickedFile pickedFile = await picker.getImage(
+//       source: ImageSource.gallery,
+//     imageQuality: 85,
+//     maxHeight: 170,
+//     maxWidth: 170,
+//   );
+//   _imageFile = File(pickedFile.path);
+// }
+// ================================
+  // Photo selection section
+// *******************************
+  takePhotoWithCamera() async {
+    Navigator.pop(context);
+    final picker = ImagePicker();
+    PickedFile cameraFile = await picker
+        .getImage(
+      source: ImageSource.camera,
+      imageQuality: 85,
+      maxHeight: 370.0,
+      maxWidth: 570.0,
+    );
+    setState(() {
+      _imageFile = File(cameraFile.path);
+    });
+  }
+
+  selectGalleryPhoto() async {
+    Navigator.pop(context);
+    final picker = ImagePicker();
+    PickedFile galleryFile = await picker
+        .getImage(
       source: ImageSource.gallery,
-    imageQuality: 85,
-    maxHeight: 170,
-    maxWidth: 170,
-  );
-  _imageFile = File(pickedFile.path);
-}
+      imageQuality: 85,
+      maxHeight: 370.0,
+      maxWidth: 570.0,
+    );
+    setState(() {
+      _imageFile = File(galleryFile.path);
+    });
+  }
+// ********************************
+
+  selectImage(mContext) {
+    return showDialog(
+        context: mContext,
+        builder: (context) {
+          return SimpleDialog(
+            title: Text(
+              'What do you want to do?',
+              style: TextStyle(
+                  color: Colors.deepPurple,
+                  fontWeight: FontWeight.bold
+              ),
+            ),
+            children: [
+              SimpleDialogOption(
+                child: Text(
+                  'Take a photo',
+                  style: TextStyle(
+                    color: Colors.deepPurple,
+                  ),
+                ),
+                onPressed: () => takePhotoWithCamera(),
+              ),
+              SimpleDialogOption(
+                child: Text(
+                  'Select from gallery',
+                  style: TextStyle(
+                    color: Colors.deepPurple,
+                  ),
+                ),
+                onPressed: () => selectGalleryPhoto(),
+              ),
+              SimpleDialogOption(
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      color: Colors.deepPurple,
+                    ),
+                  ),
+                  onPressed: () => Navigator.pop(context)
+              ),
+            ],
+          );
+        });
+  }
+// ===================================
 
 Future<void> uploadAndSaveImg() async {
     if (_imageFile == null) {
