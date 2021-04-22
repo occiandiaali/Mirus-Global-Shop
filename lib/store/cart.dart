@@ -70,7 +70,8 @@ class _CartPageState extends State<CartPage> {
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
                         fontSize: 20.0,
-                      ),),
+                      ),
+                    ),
                   ),
                 );
               },

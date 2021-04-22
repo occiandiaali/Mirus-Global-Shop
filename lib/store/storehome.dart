@@ -87,7 +87,8 @@ class _StoreHomeState extends State<StoreHome> {
                         child: Consumer<CartItemCounter>(
                           builder: (context, counter, _) {
                             return Text(
-                             //counter.count.toString(),
+                              // counter.count != null ?
+                              // counter.count.toString() : circularProgress(),
                               counter.count != null ?
                                 (EshopApp.sharedPreferences
                                 .getStringList(EshopApp.userCartList)
