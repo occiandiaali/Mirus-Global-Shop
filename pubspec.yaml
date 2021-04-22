@@ -55,7 +55,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 flutter_icons:
   android: true
-  image_path: "images/mglogo.png"
+  image_path: "images/mg_logo_small.png"
 
 # The following section is specific to Flutter.
 flutter:
