@@ -29,10 +29,10 @@ class MG extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (c) => CartItemCounter()),
-        ChangeNotifierProvider(create: (c) => ItemQuantity()),
-        ChangeNotifierProvider(create: (c) => TotalAmount()),
-        ChangeNotifierProvider(create: (c) => AddressChanger()),
+        ChangeNotifierProvider(create: (context) => CartItemCounter()),
+        ChangeNotifierProvider(create: (context) => ItemQuantity()),
+        ChangeNotifierProvider(create: (context) => TotalAmount()),
+        ChangeNotifierProvider(create: (context) => AddressChanger()),
       ],
         child: MaterialApp(
           title: 'MG Shop',
@@ -92,14 +92,16 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset("images/mglogo.png"),
+              Image.asset("images/mg_logo_small.png"),
               SizedBox(height: 20.0,),
               Text(
-                'Your reliable on-line supplier',
+                'Online store for Mirus Global',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
                 fontFamily: 'Ubuntu',
+                fontStyle: FontStyle.italic,
+                fontSize: 23,
               ),)
             ],
           ),
