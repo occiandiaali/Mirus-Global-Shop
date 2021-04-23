@@ -39,7 +39,7 @@ class _LoginState extends State<Login> {
             Container(
               alignment: Alignment.bottomCenter,
               child: Image.asset(
-                  'images/mg_logo_small.png',
+                  'images/storefront.png',
               height: 240.0,
               width: 240.0,),
             ),
