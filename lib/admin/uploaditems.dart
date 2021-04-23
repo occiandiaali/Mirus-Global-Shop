@@ -96,7 +96,7 @@ class _UploadPageState extends State<UploadPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'images/mglogo.png',
+                  'images/mg_shop.png',
                   height: 150.0,
                   width: 150.0,
                 ),
