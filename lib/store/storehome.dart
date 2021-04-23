@@ -89,10 +89,10 @@ class _StoreHomeState extends State<StoreHome> {
                             return Text(
                               // counter.count != null ?
                               // counter.count.toString() : circularProgress(),
-                              counter.count != null ?
+                                (counter.count != null) ?
                                 (EshopApp.sharedPreferences
                                 .getStringList(EshopApp.userCartList)
-                                .length - 1).toString() : circularProgress(),
+                                .length - 1).toString() : "0",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 12.0,
