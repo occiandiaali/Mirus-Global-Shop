@@ -92,17 +92,13 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset("images/mg_logo_small.png"),
-              SizedBox(height: 20.0,),
-              Text(
-                'Online store for Mirus Global',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              Image.asset(
+                  "images/mg_label.png",
+              width: 450.0,
+              height: 450.0,
                 color: Colors.white,
-                fontFamily: 'Ubuntu',
-                fontStyle: FontStyle.italic,
-                fontSize: 23,
-              ),)
+              ),
+              SizedBox(height: 20.0,),
             ],
           ),
         ),
