@@ -158,6 +158,7 @@ class MyDrawer extends StatelessWidget {
                   onTap: () {
                     EshopApp.auth.signOut().then((c) {
                       Route route = MaterialPageRoute(builder: (c) => AuthScreen());
+                      Navigator.pop(context, true);
                       Navigator.pushReplacement(context, route);
                     });
                   },
