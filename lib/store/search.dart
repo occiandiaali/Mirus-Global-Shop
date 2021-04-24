@@ -91,7 +91,7 @@ class _SearchProductState extends State<SearchProduct> {
                     startSearch(value);
                   },
                   decoration: InputDecoration.collapsed(
-                      hintText: 'Search the store...'),
+                      hintText: 'Search for...'),
                 ),
               ),
             ),
@@ -103,7 +103,7 @@ class _SearchProductState extends State<SearchProduct> {
 
   Future startSearch(String query) async {
     docList = FirebaseFirestore.instance.collection("items")
-        .where("shortInfo", isGreaterThanOrEqualTo: query)
+        .where("category", isGreaterThanOrEqualTo: query)
         .get();
   }
 
