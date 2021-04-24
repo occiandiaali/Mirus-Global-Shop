@@ -212,7 +212,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                       children: [
                         Expanded(
                           child: Text(
-                            model.shortInfo,
+                            "Category: ${model.category}",
                             style: TextStyle(
                               color: Colors.black54,
                               fontSize: 12.0,

@@ -31,6 +31,7 @@ class _UploadPageState extends State<UploadPage>
   File imageFile; // storage place for captured image
 
   // variables for item uploads
+  final _itemCategoryEditingController = TextEditingController();
   final _itemNameEditingController = TextEditingController();
   final _itemDescEditingController = TextEditingController();
   final _itemPriceEditingController = TextEditingController();
@@ -41,6 +42,7 @@ class _UploadPageState extends State<UploadPage>
 
   @override
   void dispose() {
+    _itemCategoryEditingController.dispose();
     _itemNameEditingController.dispose();
     _itemDescEditingController.dispose();
     _itemPriceEditingController.dispose();
@@ -251,6 +253,24 @@ class _UploadPageState extends State<UploadPage>
           Padding(padding: EdgeInsets.only(top: 12.0),),
           ListTile(
             leading: Icon(
+              Icons.category_outlined,
+              color: Colors.deepPurple,),
+            title: Container(
+              width: 250.0,
+              child: TextField(
+                style: TextStyle(color: Colors.deepPurple),
+                controller: _itemCategoryEditingController,
+                decoration: InputDecoration(
+                  hintText: 'Category (Phone, Shoe...)',
+                  hintStyle: TextStyle(color: Colors.deepPurpleAccent),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+          ),
+          Divider(color: Colors.deepPurple,),
+          ListTile(
+            leading: Icon(
                 Icons.perm_device_information_outlined,
             color: Colors.deepPurple,),
             title: Container(
@@ -259,7 +279,7 @@ class _UploadPageState extends State<UploadPage>
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _searchInfoEditingController,
                 decoration: InputDecoration(
-                  hintText: 'Category e.g. TV, Shoe...',
+                  hintText: 'Short Info',
                   hintStyle: TextStyle(color: Colors.deepPurpleAccent),
                   border: InputBorder.none,
                 ),
@@ -333,6 +353,7 @@ class _UploadPageState extends State<UploadPage>
 
   clearFormInfo() {
     imageFile = null;
+    _searchInfoEditingController.clear();
     _itemNameEditingController.clear();
     _itemDescEditingController.clear();
     _itemPriceEditingController.clear();
@@ -358,7 +379,8 @@ class _UploadPageState extends State<UploadPage>
   saveItemInfo(String imgUrl) {
     final itemsRef = FirebaseFirestore.instance.collection("items");
     itemsRef.doc(itemId).set({
-      "shortInfo": _searchInfoEditingController.text.trim() + (itemVariance++).toString(),
+      "category": _itemCategoryEditingController.text.trim(),
+      "shortInfo": _searchInfoEditingController.text.trim(),
       "longDescription": _itemDescEditingController.text.trim(),
       "price": int.parse(_itemPriceEditingController.text),
       "publishedDate": DateTime.now(),
@@ -370,6 +392,7 @@ class _UploadPageState extends State<UploadPage>
         imageFile = null;
         uploading = false;
         itemId = DateTime.now().millisecondsSinceEpoch.toString();
+        _itemCategoryEditingController.clear();
         _itemNameEditingController.clear();
         _itemDescEditingController.clear();
         _itemPriceEditingController.clear();

@@ -36,6 +36,7 @@ class _EditProductPageState extends State<EditProductPage> {
   
 
   // variables for item uploads
+  final _itemCategoryEditingController = TextEditingController();
   final _itemNameEditingController = TextEditingController();
   final _itemDescEditingController = TextEditingController();
   final _itemPriceEditingController = TextEditingController();
@@ -48,6 +49,7 @@ class _EditProductPageState extends State<EditProductPage> {
 
   @override
   void dispose() {
+    _itemCategoryEditingController.dispose();
     _itemNameEditingController.dispose();
     _itemDescEditingController.dispose();
     _itemPriceEditingController.dispose();
@@ -66,6 +68,7 @@ class _EditProductPageState extends State<EditProductPage> {
     final itemsRef = FirebaseFirestore.instance.collection("items");
     String id = widget.docID;
     await itemsRef.doc(id).set({
+          "category": _itemCategoryEditingController.text.trim(),
           "shortInfo": _searchInfoEditingController.text.trim(),
           "longDescription": _itemDescEditingController.text.trim(),
           "price": int.parse(_itemPriceEditingController.text),
@@ -79,6 +82,7 @@ class _EditProductPageState extends State<EditProductPage> {
         fileImage = null;
         uploading = false;
         itemId = DateTime.now().millisecondsSinceEpoch.toString();
+        _itemCategoryEditingController.clear();
         _itemNameEditingController.clear();
         _itemDescEditingController.clear();
         _itemPriceEditingController.clear();
@@ -219,6 +223,7 @@ class _EditProductPageState extends State<EditProductPage> {
     _itemNameEditingController.clear();
     _itemDescEditingController.clear();
     _itemPriceEditingController.clear();
+    _searchInfoEditingController.clear();
     Navigator.pop(context);
   }
 
@@ -312,6 +317,24 @@ class _EditProductPageState extends State<EditProductPage> {
             onTap: () => selectImage(context),
           ),
            Divider(color: Colors.deepPurple,),
+          ListTile(
+            leading: Icon(
+              Icons.category_outlined,
+              color: Colors.pink,),
+            title: Container(
+              width: 250.0,
+              child: TextField(
+                style: TextStyle(color: Colors.deepPurple),
+                controller: _itemCategoryEditingController,
+                decoration: InputDecoration(
+                  hintText: widget.itemModel.category,
+                  hintStyle: TextStyle(color: Colors.deepPurpleAccent),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+          ),
+          Divider(color: Colors.deepPurple,),
           ListTile(
             leading: Icon(
               Icons.perm_device_information_outlined,
