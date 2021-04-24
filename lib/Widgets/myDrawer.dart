@@ -145,10 +145,11 @@ class MyDrawer extends StatelessWidget {
                   onTap: () {
                     EshopApp.auth.signOut().then((c) {
                        //Route route = MaterialPageRoute(builder: (c) => AuthScreen());
-                       Navigator.pushAndRemoveUntil(
-                           context,
+                       Navigator.of(context).pushAndRemoveUntil(
+                          // context,
                            MaterialPageRoute(builder: (c) => AuthScreen()),
-                               (route) => false);
+                              (route) => false,
+                       );
                       // Navigator.pushReplacement(context, route);
                     });
                   },
