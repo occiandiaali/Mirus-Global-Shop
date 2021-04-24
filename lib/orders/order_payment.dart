@@ -71,6 +71,14 @@ class _OrderPaymentState extends State<OrderPayment> {
                           'on this app as soon as your payment is confirmed',
                       style: TextStyle(color: Colors.yellow, fontSize: 15.0),
                     ),
+                    Text(
+                      'Customer Care',
+                      style: TextStyle(color: Colors.white, fontSize: 18.0),
+                    ),
+                    Text(
+                      '+23481122334455',
+                      style: TextStyle(color: Colors.white, fontSize: 21.0),
+                    ),
                   ],
                 ),
               ),
@@ -79,10 +87,10 @@ class _OrderPaymentState extends State<OrderPayment> {
                 child: Text('I Agree'),
                 style: TextButton.styleFrom(
                   elevation: 10.0,
-                  backgroundColor: Colors.purple,
+                  backgroundColor: Colors.green,
                   textStyle: TextStyle(
                     color: Colors.white,
-                    fontSize: 17.0,
+                    fontSize: 19.0,
                   ),
                 ),
                 onPressed: () => addOrderDetails(),

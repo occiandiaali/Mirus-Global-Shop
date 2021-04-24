@@ -117,7 +117,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  FirebaseAuth _auth = FirebaseAuth.instance;
+ // FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future readInfoData(User fUser) async {
     FirebaseFirestore.instance.collection("users")
@@ -144,8 +144,9 @@ class _LoginState extends State<Login> {
         context: context,
         builder: (c) => LoadingAlertDialog(message: 'Verifying you...')
     );
-    User firebaseUser;
-    await _auth.signInWithEmailAndPassword(
+   // User firebaseUser;
+    var firebaseUser = EshopApp.auth.currentUser;
+    await EshopApp.auth.signInWithEmailAndPassword(
       email: _emailController.text.trim(),
       password: _passwordController.text.trim(),
     ).then((authUser) {

@@ -4,6 +4,7 @@ import 'package:mirus_global/admin/admin_manage.dart';
 import 'package:mirus_global/authentication/auth_screen.dart';
 //import 'package:mirus_global/admin/adminShiftOrders.dart';
 import 'package:mirus_global/Widgets/loadingWidget.dart';
+import 'package:mirus_global/config/config.dart';
 import 'package:mirus_global/main.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,7 @@ class _UploadPageState extends State<UploadPage>
   final _searchInfoEditingController = TextEditingController();
   String itemId = DateTime.now().millisecondsSinceEpoch.toString();
   bool uploading = false;
+  int itemVariance = 0; // track individual items for search purpose
 
   @override
   void dispose() {
@@ -257,7 +259,7 @@ class _UploadPageState extends State<UploadPage>
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _searchInfoEditingController,
                 decoration: InputDecoration(
-                  hintText: 'Tag e.g. "Phone", or "Shoes"...',
+                  hintText: 'Category e.g. TV, Shoe...',
                   hintStyle: TextStyle(color: Colors.deepPurpleAccent),
                   border: InputBorder.none,
                 ),
@@ -295,7 +297,7 @@ class _UploadPageState extends State<UploadPage>
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _itemDescEditingController,
                 decoration: InputDecoration(
-                  hintText: 'Item description',
+                  hintText: 'Item details...',
                   hintStyle: TextStyle(color: Colors.deepPurpleAccent),
                   border: InputBorder.none,
                 ),
@@ -356,7 +358,7 @@ class _UploadPageState extends State<UploadPage>
   saveItemInfo(String imgUrl) {
     final itemsRef = FirebaseFirestore.instance.collection("items");
     itemsRef.doc(itemId).set({
-      "shortInfo": _searchInfoEditingController.text.trim(),
+      "shortInfo": _searchInfoEditingController.text.trim() + (itemVariance++).toString(),
       "longDescription": _itemDescEditingController.text.trim(),
       "price": int.parse(_itemPriceEditingController.text),
       "publishedDate": DateTime.now(),
@@ -468,20 +470,20 @@ class _UploadPageState extends State<UploadPage>
   //   );
   // }
 
-  takePhotoWithCamera() async {
-    Navigator.pop(context);
-    final picker = ImagePicker();
-    PickedFile photoFile = await picker
-        .getImage(
-        source: ImageSource.camera,
-    imageQuality: 85,
-    maxHeight: 370.0,
-    maxWidth: 570.0,
-    );
-    setState(() {
-      imageFile = File(photoFile.path);
-    });
-  }
+  // takePhotoWithCamera() async {
+  //   Navigator.pop(context);
+  //   final picker = ImagePicker();
+  //   PickedFile photoFile = await picker
+  //       .getImage(
+  //       source: ImageSource.camera,
+  //   imageQuality: 85,
+  //   maxHeight: 370.0,
+  //   maxWidth: 570.0,
+  //   );
+  //   setState(() {
+  //     imageFile = File(photoFile.path);
+  //   });
+  // }
 
   selectGalleryPhoto() async {
     Navigator.pop(context);
@@ -505,22 +507,22 @@ class _UploadPageState extends State<UploadPage>
     builder: (context) {
           return SimpleDialog(
             title: Text(
-              'What do you want to do?',
+              'Choose an image of the item',
               style: TextStyle(
                 color: Colors.deepPurple,
                 fontWeight: FontWeight.bold
               ),
             ),
             children: [
-              SimpleDialogOption(
-                child: Text(
-                    'Take a photo',
-                  style: TextStyle(
-                      color: Colors.deepPurple,
-                  ),
-                ),
-                onPressed: () => takePhotoWithCamera(),
-              ),
+              // SimpleDialogOption(
+              //   child: Text(
+              //       'Take a photo',
+              //     style: TextStyle(
+              //         color: Colors.deepPurple,
+              //     ),
+              //   ),
+              //   onPressed: () => takePhotoWithCamera(),
+              // ),
               SimpleDialogOption(
                 child: Text(
                   'Select from gallery',

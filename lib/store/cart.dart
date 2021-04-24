@@ -63,8 +63,8 @@ class _CartPageState extends State<CartPage> {
                 return Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Center(
-                    child: cartProvider.count == 0 ?
-                    Container() : Text(
+                    child: cartProvider.count == 0 ? Container()
+                        : Text(
                       "Total: =N=${amountProvider.totalAmount.toString()}",
                       style: TextStyle(
                         color: Colors.black,

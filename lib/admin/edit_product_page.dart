@@ -4,10 +4,12 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mirus_global/Widgets/customAppBar.dart';
 import 'package:mirus_global/Widgets/loadingWidget.dart';
 import 'package:mirus_global/Widgets/myDrawer.dart';
+import 'package:mirus_global/admin/admin_manage.dart';
 import 'package:mirus_global/config/config.dart';
 import 'package:mirus_global/models/item.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +32,7 @@ class EditProductPage extends StatefulWidget {
 class _EditProductPageState extends State<EditProductPage> {
 
   int qtyOfItems = 1;
-  File imageFile; // storage place for captured image
+  File fileImage; // storage place for captured image
   
 
   // variables for item uploads
@@ -74,7 +76,7 @@ class _EditProductPageState extends State<EditProductPage> {
     }).then((v) {
       print('Item updated');
         setState(() {
-        imageFile = null;
+        fileImage = null;
         uploading = false;
         itemId = DateTime.now().millisecondsSinceEpoch.toString();
         _itemNameEditingController.clear();
@@ -87,28 +89,71 @@ class _EditProductPageState extends State<EditProductPage> {
   } // update item info
 
 
+  // deleteItemInfo() {
+  //   itemsDoc
+  //       .doc(widget.docID).delete();
+  //   Navigator.pop(context);
+  // }
+
   deleteItemInfo() {
-    itemsDoc
-        .doc(widget.docID).delete();
-    Navigator.pop(context);
+    showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            title: Text(
+              'Delete Item?',
+              style: TextStyle(
+                  color: Colors.deepPurple,
+                  fontWeight: FontWeight.bold
+              ),
+            ),
+            children: [
+              SimpleDialogOption(
+                child: Text(
+                  'Yes, delete forever',
+                  style: TextStyle(
+                    color: Colors.deepPurple,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                  itemsDoc.doc(widget.docID).delete();
+                  Fluttertoast.showToast(
+                      msg: 'Deleted! Go back to Management.',
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity: ToastGravity.CENTER);
+                },
+              ),
+              SimpleDialogOption(
+                  child: Text(
+                    'No, I change my mind',
+                    style: TextStyle(
+                      color: Colors.deepPurple,
+                    ),
+                  ),
+                  onPressed: () => Navigator.pop(context)
+              ),
+            ],
+          );
+        });
   }
 
 
 
   // image update section
-  takePhotoWithCamera() async {
-    Navigator.pop(context);
-    final picker = ImagePicker();
-    PickedFile photoFile = await picker
-        .getImage(
-      source: ImageSource.camera,
-      maxHeight: 680.0,
-      maxWidth: 970.0,
-    );
-    setState(() {
-      imageFile = File(photoFile.path);
-    });
-  }
+  // takePhotoWithCamera() async {
+  //   Navigator.pop(context);
+  //   final picker = ImagePicker();
+  //   PickedFile photoFile = await picker
+  //       .getImage(
+  //     source: ImageSource.camera,
+  //     maxHeight: 680.0,
+  //     maxWidth: 970.0,
+  //   );
+  //   setState(() {
+  //     fileImage = File(photoFile.path);
+  //   });
+  // }
 
   selectGalleryPhoto() async {
     Navigator.pop(context);
@@ -118,7 +163,7 @@ class _EditProductPageState extends State<EditProductPage> {
       source: ImageSource.gallery,
     );
     setState(() {
-      imageFile = File(photoFile.path);
+      fileImage = File(photoFile.path);
     });
   }
 
@@ -129,22 +174,22 @@ class _EditProductPageState extends State<EditProductPage> {
         builder: (context) {
           return SimpleDialog(
             title: Text(
-              'Start by updating the item image',
+              'Change or choose same image',
               style: TextStyle(
                   color: Colors.purple,
                   fontWeight: FontWeight.bold
               ),
             ),
             children: [
-              SimpleDialogOption(
-                child: Text(
-                  'Take a photo',
-                  style: TextStyle(
-                    color: Colors.purple,
-                  ),
-                ),
-                onPressed: () => takePhotoWithCamera(),
-              ),
+              // SimpleDialogOption(
+              //   child: Text(
+              //     'Take a photo',
+              //     style: TextStyle(
+              //       color: Colors.purple,
+              //     ),
+              //   ),
+              //   onPressed: () => takePhotoWithCamera(),
+              // ),
               SimpleDialogOption(
                 child: Text(
                   'Select image from gallery',
@@ -170,20 +215,40 @@ class _EditProductPageState extends State<EditProductPage> {
 // ================================
 
   clearFormInfo() {
-    imageFile = null;
+    fileImage = null;
     _itemNameEditingController.clear();
     _itemDescEditingController.clear();
     _itemPriceEditingController.clear();
     Navigator.pop(context);
   }
 
-  uploadAndSaveItem() async {
-    setState(() {
-      uploading = true;
-    });
-    String imageDownloadUrl = await uploadItemImage(imageFile);
+  void _mustAddImage(BuildContext ctx) {
+    showModalBottomSheet(
+        elevation: 10,
+        backgroundColor: Colors.amber,
+        context: ctx,
+        builder: (ctx) => Container(
+          padding: EdgeInsets.all(8.0),
+          width: 300,
+          height: 100,
+          color: Colors.white54,
+          alignment: Alignment.center,
+          child: Text(
+            'Ensure you select image and fill fields!',
+            style: TextStyle(color: Colors.deepPurple, fontSize: 23.0),),
+        ));
+  }
 
-    updateItemInfo(imageDownloadUrl);
+  uploadAndSaveItem() async {
+    if(fileImage != null) {
+      setState(() {
+        uploading = true;
+      });
+      String imageDownloadUrl = await uploadItemImage(fileImage);
+      updateItemInfo(imageDownloadUrl);
+    } else {
+      _mustAddImage(context);
+    }
   }
 
   Future<String> uploadItemImage(mFileImage) async {
@@ -225,7 +290,6 @@ class _EditProductPageState extends State<EditProductPage> {
                 fontWeight: FontWeight.bold,
               ),),
             onPressed: uploading ? null : () => uploadAndSaveItem(),
-           // onPressed: () => uploadAndSaveItem(),
           ),
           TextButton(
             child: Icon(Icons.cancel_rounded, color: Colors.white,),

@@ -76,7 +76,7 @@ class AddAddress extends StatelessWidget {
                       controller: nameController,
                     ),
                     MyTextField(
-                      hint: "Phone e.g. +234-8034096604",
+                      hint: "Phone e.g. +234-81122334455",
                       controller: phoneController,
                     ),
                     MyTextField(

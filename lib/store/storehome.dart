@@ -86,17 +86,36 @@ class _StoreHomeState extends State<StoreHome> {
                         left: 7.0,
                         child: Consumer<CartItemCounter>(
                           builder: (context, counter, _) {
-                            return Text(
-                              // counter.count != null ?
-                              // counter.count.toString() : circularProgress(),
-                                (counter.count != null) ?
+                            // return Text(
+                            //   // counter.count != null ?
+                            //   // counter.count.toString() : circularProgress(),
+                            //     (counter.count != null) ?
+                            //     (EshopApp.sharedPreferences
+                            //     .getStringList(EshopApp.userCartList)
+                            //     .length - 1).toString() : "0",
+                            //   style: TextStyle(
+                            //     color: Colors.white,
+                            //     fontSize: 12.0,
+                            //     fontWeight: FontWeight.w500
+                            //   ),
+                            // );
+                            return (counter.count != null) ?
+                                Text(
                                 (EshopApp.sharedPreferences
-                                .getStringList(EshopApp.userCartList)
-                                .length - 1).toString() : "0",
+                                        .getStringList(EshopApp.userCartList)
+                                        .length - 1).toString(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.w500
+                                      ),
+                                )
+                                : Text(
+                              '0',
                               style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12.0,
-                                fontWeight: FontWeight.w500
+                                  color: Colors.white,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w500
                               ),
                             );
                           },
@@ -368,9 +387,11 @@ addItemToCart(String shortInfoAsId, BuildContext context) {
   List tempCartList = EshopApp.sharedPreferences
       .getStringList(EshopApp.userCartList);
   tempCartList.add(shortInfoAsId);
-  var userDocRef = EshopApp.firestore.collection(EshopApp.collectionUser)
-      .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID));
-  userDocRef.set({
+  // var userDocRef = EshopApp.firestore.collection(EshopApp.collectionUser)
+  //     .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID));
+  EshopApp.firestore.collection(EshopApp.collectionUser)
+      .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
+  .set({
     EshopApp.userCartList: tempCartList,
   }).then((v) {
     Fluttertoast.showToast(msg: 'Item added to cart!');

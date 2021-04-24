@@ -127,19 +127,6 @@ class MyDrawer extends StatelessWidget {
                   thickness: 6.0,),
 
                 ListTile(
-                  leading: Icon(Icons.search_outlined, color: Colors.white,),
-                  title: Text('Search', style: TextStyle(color: Colors.white),),
-                  onTap: () {
-                    Route route = MaterialPageRoute(builder: (c) => SearchProduct());
-                    Navigator.push(context, route);
-                  },
-                ),
-                Divider(
-                  height: 10.0,
-                  color: Colors.white,
-                  thickness: 6.0,),
-
-                ListTile(
                   leading: Icon(Icons.add_location_outlined, color: Colors.white,),
                   title: Text('Add address', style: TextStyle(color: Colors.white),),
                   onTap: () {
@@ -157,9 +144,12 @@ class MyDrawer extends StatelessWidget {
                   title: Text('Logout', style: TextStyle(color: Colors.white),),
                   onTap: () {
                     EshopApp.auth.signOut().then((c) {
-                      Route route = MaterialPageRoute(builder: (c) => AuthScreen());
-                      Navigator.pop(context, true);
-                      Navigator.pushReplacement(context, route);
+                       //Route route = MaterialPageRoute(builder: (c) => AuthScreen());
+                       Navigator.pushAndRemoveUntil(
+                           context,
+                           MaterialPageRoute(builder: (c) => AuthScreen()),
+                               (route) => false);
+                      // Navigator.pushReplacement(context, route);
                     });
                   },
                 ),

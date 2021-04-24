@@ -87,9 +87,11 @@ class _SearchProductState extends State<SearchProduct> {
               child: Padding(
                 padding: EdgeInsets.only(left: 8.0),
                 child: TextField(
-                  onChanged: (value) => startSearch(value),
+                  onChanged: (value) {
+                    startSearch(value);
+                  },
                   decoration: InputDecoration.collapsed(
-                      hintText: 'Search by Tags e.g.Phones, Shoes...'),
+                      hintText: 'Search the store...'),
                 ),
               ),
             ),
