@@ -71,12 +71,47 @@ class _ProductPageState extends State<ProductPage> {
                             widget.itemModel.longDescription,
                           ),
                           SizedBox(height: 10.0,),
+                          Row(
+                              children: [
+                                Text(
+                                  "=N= " + widget.itemModel.price.toString(),
+                                  style: boldTextStyle,
+                                ),
+                                SizedBox(width: 30.0,),
+                                Text('Quantity: '),
+                                DropdownButton(
+                                  value: qtyOfItems,
+                                  items: [
+                                    DropdownMenuItem(
+                                      child: Text('1'),
+                                      value: 1,
+                                    ),
+                                    DropdownMenuItem(
+                                      child: Text('2'),
+                                      value: 2,
+                                    ),
+                                    DropdownMenuItem(
+                                      child: Text('3'),
+                                      value: 3,
+                                    ),
+                                    DropdownMenuItem(
+                                      child: Text('4'),
+                                      value: 4,
+                                    ),
+                                    DropdownMenuItem(
+                                      child: Text('5'),
+                                      value: 5,
+                                    ),
+                                  ],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      qtyOfItems = value;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
 
-                          Text(
-                            "=N= " + widget.itemModel.price.toString(),
-                            style: boldTextStyle,
-                          ),
-                          SizedBox(height: 10.0,),
                         ],
                       ),
                     ),
