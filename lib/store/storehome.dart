@@ -226,8 +226,11 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                     children: [
                       Container(
                         decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.deepPurple,
+                          width: 2.0),
                           shape: BoxShape.rectangle,
-                          color: Colors.deepPurple,
+                         // color: Colors.deepPurple,
                         ),
                         alignment: Alignment.topLeft,
                         width: 40.0,
@@ -240,13 +243,14 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                                     '50%',
                                     style: TextStyle(
                                         fontSize: 15.0,
-                                    color: Colors.white),),
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.deepPurple),),
 
                                 Text(
                                     'OFF',
                                     style: TextStyle(
                                         fontSize: 10.0,
-                                    color: Colors.white),
+                                    color: Colors.deepPurple),
                                   ),
 
                               ],
