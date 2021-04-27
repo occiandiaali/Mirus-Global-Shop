@@ -41,6 +41,8 @@ class _EditProductPageState extends State<EditProductPage> {
   final _itemDescEditingController = TextEditingController();
   final _itemPriceEditingController = TextEditingController();
   final _searchInfoEditingController = TextEditingController();
+  final _qtyEditingController = TextEditingController();
+
   String itemId = DateTime.now().millisecondsSinceEpoch.toString();
   bool uploading = false;
 
@@ -54,6 +56,7 @@ class _EditProductPageState extends State<EditProductPage> {
     _itemDescEditingController.dispose();
     _itemPriceEditingController.dispose();
     _searchInfoEditingController.dispose();
+    _qtyEditingController.dispose();
     super.dispose();
   }
 
@@ -72,10 +75,11 @@ class _EditProductPageState extends State<EditProductPage> {
           "shortInfo": _searchInfoEditingController.text.trim(),
           "longDescription": _itemDescEditingController.text.trim(),
           "price": int.parse(_itemPriceEditingController.text),
+          "quantity": int.parse(_qtyEditingController.text),
           "publishedDate": DateTime.now(),
           "status": "available",
           "thumbnailUrl": urlImg,
-          "title": _itemNameEditingController.text.trim()
+          "title": _itemNameEditingController.text.trim(),
     }).then((v) {
       print('Item updated');
         setState(() {
@@ -87,6 +91,7 @@ class _EditProductPageState extends State<EditProductPage> {
         _itemDescEditingController.clear();
         _itemPriceEditingController.clear();
         _searchInfoEditingController.clear();
+        _qtyEditingController.clear();
         });
         Navigator.pop(context);
     }).catchError((e) => print('Failed to update: $e'));
@@ -145,19 +150,19 @@ class _EditProductPageState extends State<EditProductPage> {
 
 
   // image update section
-  // takePhotoWithCamera() async {
-  //   Navigator.pop(context);
-  //   final picker = ImagePicker();
-  //   PickedFile photoFile = await picker
-  //       .getImage(
-  //     source: ImageSource.camera,
-  //     maxHeight: 680.0,
-  //     maxWidth: 970.0,
-  //   );
-  //   setState(() {
-  //     fileImage = File(photoFile.path);
-  //   });
-  // }
+  takePhotoWithCamera() async {
+    Navigator.pop(context);
+    final picker = ImagePicker();
+    PickedFile photoFile = await picker
+        .getImage(
+      source: ImageSource.camera,
+      maxHeight: 680.0,
+      maxWidth: 970.0,
+    );
+    setState(() {
+      fileImage = File(photoFile.path);
+    });
+  }
 
   selectGalleryPhoto() async {
     Navigator.pop(context);
@@ -185,15 +190,15 @@ class _EditProductPageState extends State<EditProductPage> {
               ),
             ),
             children: [
-              // SimpleDialogOption(
-              //   child: Text(
-              //     'Take a photo',
-              //     style: TextStyle(
-              //       color: Colors.purple,
-              //     ),
-              //   ),
-              //   onPressed: () => takePhotoWithCamera(),
-              // ),
+              SimpleDialogOption(
+                child: Text(
+                  'Take a photo',
+                  style: TextStyle(
+                    color: Colors.purple,
+                  ),
+                ),
+                onPressed: () => takePhotoWithCamera(),
+              ),
               SimpleDialogOption(
                 child: Text(
                   'Select image from gallery',
@@ -224,6 +229,7 @@ class _EditProductPageState extends State<EditProductPage> {
     _itemDescEditingController.clear();
     _itemPriceEditingController.clear();
     _searchInfoEditingController.clear();
+    _qtyEditingController.clear();
     Navigator.pop(context);
   }
 
@@ -394,6 +400,25 @@ class _EditProductPageState extends State<EditProductPage> {
 
           ListTile(
             leading: Icon(
+              Icons.wysiwyg,
+              color: Colors.pink,),
+            title: Container(
+              width: 250.0,
+              child: TextField(
+                style: TextStyle(color: Colors.deepPurple),
+                controller: _qtyEditingController,
+                decoration: InputDecoration(
+                  hintText: widget.itemModel.qty.toString(),
+                  hintStyle: TextStyle(color: Colors.deepPurpleAccent),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+          ),
+          Divider(color: Colors.deepPurple,),
+
+          ListTile(
+            leading: Icon(
               Icons.money_outlined,
               color: Colors.pink,),
             title: Container(
@@ -410,7 +435,7 @@ class _EditProductPageState extends State<EditProductPage> {
               ),
             ),
           ),
-          Divider(color: Colors.deepPurple,),
+         // Divider(color: Colors.deepPurple,),
         ],
       ),
       floatingActionButton: FloatingActionButton(

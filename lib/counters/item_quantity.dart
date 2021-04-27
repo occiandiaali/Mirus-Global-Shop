@@ -5,9 +5,11 @@ class ItemQuantity with ChangeNotifier {
 
   int get numberOfItems => _numberOfItems;
 
-  display(int numba) {
-    _numberOfItems = numba;
+  qtyOfItem(int n) async {
+    _numberOfItems = n;
+    await Future.delayed(const Duration(milliseconds: 100), () {
     notifyListeners();
+    });
   }
 
 }

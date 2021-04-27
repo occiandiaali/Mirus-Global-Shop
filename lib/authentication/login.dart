@@ -156,7 +156,8 @@ class _LoginState extends State<Login> {
       showDialog(
           context: context,
           builder: (c) {
-            return ErrorAlertDialog(message: error.toString());
+           // return ErrorAlertDialog(message: error.toString());
+            return ErrorAlertDialog(message: 'Email or Password is incorrect');
           }
       );
     });

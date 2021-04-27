@@ -36,6 +36,8 @@ class _UploadPageState extends State<UploadPage>
   final _itemDescEditingController = TextEditingController();
   final _itemPriceEditingController = TextEditingController();
   final _searchInfoEditingController = TextEditingController();
+  final _qtyEditingController = TextEditingController();
+
   String itemId = DateTime.now().millisecondsSinceEpoch.toString();
   bool uploading = false;
   int itemVariance = 0; // track individual items for search purpose
@@ -47,6 +49,7 @@ class _UploadPageState extends State<UploadPage>
     _itemDescEditingController.dispose();
     _itemPriceEditingController.dispose();
     _searchInfoEditingController.dispose();
+    _qtyEditingController.dispose();
     super.dispose();
   }
 
@@ -328,6 +331,25 @@ class _UploadPageState extends State<UploadPage>
 
           ListTile(
             leading: Icon(
+              Icons.wysiwyg,
+              color: Colors.deepPurple,),
+            title: Container(
+              width: 250.0,
+              child: TextField(
+                style: TextStyle(color: Colors.deepPurple),
+                controller: _qtyEditingController,
+                decoration: InputDecoration(
+                  hintText: 'Quantity in stock',
+                  hintStyle: TextStyle(color: Colors.deepPurpleAccent),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+          ),
+          Divider(color: Colors.deepPurple,),
+
+          ListTile(
+            leading: Icon(
               Icons.money_outlined,
               color: Colors.deepPurple,),
             title: Container(
@@ -357,6 +379,7 @@ class _UploadPageState extends State<UploadPage>
     _itemNameEditingController.clear();
     _itemDescEditingController.clear();
     _itemPriceEditingController.clear();
+    _qtyEditingController.clear();
   }
 
   uploadAndSaveItem() async {
@@ -382,6 +405,7 @@ class _UploadPageState extends State<UploadPage>
       "category": _itemCategoryEditingController.text.trim(),
       "shortInfo": _searchInfoEditingController.text.trim(),
       "longDescription": _itemDescEditingController.text.trim(),
+      "quantity": int.parse(_qtyEditingController.text),
       "price": int.parse(_itemPriceEditingController.text),
       "publishedDate": DateTime.now(),
       "status": "available",
@@ -397,6 +421,7 @@ class _UploadPageState extends State<UploadPage>
         _itemDescEditingController.clear();
         _itemPriceEditingController.clear();
         _searchInfoEditingController.clear();
+        _qtyEditingController.clear();
       });
     }).catchError((e) => print("Error: $e"));
 
@@ -493,20 +518,20 @@ class _UploadPageState extends State<UploadPage>
   //   );
   // }
 
-  // takePhotoWithCamera() async {
-  //   Navigator.pop(context);
-  //   final picker = ImagePicker();
-  //   PickedFile photoFile = await picker
-  //       .getImage(
-  //       source: ImageSource.camera,
-  //   imageQuality: 85,
-  //   maxHeight: 370.0,
-  //   maxWidth: 570.0,
-  //   );
-  //   setState(() {
-  //     imageFile = File(photoFile.path);
-  //   });
-  // }
+  takePhotoWithCamera() async {
+    Navigator.pop(context);
+    final picker = ImagePicker();
+    PickedFile photoFile = await picker
+        .getImage(
+        source: ImageSource.camera,
+    imageQuality: 85,
+    maxHeight: 370.0,
+    maxWidth: 570.0,
+    );
+    setState(() {
+      imageFile = File(photoFile.path);
+    });
+  }
 
   selectGalleryPhoto() async {
     Navigator.pop(context);
@@ -537,15 +562,15 @@ class _UploadPageState extends State<UploadPage>
               ),
             ),
             children: [
-              // SimpleDialogOption(
-              //   child: Text(
-              //       'Take a photo',
-              //     style: TextStyle(
-              //         color: Colors.deepPurple,
-              //     ),
-              //   ),
-              //   onPressed: () => takePhotoWithCamera(),
-              // ),
+              SimpleDialogOption(
+                child: Text(
+                    'Take a photo',
+                  style: TextStyle(
+                      color: Colors.deepPurple,
+                  ),
+                ),
+                onPressed: () => takePhotoWithCamera(),
+              ),
               SimpleDialogOption(
                 child: Text(
                   'Select from gallery',

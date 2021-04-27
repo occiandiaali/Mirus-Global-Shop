@@ -128,7 +128,7 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
     child: Padding(
       padding: EdgeInsets.all(6.0),
       child: Container(
-        height: 170.0,
+        height: 190.0,
         width: width,
         child: Row(
           children: [
@@ -168,7 +168,7 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
                       children: [
                         Expanded(
                           child: Text(
-                            model.status,
+                            'Category: ${model.category}',
                             style: TextStyle(
                               color: Colors.black54,
                               fontSize: 12.0,
@@ -197,15 +197,9 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
                             child: Row(
                               children: [
                                 Text(
-                                  'Price: =N=',
+                                  'Price: =N= ${model.price}',
                                   style: TextStyle(
                                     fontSize: 14.0,
-                                    color: Colors.green,
-                                  ),),
-                                Text(
-                                  (model.price).toString(),
-                                  style: TextStyle(
-                                    fontSize: 15.0,
                                     color: Colors.green,
                                   ),),
                               ],

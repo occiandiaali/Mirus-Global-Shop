@@ -30,8 +30,8 @@ class MG extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => CartItemCounter()),
-        ChangeNotifierProvider(create: (context) => ItemQuantity()),
         ChangeNotifierProvider(create: (context) => TotalAmount()),
+        ChangeNotifierProvider(create: (context) => ItemQuantity()),
         ChangeNotifierProvider(create: (context) => AddressChanger()),
       ],
         child: MaterialApp(

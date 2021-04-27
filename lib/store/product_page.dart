@@ -1,9 +1,12 @@
-//import 'package:mirus_global/widgets/customAppBar.dart';
-import 'package:mirus_global/Widgets/customAppBar.dart';
-import 'package:mirus_global/Widgets/myDrawer.dart';
-import 'package:mirus_global/models/item.dart';
 import 'package:flutter/material.dart';
-import 'package:mirus_global/store/storehome.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:mirus_global/Widgets/customAppBar.dart';
+
+import 'package:mirus_global/models/item.dart';
+
+import './storehome.dart';
+import './cart.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 
 class ProductPage extends StatefulWidget {
@@ -16,16 +19,22 @@ class ProductPage extends StatefulWidget {
   _ProductPageState createState() => _ProductPageState();
 }
 
-
-
 class _ProductPageState extends State<ProductPage> {
-
-  int qtyOfItems = 1;
+  int qtyOfItem = 1;
+ //int cost = 0;
+ //int itemQty;
 
   @override
   Widget build(BuildContext context) {
 
-    Size screenSize = MediaQuery.of(context).size;
+   // Size screenSize = MediaQuery.of(context).size;
+   //  cost = widget.itemModel.price * qtyOfItem;
+    // itemQty = qtyOfItem;
+    // itemQty = widget.itemModel.itemQty;
+
+
+
+
     return SafeArea(
       child: Scaffold(
         appBar: MyAppBar(),
@@ -59,73 +68,81 @@ class _ProductPageState extends State<ProductPage> {
                     padding: EdgeInsets.all(20.0),
                     child: Center(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                       // crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             widget.itemModel.title,
-                            style: boldTextStyle,
+                            style: TextStyle(fontSize: 25.0),
                           ),
-                          SizedBox(height: 10.0,),
+                          Divider(
+                            color: Colors.purple,
+                            thickness: 0.9,
+                          ),
+                          SizedBox(height: 2.0,),
 
                           Text(
                             widget.itemModel.longDescription,
-                          ),
-                          SizedBox(height: 10.0,),
-                          Row(
-                              children: [
-                                Text(
-                                  "=N= " + widget.itemModel.price.toString(),
-                                  style: boldTextStyle,
-                                ),
-                                SizedBox(width: 30.0,),
-                                Text('Quantity: '),
-                                DropdownButton(
-                                  value: qtyOfItems,
-                                  items: [
-                                    DropdownMenuItem(
-                                      child: Text('1'),
-                                      value: 1,
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text('2'),
-                                      value: 2,
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text('3'),
-                                      value: 3,
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text('4'),
-                                      value: 4,
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text('5'),
-                                      value: 5,
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      qtyOfItems = value;
-                                    });
-                                  },
-                                ),
-                              ],
+                            style: TextStyle(
+                              fontSize: 19.0,
+
                             ),
+                          ),
+                          Divider(
+                            color: Colors.purple,
+                            thickness: 0.7,
+                          ),
+                          SizedBox(height: 2.0,),
+                          Text(
+                            'Category: ${widget.itemModel.category}',
+                            style: TextStyle(
+                                fontSize: 15.0,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          SizedBox(height: 15.0,),
+                          // Text(
+                          //   widget.itemModel.qty.toString(),
+                          //   style: boldTextStyle,
+                          // ),
+                                Row(
+                                    children: [
+                                      Text(
+                                        "=N= ${widget.itemModel.price * qtyOfItem}",
+                                     // "=N= $cost",
+                                        style: TextStyle(
+                                          fontSize: 25.0,
+                                        ),
+                                      ),
+                                      // SizedBox(width: 8.0,),
+                                    ],
+                                  ),
+                          // Row(
+                          //   children: [
+                          //     qtyPicker(),
+                          //   ],
+                          // ),
 
                         ],
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 8.0),
+                    padding: EdgeInsets.only(top: 2.0),
                     child: Center(
                       child: InkWell(
-                        onTap: () =>
+                        onTap: () {
+                          print('Product Page item qty: $qtyOfItem');
                             checkItemInCart(
                                 widget.itemModel.shortInfo,
-                                context),
+                                context);
+                            },
                         child: Container(
                           decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(15.0),
+                              topRight: Radius.circular(15.0),
+                            ),
                             gradient: LinearGradient(
                               colors: [Colors.pink, Colors.blueGrey],
                               begin: const FractionalOffset(0.0, 0.0),
@@ -135,11 +152,13 @@ class _ProductPageState extends State<ProductPage> {
                             ),
                           ),
                           width: MediaQuery.of(context).size.width - 40.0,
-                          height: 50.0,
+                          height: 45.0,
                           child: Center(
                             child: Text(
                               'Add to cart',
-                              style: TextStyle(color: Colors.white),),
+                              style: TextStyle(
+                                fontSize: 23.0,
+                                  color: Colors.white),),
                           ),
                         ),
                       ),
@@ -154,7 +173,27 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-}
+  // Widget qtyPicker() {
+  //   return Row(
+  //     children: [
+  //       Text('Quantity: '),
+  //       NumberPicker(
+  //           minValue: 1,
+  //           maxValue: 50,
+  //           axis: Axis.horizontal,
+  //           itemWidth: 40,
+  //           textStyle: numPickerStyle,
+  //           value: qtyOfItem,
+  //           onChanged: (value) => setState(() => qtyOfItem = value)),
+  //     ],
+  //   );
+  // }
 
-const boldTextStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 20);
-const largeTextStyle = TextStyle(fontWeight: FontWeight.normal, fontSize: 20);
+} // class
+
+const numPickerStyle = TextStyle(color: Colors.deepPurple);
+const boldTextStyle = TextStyle(
+    fontStyle: FontStyle.italic,
+    fontWeight: FontWeight.bold, fontSize: 18);
+const largeTextStyle = TextStyle(
+    fontWeight: FontWeight.normal, fontSize: 20.0);

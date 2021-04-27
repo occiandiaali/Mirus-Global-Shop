@@ -1,21 +1,24 @@
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mirus_global/Widgets/customAppBar.dart';
 import 'package:mirus_global/address/address.dart';
 import 'package:mirus_global/config/config.dart';
 //import 'package:mirus_global/address/address.dart';
 import 'package:mirus_global/Widgets/loadingWidget.dart';
-
+import 'package:mirus_global/counters/item_quantity.dart';
+import 'package:numberpicker/numberpicker.dart';
 import 'package:mirus_global/counters/total_amt.dart';
 import 'package:mirus_global/models/item.dart';
 import 'package:mirus_global/counters/cartitemcounter.dart';
-//import 'package:mirus_global/counters/totalMoney.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
+
 import 'package:mirus_global/store/storehome.dart';
 import 'package:provider/provider.dart';
-import '../main.dart';
+import 'package:mirus_global/store/product_page.dart';
 
 class CartPage extends StatefulWidget {
+
   @override
   _CartPageState createState() => _CartPageState();
 }
@@ -23,17 +26,23 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
 
   double totalAmount;
+  int numOfItem = 1;
+  int qtyOfItem = 1;
 
   @override
   void initState() {
     super.initState();
 
-    totalAmount = 0;
+    totalAmount = 0.0;
+
+   // Provider.of<ItemQuantity>(context, listen: false).qtyOfItem(0);
     Provider.of<TotalAmount>(context, listen: false).display(0);
+
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         floatingActionButton: FloatingActionButton.extended(
           elevation: 10.0,
@@ -65,14 +74,17 @@ class _CartPageState extends State<CartPage> {
                   child: Center(
                     child: cartProvider.count == 0 ? Container()
                         : Text(
-                      "Total: =N=${amountProvider.totalAmount.toString()}",
+                      // "TOTAL =N= ${amountProvider.totalAmount.toString()}",
+                      "TOTAL =N= ${amountProvider.totalAmount}",
                       style: TextStyle(
                         color: Colors.black,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                         fontSize: 20.0,
                       ),
                     ),
+
                   ),
+
                 );
               },
             ),
@@ -90,17 +102,20 @@ class _CartPageState extends State<CartPage> {
                       child: circularProgress(),),
                   )
                   : snapshot.data.docs.length == 0 ?
-                  beginBuildingCart() : SliverList(
+                  beginBuildingCart()
+                  : SliverList(
                 delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       ItemModel model = ItemModel.
                       fromJson(snapshot.data.docs[index].data());
-
                       if(index == 0) {
                         totalAmount = 0;
-                        totalAmount = model.price + totalAmount;
+                       // totalAmount = model.price + totalAmount;
+                        print('Model Item Qty: $qtyOfItem');
+                        totalAmount = (model.price * qtyOfItem) + totalAmount;
                       } else {
                         totalAmount = model.price + totalAmount;
+                       // totalAmount = (model.price + totalAmount) * numItems;
                       }
 
                       if(snapshot.data.docs.length - 1 == index) {
@@ -111,7 +126,11 @@ class _CartPageState extends State<CartPage> {
                                   .display(totalAmount);
                         });
                       }
-                      return sourceInfo(
+                      // return sourceInfo(
+                      //     model,
+                      //     context,
+                      //     removeCartFunction: () => removeItemFromUserCart(model.shortInfo));
+                      return cartInfo(
                           model,
                           context,
                           removeCartFunction: () => removeItemFromUserCart(model.shortInfo));
@@ -179,5 +198,172 @@ class _CartPageState extends State<CartPage> {
       totalAmount = 0;
     }).catchError((e) => print("Error updating document: $e"));
   }
+
+
+  // ****************************************
+  Widget cartInfo( ItemModel model, BuildContext context,
+      {Color background, removeCartFunction}) {
+    String s = model.shortInfo;
+    return InkWell(
+      // onTap: () {
+      //   Route route = MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,));
+      //   Navigator.push(context, route);
+      // },
+      splashColor: Colors.grey,
+      child: Padding(
+        padding: EdgeInsets.all(6.0),
+        child: Container(
+          height: 230.0,
+          width: width,
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15.0),
+                child: Image.network(
+                  model.thumbnailUrl,
+                  width: 120.0,
+                  height: 140.0,
+                ),
+              ),
+              SizedBox(width: 14.0,),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 45.0),
+                    Container(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              model.title,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18.0,
+                              ),),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 5.0,),
+                    Container(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Category: ${model.category}",
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 12.0,
+                              ),),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 5.0,),
+                    Row(
+                      children: [
+                        SizedBox(width: 7.0,),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(top: 0.0),
+                              child: Text(
+                                '${model.qty} pieces in stock',
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 0.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    '=N= ${model.price * qtyOfItem}',
+                                    style: TextStyle(
+                                      fontSize: 19.0,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 2.0),
+                              child: Row(
+                                children: [
+                                  qtyPicker(s),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+
+                      ],
+                    ),
+                    Flexible(
+                      child: Container(),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(
+                        onPressed: () {
+                          removeCartFunction();
+                          Route route = MaterialPageRoute(
+                              builder: (c) => StoreHome()
+                          );
+                          Navigator.push(context, route);
+                        },
+                        icon: Icon(Icons.delete_forever,
+                            color: Colors.purpleAccent),
+                      ),
+                    ),
+                    Divider(
+                      height: 2.0,
+                      color: Colors.purpleAccent,
+                      thickness: 0.5,),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+
+      ),
+    );
+
+
+  } // cart info
+ // *******************************************
+
+Widget qtyPicker(String str) {
+  return Row(
+    children: [
+      Text('Quantity: '),
+      NumberPicker(
+          minValue: 1,
+          maxValue: 50,
+          axis: Axis.horizontal,
+          itemWidth: 30,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+            border: Border.all(color: Colors.deepPurple),
+          ),
+         // textStyle: numPickerStyle,
+          value: qtyOfItem,
+          onChanged: (value) => setState(() {
+            //print();
+              qtyOfItem = value;
+
+          })
+      ),
+    ],
+  );
+}
+
+
+
+// =======================================
 
 } // class
