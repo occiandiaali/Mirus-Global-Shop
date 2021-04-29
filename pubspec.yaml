@@ -1,5 +1,5 @@
 name: mirus_global
-description: A new Flutter project.
+description: An E-commerce app for Mirus Global Shipping Limited.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -56,7 +56,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 flutter_icons:
   android: true
-  image_path: "images/mg_logo_big.png"
+  image_path: "images/mg_logo_launch.png"
 
 # The following section is specific to Flutter.
 flutter:
