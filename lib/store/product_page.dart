@@ -20,7 +20,7 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  int qtyOfItem = 1;
+  //int qtyOfItem = 1;
  //int cost = 0;
  //int itemQty;
 
@@ -108,7 +108,7 @@ class _ProductPageState extends State<ProductPage> {
                                 Row(
                                     children: [
                                       Text(
-                                        "=N= ${widget.itemModel.price * qtyOfItem}",
+                                        "=N= ${widget.itemModel.price}",
                                      // "=N= $cost",
                                         style: TextStyle(
                                           fontSize: 25.0,
@@ -132,7 +132,6 @@ class _ProductPageState extends State<ProductPage> {
                     child: Center(
                       child: InkWell(
                         onTap: () {
-                          print('Product Page item qty: $qtyOfItem');
                             checkItemInCart(
                                 widget.itemModel.shortInfo,
                                 context);
@@ -152,7 +151,7 @@ class _ProductPageState extends State<ProductPage> {
                             ),
                           ),
                           width: MediaQuery.of(context).size.width - 40.0,
-                          height: 45.0,
+                          height: 55.0,
                           child: Center(
                             child: Text(
                               'Add to cart',

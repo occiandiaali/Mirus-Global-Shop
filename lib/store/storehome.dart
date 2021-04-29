@@ -103,7 +103,7 @@ class _StoreHomeState extends State<StoreHome> {
                             //     fontWeight: FontWeight.w500
                             //   ),
                             // );
-                            return (counter.count != null) ?
+                            return counter.count != null ?
                                 Text(
                                 (EshopApp.sharedPreferences
                                         .getStringList(EshopApp.userCartList)
@@ -346,6 +346,8 @@ Widget sourceInfo(ItemModel model, BuildContext context,{Color background, remov
                   //  child: removeCartFunction == null ?
                     child: IconButton(
                       onPressed: () {
+                        print("StoreHome ID: ${model.shortInfo}");
+                        print("StoreHome =N=: ${model.price}");
                         checkItemInCart(
                         model.shortInfo,
                             context);

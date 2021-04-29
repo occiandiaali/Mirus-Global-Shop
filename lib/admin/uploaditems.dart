@@ -16,7 +16,9 @@ import 'package:image/image.dart' as ImD;
 import 'admin_shift_orders.dart';
 
 class UploadPage extends StatefulWidget {
+
   final String adminUser;
+
   UploadPage(this.adminUser, {Key key}) : super(key: key);
 
   @override
@@ -37,6 +39,7 @@ class _UploadPageState extends State<UploadPage>
   final _itemPriceEditingController = TextEditingController();
   final _searchInfoEditingController = TextEditingController();
   final _qtyEditingController = TextEditingController();
+ // final _itemQtyController = TextEditingController();
 
   String itemId = DateTime.now().millisecondsSinceEpoch.toString();
   bool uploading = false;
@@ -50,6 +53,7 @@ class _UploadPageState extends State<UploadPage>
     _itemPriceEditingController.dispose();
     _searchInfoEditingController.dispose();
     _qtyEditingController.dispose();
+   // _itemQtyController.dispose();
     super.dispose();
   }
 

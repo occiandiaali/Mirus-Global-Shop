@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mirus_global/Widgets/customAppBar.dart';
@@ -11,11 +12,12 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:mirus_global/counters/total_amt.dart';
 import 'package:mirus_global/models/item.dart';
 import 'package:mirus_global/counters/cartitemcounter.dart';
+import './cart_card.dart';
 
 
 import 'package:mirus_global/store/storehome.dart';
-import 'package:provider/provider.dart';
-import 'package:mirus_global/store/product_page.dart';
+
+
 
 class CartPage extends StatefulWidget {
 
@@ -26,22 +28,23 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
 
   double totalAmount;
-  int numOfItem = 1;
-  int qtyOfItem = 1;
+ // int numberOfItems;
 
   @override
   void initState() {
     super.initState();
 
     totalAmount = 0.0;
+   // numberOfItems = 1;
 
-   // Provider.of<ItemQuantity>(context, listen: false).qtyOfItem(0);
+  // numberOfItems = Provider.of<ItemQuantity>(context, listen: false).numberOfItems;
     Provider.of<TotalAmount>(context, listen: false).display(0);
 
   }
 
   @override
   Widget build(BuildContext context) {
+    final quantityOfItem = Provider.of<ItemQuantity>(context);
 
     return Scaffold(
         floatingActionButton: FloatingActionButton.extended(
@@ -72,9 +75,9 @@ class _CartPageState extends State<CartPage> {
                 return Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Center(
-                    child: cartProvider.count == 0 ? Container()
+                    child: cartProvider.count == 0 ?
+                    Container()
                         : Text(
-                      // "TOTAL =N= ${amountProvider.totalAmount.toString()}",
                       "TOTAL =N= ${amountProvider.totalAmount}",
                       style: TextStyle(
                         color: Colors.black,
@@ -111,12 +114,12 @@ class _CartPageState extends State<CartPage> {
                       if(index == 0) {
                         totalAmount = 0;
                        // totalAmount = model.price + totalAmount;
-                        print('Model Item Qty: $qtyOfItem');
-                        totalAmount = (model.price * qtyOfItem) + totalAmount;
+                        totalAmount = (model.price * quantityOfItem.numberOfItems) + totalAmount;
                       } else {
-                        totalAmount = model.price + totalAmount;
-                       // totalAmount = (model.price + totalAmount) * numItems;
+                       // totalAmount = model.price + totalAmount;
+                        totalAmount = (model.price * quantityOfItem.numberOfItems) + totalAmount; //+ totalAmount ;
                       }
+
 
                       if(snapshot.data.docs.length - 1 == index) {
                         WidgetsBinding
@@ -130,10 +133,16 @@ class _CartPageState extends State<CartPage> {
                       //     model,
                       //     context,
                       //     removeCartFunction: () => removeItemFromUserCart(model.shortInfo));
-                      return cartInfo(
+                      // return cartInfo(
+                      //     model,
+                      //     context,
+                      //     removeCartFunction: () => removeItemFromUserCart(model.shortInfo));
+                      return CartCard(
                           model,
-                          context,
-                          removeCartFunction: () => removeItemFromUserCart(model.shortInfo));
+                         // numberOfItems,
+                          context,);
+                        //  removeCartFunction: () => removeItemFromUserCart(model.shortInfo));
+
                     },
                   childCount: snapshot.hasData ?
                       snapshot.data.docs.length : 0,
@@ -183,187 +192,218 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  removeItemFromUserCart(String shortInfoAsId) {
-    List tempCartList = EshopApp.sharedPreferences
-        .getStringList(EshopApp.userCartList);
-    tempCartList.remove(shortInfoAsId);
-    var userDocRef = EshopApp.firestore.collection(EshopApp.collectionUser)
-        .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID));
-    userDocRef.set({
-      EshopApp.userCartList: tempCartList,
-    }).then((v) {
-      Fluttertoast.showToast(msg: 'Item removed from cart!');
-      EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, tempCartList);
-      Provider.of<CartItemCounter>(context, listen: false).displayResult(EshopApp.userCartList.length);
-      totalAmount = 0;
-    }).catchError((e) => print("Error updating document: $e"));
-  }
-
+  // removeItemFromUserCart(String shortInfoAsId) {
+  //   List tempCartList = EshopApp.sharedPreferences
+  //       .getStringList(EshopApp.userCartList);
+  //   tempCartList.remove(shortInfoAsId);
+  //   var userDocRef = EshopApp.firestore.collection(EshopApp.collectionUser)
+  //       .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID));
+  //   userDocRef.set({
+  //     EshopApp.userCartList: tempCartList,
+  //   }).then((v) {
+  //     Fluttertoast.showToast(msg: 'Item removed from cart!');
+  //     EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, tempCartList);
+  //     Provider.of<CartItemCounter>(context, listen: false).displayResult(EshopApp.userCartList.length);
+  //     totalAmount = 0;
+  //   }).catchError((e) => print("Error updating document: $e"));
+  // }
 
   // ****************************************
-  Widget cartInfo( ItemModel model, BuildContext context,
-      {Color background, removeCartFunction}) {
-    String s = model.shortInfo;
-    return InkWell(
-      // onTap: () {
-      //   Route route = MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,));
-      //   Navigator.push(context, route);
-      // },
-      splashColor: Colors.grey,
-      child: Padding(
-        padding: EdgeInsets.all(6.0),
-        child: Container(
-          height: 230.0,
-          width: width,
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15.0),
-                child: Image.network(
-                  model.thumbnailUrl,
-                  width: 120.0,
-                  height: 140.0,
-                ),
-              ),
-              SizedBox(width: 14.0,),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 45.0),
-                    Container(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              model.title,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18.0,
-                              ),),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 5.0,),
-                    Container(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "Category: ${model.category}",
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 12.0,
-                              ),),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 5.0,),
-                    Row(
-                      children: [
-                        SizedBox(width: 7.0,),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 0.0),
-                              child: Text(
-                                '${model.qty} pieces in stock',
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 0.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    '=N= ${model.price * qtyOfItem}',
-                                    style: TextStyle(
-                                      fontSize: 19.0,
-                                      color: Colors.green,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 2.0),
-                              child: Row(
-                                children: [
-                                  qtyPicker(s),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-
-                      ],
-                    ),
-                    Flexible(
-                      child: Container(),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: IconButton(
-                        onPressed: () {
-                          removeCartFunction();
-                          Route route = MaterialPageRoute(
-                              builder: (c) => StoreHome()
-                          );
-                          Navigator.push(context, route);
-                        },
-                        icon: Icon(Icons.delete_forever,
-                            color: Colors.purpleAccent),
-                      ),
-                    ),
-                    Divider(
-                      height: 2.0,
-                      color: Colors.purpleAccent,
-                      thickness: 0.5,),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-
-      ),
-    );
-
-
-  } // cart info
+  // Widget cartInfo( ItemModel model, BuildContext context,
+  //     {Color background, removeCartFunction}) {
+  //  // String cartWidgetID = model.shortInfo;
+  //  // int unitPrice = model.price;
+  //   return InkWell(
+  //     // onTap: () {
+  //     //   Route route = MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,));
+  //     //   Navigator.push(context, route);
+  //     // },
+  //     splashColor: Colors.grey,
+  //     child: Padding(
+  //       padding: EdgeInsets.all(6.0),
+  //       child: Container(
+  //         height: 230.0,
+  //         width: width,
+  //         child: Row(
+  //           children: [
+  //             ClipRRect(
+  //               borderRadius: BorderRadius.circular(15.0),
+  //               child: Image.network(
+  //                 model.thumbnailUrl,
+  //                 width: 120.0,
+  //                 height: 140.0,
+  //               ),
+  //             ),
+  //             SizedBox(width: 14.0,),
+  //             Expanded(
+  //               child: Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   SizedBox(height: 45.0),
+  //                   Container(
+  //                     child: Row(
+  //                       mainAxisSize: MainAxisSize.max,
+  //                       children: [
+  //                         Expanded(
+  //                           child: Text(
+  //                             model.title,
+  //                             style: TextStyle(
+  //                               color: Colors.black,
+  //                               fontSize: 18.0,
+  //                             ),),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                   SizedBox(height: 5.0,),
+  //                   Container(
+  //                     child: Row(
+  //                       mainAxisSize: MainAxisSize.max,
+  //                       children: [
+  //                         Expanded(
+  //                           child: Text(
+  //                             "Category: ${model.category}",
+  //                             style: TextStyle(
+  //                               color: Colors.black54,
+  //                               fontSize: 12.0,
+  //                             ),),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                   SizedBox(height: 5.0,),
+  //                   Row(
+  //                     children: [
+  //                       SizedBox(width: 7.0,),
+  //                       Column(
+  //                         crossAxisAlignment: CrossAxisAlignment.start,
+  //                         children: [
+  //                           Padding(
+  //                             padding: EdgeInsets.only(top: 0.0),
+  //                             child: Text(
+  //                               '${model.qty} pieces in stock',
+  //                             ),
+  //                           ),
+  //                           Padding(
+  //                             padding: EdgeInsets.only(top: 0.0),
+  //                             child: Row(
+  //                               children: [
+  //                                 Text(
+  //                                   // cartWidgetID == model.shortInfo ?
+  //                                   // '=N= ${model.price * qtyOfItem}'
+  //                                   // : '=N= ${model.price}',
+  //                                   '=N= ${model.price * numberOfItems}',
+  //                                   style: TextStyle(
+  //                                     fontSize: 19.0,
+  //                                     color: Colors.green,
+  //                                   ),
+  //                                 ),
+  //                               ],
+  //                             ),
+  //                           ),
+  //                           Padding(
+  //                             padding: EdgeInsets.only(top: 2.0),
+  //                             child: Row(
+  //                               mainAxisAlignment: MainAxisAlignment.start,
+  //                               children: [
+  //                                 Text('Quantity: '),
+  //                                SizedBox(width: 1.0,),
+  //                                // qtyPicker(),
+  //                                 NumberPicker(
+  //                                     minValue: 1,
+  //                                     maxValue: 50,
+  //                                     axis: Axis.horizontal,
+  //                                     itemWidth: 40,
+  //                                     decoration: BoxDecoration(
+  //                                       borderRadius: BorderRadius.all(Radius.circular(15.0)),
+  //                                       border: Border.all(color: Colors.deepPurple),
+  //                                     ),
+  //                                     // textStyle: numPickerStyle,
+  //                                     value: numberOfItems,
+  //                                     onChanged: (value) => setState(() {
+  //                                       // print("shortInfo: ${model.shortInfo}");
+  //                                       //  print("widgetID: $cartWidgetID");
+  //                                        print("numberOfItems: $numberOfItems");
+  //                                        numberOfItems = value;
+  //                                     })
+  //                                 )
+  //                               ],
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //
+  //                     ],
+  //                   ),
+  //                   Flexible(
+  //                     child: Container(),
+  //                   ),
+  //                   Align(
+  //                     alignment: Alignment.centerRight,
+  //                     child: IconButton(
+  //                       onPressed: () {
+  //                         removeCartFunction();
+  //                         Route route = MaterialPageRoute(
+  //                             builder: (c) => StoreHome()
+  //                         );
+  //                         Navigator.push(context, route);
+  //                       },
+  //                       icon: Icon(Icons.delete_forever,
+  //                           color: Colors.purpleAccent),
+  //                     ),
+  //                   ),
+  //                   Divider(
+  //                     height: 2.0,
+  //                     color: Colors.purpleAccent,
+  //                     thickness: 0.5,),
+  //                 ],
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //
+  //     ),
+  //   );
+  //
+  // } // cart info
  // *******************************************
 
-Widget qtyPicker(String str) {
-  return Row(
-    children: [
-      Text('Quantity: '),
-      NumberPicker(
-          minValue: 1,
-          maxValue: 50,
-          axis: Axis.horizontal,
-          itemWidth: 30,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(15.0)),
-            border: Border.all(color: Colors.deepPurple),
-          ),
-         // textStyle: numPickerStyle,
-          value: qtyOfItem,
-          onChanged: (value) => setState(() {
-            //print();
-              qtyOfItem = value;
-
-          })
-      ),
-    ],
-  );
-}
-
-
+// Widget qtyPicker() {
+//      return NumberPicker(
+//           minValue: 1,
+//           maxValue: 50,
+//           axis: Axis.horizontal,
+//           itemWidth: 36,
+//           decoration: BoxDecoration(
+//             borderRadius: BorderRadius.all(Radius.circular(15.0)),
+//             border: Border.all(color: Colors.deepPurple),
+//           ),
+//          // textStyle: numPickerStyle,
+//           value: qtyOfItems,
+//           onChanged: (value) => setState(() {
+//               qtyOfItems = value;
+//           })
+//       );
+//
+// } // qty picker
+// =======================================
+// int priceAdjuster() {
+//     numberOfItems = int.parse(_itemQtyController.text);
+//     Fluttertoast.showToast(
+//         msg: 'Qty: ${int.parse(_itemQtyController.text)}',
+//       toastLength: Toast.LENGTH_LONG,
+//     );
+//     _itemQtyController.clear();
+//     return numberOfItems;
+// }
+// ===================================
 
 // =======================================
 
 } // class
+
+
+
+
+

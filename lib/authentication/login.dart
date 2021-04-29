@@ -157,7 +157,9 @@ class _LoginState extends State<Login> {
           context: context,
           builder: (c) {
            // return ErrorAlertDialog(message: error.toString());
-            return ErrorAlertDialog(message: 'Email or Password is incorrect');
+            return ErrorAlertDialog(
+                message: 'Could not sign in. You need internet connection, '
+                    ' and valid email or password...');
           }
       );
     });
