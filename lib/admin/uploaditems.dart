@@ -265,10 +265,11 @@ class _UploadPageState extends State<UploadPage>
             title: Container(
               width: 250.0,
               child: TextField(
+                textCapitalization: TextCapitalization.none,
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _itemCategoryEditingController,
                 decoration: InputDecoration(
-                  hintText: 'Category (Phone, Shoe...)',
+                  hintText: 'Category (phone, shoe...)',
                   hintStyle: TextStyle(color: Colors.deepPurpleAccent),
                   border: InputBorder.none,
                 ),
@@ -340,6 +341,7 @@ class _UploadPageState extends State<UploadPage>
             title: Container(
               width: 250.0,
               child: TextField(
+                keyboardType: TextInputType.number,
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _qtyEditingController,
                 decoration: InputDecoration(

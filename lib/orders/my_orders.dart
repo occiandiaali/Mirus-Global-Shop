@@ -14,6 +14,22 @@ class MyOrders extends StatefulWidget {
 
 class _MyOrdersState extends State<MyOrders> {
 
+  void _showMyOrdersDropdown(BuildContext ctx) {
+    showModalBottomSheet(
+        elevation: 10,
+        backgroundColor: Colors.amber,
+        context: ctx,
+        builder: (ctx) => Container(
+          width: 300,
+          height: 150,
+          color: Colors.white54,
+          alignment: Alignment.center,
+          child: Text(
+            'My Orders settings will show here...',
+            style: TextStyle(color: Colors.deepPurple, fontSize: 23.0),),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -46,7 +62,7 @@ class _MyOrdersState extends State<MyOrders> {
                   Icons.arrow_drop_down_circle_outlined,
               color: Colors.white,),
              // onPressed: () => SystemNavigator.pop(),
-              onPressed: () => print('My Orders dropdown funtionality here...'),
+              onPressed: () => _showMyOrdersDropdown(context),
             ),
           ],
         ),

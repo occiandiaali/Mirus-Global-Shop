@@ -67,9 +67,12 @@ class _OrderPaymentState extends State<OrderPayment> {
                       style: TextStyle(color: Colors.white, fontSize: 21.0),
                     ),
                     Text(
-                      'You will receive notification '
-                          'on this app as soon as your payment is confirmed',
-                      style: TextStyle(color: Colors.yellow, fontSize: 15.0),
+                      'Payment must be confirmed BEFORE delivery.',
+                      style: TextStyle(color: Colors.yellow, fontSize: 16.0),
+                    ),
+                    Text(
+                      'NO RETURN policy on already shipped orders.',
+                      style: TextStyle(color: Colors.yellow, fontSize: 16.0),
                     ),
                     Text(
                       'Customer Care',
@@ -90,7 +93,7 @@ class _OrderPaymentState extends State<OrderPayment> {
                   backgroundColor: Colors.green,
                   textStyle: TextStyle(
                     color: Colors.white,
-                    fontSize: 19.0,
+                    fontSize: 20.0,
                   ),
                 ),
                 onPressed: () => addOrderDetails(),

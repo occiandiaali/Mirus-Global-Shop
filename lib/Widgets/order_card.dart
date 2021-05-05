@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mirus_global/counters/item_quantity.dart';
 import 'package:mirus_global/orders/order_details.dart';
 import 'package:mirus_global/models/item.dart';
+import 'package:provider/provider.dart';
 
 import '../store/storehome.dart';
 
@@ -63,7 +65,7 @@ class OrderCard extends StatelessWidget {
 Widget sourceOrderInfo(ItemModel model, BuildContext context,
     {Color background}) {
   width =  MediaQuery.of(context).size.width;
-
+  final qtyItem = Provider.of<ItemQuantity>(context);
   return  Container(
     color: Colors.grey[100],
     height: 170.0,
@@ -122,26 +124,31 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
                         child: Row(
                           children: [
                             Text(
-                              'Price: ',
+                              'Qty: ${qtyItem.numberOfItems}',
                               style: TextStyle(
                                 fontSize: 14.0,
                                 color: Colors.grey,
                               ),),
-                            Text(
-                              '=N= ',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                color: Colors.green,
-                              ),
-                            ),
-                            Text(
-                              (model.price).toString(),
-                              style: TextStyle(
-                                fontSize: 15.0,
-                                color: Colors.grey,
-                              ),),
+
+                            // Text(
+                            //   (model.price).toString(),
+                            //   style: TextStyle(
+                            //     fontSize: 15.0,
+                            //     color: Colors.grey,
+                            //   ),),
                           ],
                         ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            '=N= ${model.price}',
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              color: Colors.green,
+                            ),
+                          ),
+                        ],
                       ),
 
                     ],

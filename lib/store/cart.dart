@@ -28,7 +28,6 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
 
   double totalAmount;
- // int numberOfItems;
 
   @override
   void initState() {
@@ -36,7 +35,6 @@ class _CartPageState extends State<CartPage> {
 
     totalAmount = 0.0;
    // numberOfItems = 1;
-
   // numberOfItems = Provider.of<ItemQuantity>(context, listen: false).numberOfItems;
     Provider.of<TotalAmount>(context, listen: false).display(0);
 
@@ -44,8 +42,7 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
-    final quantityOfItem = Provider.of<ItemQuantity>(context);
-
+   final quantityOfItem = Provider.of<ItemQuantity>(context);
     return Scaffold(
         floatingActionButton: FloatingActionButton.extended(
           elevation: 10.0,
@@ -105,19 +102,26 @@ class _CartPageState extends State<CartPage> {
                       child: circularProgress(),),
                   )
                   : snapshot.data.docs.length == 0 ?
-                  beginBuildingCart()
+                  showEmptyCart()
                   : SliverList(
                 delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       ItemModel model = ItemModel.
                       fromJson(snapshot.data.docs[index].data());
-                      if(index == 0) {
+                      int len = snapshot.data.docs.length;
+                      int q = quantityOfItem.numberOfItems;
+
+                      if(index == 0 && len >= 1) {
                         totalAmount = 0;
-                       // totalAmount = model.price + totalAmount;
-                        totalAmount = (model.price * quantityOfItem.numberOfItems) + totalAmount;
+                       // totalAmount = model.price.toDouble();
+                        // if(quantityOfItem.numberOfItems > 1) {
+                        //   totalAmount -= model.price;
+                        //   totalAmount = (model.price * quantityOfItem.numberOfItems).toDouble();
+                        // }
+                        totalAmount += q > 1 ?
+                            model.price * q : model.price;
                       } else {
-                       // totalAmount = model.price + totalAmount;
-                        totalAmount = (model.price * quantityOfItem.numberOfItems) + totalAmount; //+ totalAmount ;
+                        totalAmount += model.price;
                       }
 
 
@@ -129,19 +133,14 @@ class _CartPageState extends State<CartPage> {
                                   .display(totalAmount);
                         });
                       }
-                      // return sourceInfo(
-                      //     model,
-                      //     context,
-                      //     removeCartFunction: () => removeItemFromUserCart(model.shortInfo));
                       // return cartInfo(
                       //     model,
                       //     context,
                       //     removeCartFunction: () => removeItemFromUserCart(model.shortInfo));
                       return CartCard(
                           model,
-                         // numberOfItems,
-                          context,);
-                        //  removeCartFunction: () => removeItemFromUserCart(model.shortInfo));
+                          context,
+                      );
 
                     },
                   childCount: snapshot.hasData ?
@@ -156,7 +155,7 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  beginBuildingCart() {
+  showEmptyCart() {
     return SliverToBoxAdapter(
       child: Card(
        // color: Theme.of(context).primaryColor.withOpacity(0.5),

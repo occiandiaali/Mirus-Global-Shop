@@ -225,7 +225,7 @@ Future<void> uploadAndSaveImg() async {
           _confirmPassController.text.isNotEmpty &&
           _nameController.text.isNotEmpty
           ? uploadToStorage()
-          : _displayDialog('Provide ALL credentials')
+          : _displayDialog('Confirm internet access and provide ALL credentials')
           : _displayDialog('Password confirm does not match');
     }
 }

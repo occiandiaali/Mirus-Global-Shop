@@ -182,13 +182,40 @@ Widget sourceInfo(ItemModel model, BuildContext context,{Color background, remov
         width: width,
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(15.0),
-              child: Image.network(
-                model.thumbnailUrl,
-                width: 120.0,
-                height: 140.0,
-              ),
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15.0),
+                  child: Image.network(
+                    model.thumbnailUrl,
+                    width: 120.0,
+                    height: 140.0,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Row(
+                    children: [
+                      Text(
+                        '50% ',
+                        style: TextStyle(
+                            color: Colors.deepPurple,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      Text(
+                        'OFF',
+                        style: TextStyle(
+                            color: Colors.deepPurple,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             SizedBox(width: 14.0,),
             Expanded(
@@ -211,58 +238,10 @@ Widget sourceInfo(ItemModel model, BuildContext context,{Color background, remov
                       ],
                     ),
                   ),
-                  SizedBox(height: 5.0,),
-                  Container(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "Category: ${model.category}",
-                            style: TextStyle(
-                              color: Colors.black54,
-                              fontSize: 12.0,
-                            ),),
-                        ),
-                      ],
-                    ),
-                  ),
+
                   SizedBox(height: 5.0,),
                   Row(
                     children: [
-                      // Container(
-                      //   decoration: BoxDecoration(
-                      //     border: Border.all(
-                      //         color: Colors.deepPurple,
-                      //     width: 2.0),
-                      //     shape: BoxShape.rectangle,
-                      //    // color: Colors.deepPurple,
-                      //   ),
-                      //   alignment: Alignment.topLeft,
-                      //   width: 40.0,
-                      //   height: 43.0,
-                      //   child: Center(
-                      //       child: Column(
-                      //         mainAxisAlignment: MainAxisAlignment.center,
-                      //         children: [
-                      //           Text(
-                      //               '50%',
-                      //               style: TextStyle(
-                      //                   fontSize: 15.0,
-                      //               fontWeight: FontWeight.bold,
-                      //               color: Colors.deepPurple),),
-                      //
-                      //           Text(
-                      //               'OFF',
-                      //               style: TextStyle(
-                      //                   fontSize: 10.0,
-                      //               color: Colors.deepPurple),
-                      //             ),
-                      //
-                      //         ],
-                      //       ),
-                      //   ),
-                      // ),
                       SizedBox(width: 7.0,),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -270,7 +249,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,{Color background, remov
                             Padding(
                               padding: EdgeInsets.only(top: 0.0),
                               child: Text(
-                                '${model.qty} pieces in stock',
+                                model.shortInfo,
                               ),
                             ),
                             Padding(
@@ -301,7 +280,6 @@ Widget sourceInfo(ItemModel model, BuildContext context,{Color background, remov
                               padding: EdgeInsets.only(top: 0.0),
                               child: Row(
                                 children: [
-
                                   Text(
                                       '=N= ${model.price}',
                                       style: TextStyle(
@@ -309,31 +287,26 @@ Widget sourceInfo(ItemModel model, BuildContext context,{Color background, remov
                                         color: Colors.green,
                                       ),
                                     ),
-                                  SizedBox(width: 15.0),
+                                  SizedBox(width: 8.0),
                                   Text(
                                       'New',
                                     style: TextStyle(
                                         fontSize: 12.0,
                                     color: Colors.green),),
-                                  // Text(
-                                  //     '=N= ',
-                                  //     style: TextStyle(
-                                  //       fontSize: 14.0,
-                                  //       color: Colors.deepPurple,
-                                  //     ),
-                                  //   ),
-                                  //   Text(
-                                  //     (model.price).toString(),
-                                  //     style: TextStyle(
-                                  //       fontSize: 14.0,
-                                  //       color: Colors.purple,
-                                  //     ),
-                                  //   ),
 
                                 ],
                               ),
                             ),
-                          ],
+                          //  SizedBox(height: 5.0,),
+                            Padding(
+                              padding: EdgeInsets.only(top: 5.0),
+                              child: Text(
+                                'category: ${model.category}',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+
+                          ], // kids
                         ),
 
                     ],
@@ -416,17 +389,35 @@ addItemToCart(String shortInfoAsId, BuildContext context) {
       .getStringList(EshopApp.userCartList);
   tempCartList.add(shortInfoAsId);
 
-  EshopApp.firestore.collection(EshopApp.collectionUser)
-      .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
-  .set({
-    EshopApp.userCartList: tempCartList,
-  }).then((v) {
-    Fluttertoast.showToast(msg: 'Item added to cart!');
+  if(tempCartList.length <= 2) {
+    EshopApp.firestore.collection(EshopApp.collectionUser)
+        .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
+        .set({
+      EshopApp.userCartList: tempCartList,
+    }).then((v) {
+      Fluttertoast.showToast(msg: 'Item added to cart!');
 
-    EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, tempCartList);
+      EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, tempCartList);
 
-    Provider.of<CartItemCounter>(context, listen: false).displayResult(EshopApp.userCartList.length);
-  }).catchError((e) => print("Error updating document: $e"));
+      Provider.of<CartItemCounter>(context, listen: false).displayResult(EshopApp.userCartList.length);
+    }).catchError((e) => print("Error updating document: $e"));
+  } else {
+    Fluttertoast.showToast(
+        msg: 'Pls, add/process only one item in your cart at a time...',
+    gravity: ToastGravity.CENTER,
+    toastLength: Toast.LENGTH_LONG);
+  }
+  // EshopApp.firestore.collection(EshopApp.collectionUser)
+  //     .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
+  // .set({
+  //   EshopApp.userCartList: tempCartList,
+  // }).then((v) {
+  //   Fluttertoast.showToast(msg: 'Item added to cart!');
+  //
+  //   EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, tempCartList);
+  //
+  //   Provider.of<CartItemCounter>(context, listen: false).displayResult(EshopApp.userCartList.length);
+  // }).catchError((e) => print("Error updating document: $e"));
 } // add item to cart
 
 

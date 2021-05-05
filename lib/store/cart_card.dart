@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mirus_global/config/config.dart';
 import 'package:mirus_global/counters/cartitemcounter.dart';
 import 'package:mirus_global/counters/item_quantity.dart';
+import 'package:mirus_global/counters/total_amt.dart';
 import 'package:mirus_global/models/item.dart';
 import 'package:mirus_global/store/storehome.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -29,6 +30,7 @@ class _CartCardState extends State<CartCard> {
     List tempCartList = EshopApp.sharedPreferences
         .getStringList(EshopApp.userCartList);
     tempCartList.remove(shortInfoAsId);
+
     var userDocRef = EshopApp.firestore.collection(EshopApp.collectionUser)
         .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID));
     userDocRef.set({
@@ -85,22 +87,22 @@ class _CartCardState extends State<CartCard> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 5.0,),
-                    Container(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "Category: ${widget.model.category}",
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 12.0,
-                              ),),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // SizedBox(height: 5.0,),
+                    // Container(
+                    //   child: Row(
+                    //     mainAxisSize: MainAxisSize.max,
+                    //     children: [
+                    //       Expanded(
+                    //         child: Text(
+                    //           "Category: ${widget.model.category}",
+                    //           style: TextStyle(
+                    //             color: Colors.black54,
+                    //             fontSize: 12.0,
+                    //           ),),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     SizedBox(height: 5.0,),
                     Row(
                       children: [
@@ -111,7 +113,7 @@ class _CartCardState extends State<CartCard> {
                             Padding(
                               padding: EdgeInsets.only(top: 0.0),
                               child: Text(
-                                '${widget.model.qty} pieces in stock',
+                                '${widget.model.qty - itemQty} pieces in stock',
                               ),
                             ),
                             Padding(
@@ -122,6 +124,20 @@ class _CartCardState extends State<CartCard> {
                                     '=N= ${widget.model.price * itemQty}',
                                     style: TextStyle(
                                       fontSize: 19.0,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 0.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Shipping: =N= ${widget.model.price * (10 / 100)}',
+                                    style: TextStyle(
+                                      fontSize: 12.0,
                                       color: Colors.green,
                                     ),
                                   ),
@@ -147,11 +163,19 @@ class _CartCardState extends State<CartCard> {
                                       value: itemQty,
                                       onChanged: (value) => setState(() {
                                         itemQty = value;
+                                        widget.model.qty -= value;
                                        // print("widget.qtyOfItem: $itemQty");
+                                        // Provider for qty of each ordered item
                                         Provider.of<ItemQuantity>(
                                             context,
                                             listen: false,
                                         ).qtyOfItem(itemQty);
+
+                                        // Provider for items in stock
+                                        Provider.of<ItemQuantity>(
+                                          context,
+                                          listen: false,
+                                        ).qtyOfItemInStock(widget.model.qty);
                                       }),
                                   )
                                 ],
