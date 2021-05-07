@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mirus_global/config/config.dart';
 import 'package:mirus_global/counters/item_quantity.dart';
 import 'package:mirus_global/orders/order_details.dart';
 import 'package:mirus_global/models/item.dart';
@@ -7,38 +8,38 @@ import 'package:provider/provider.dart';
 
 import '../store/storehome.dart';
 
-
 int counter = 0;
-class OrderCard extends StatelessWidget {
 
+class OrderCard extends StatelessWidget {
   final int itemCount;
   final List<DocumentSnapshot> data;
   final String orderID;
+  final bool isEnabled;
 
-  OrderCard({
-  Key key,
-  this.itemCount,
-  this.data,
-  this.orderID}) : super(key: key);
+  OrderCard({Key key,
+    this.itemCount,
+    this.data,
+    this.orderID,
+  this.isEnabled})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  InkWell(
+    return InkWell(
       onTap: () {
         Route route;
-        if(counter == 0) {
+        if (counter == 0) {
           counter = counter + 1;
-          route = MaterialPageRoute(builder: (c) => OrderDetails(orderID: orderID));
+          route =
+              MaterialPageRoute(builder: (c) => OrderDetails(orderID: orderID));
+          Navigator.push(context, route);
         }
-        Navigator.push(context, route);
+        // Navigator.push(context, route);
       },
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Colors.deepPurple,
-              Colors.blueGrey,
-              Colors.orangeAccent],
+            colors: [Colors.deepPurple, Colors.blueGrey, Colors.orangeAccent],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             stops: [0.4, 0.6, 1],
@@ -49,24 +50,24 @@ class OrderCard extends StatelessWidget {
         margin: EdgeInsets.all(10.0),
         height: itemCount * 190.0,
         child: ListView.builder(
-            itemCount: itemCount,
-        physics: NeverScrollableScrollPhysics(),
-        itemBuilder: (c, index) {
-              ItemModel model = ItemModel.fromJson(data[index].data());
-              return sourceOrderInfo(model, context);
-        },),
+          itemCount: itemCount,
+          physics: NeverScrollableScrollPhysics(),
+          itemBuilder: (c, index) {
+            ItemModel model = ItemModel.fromJson(data[index].data());
+            return sourceOrderInfo(model, context, oID: orderID, isEButtonEnabled: isEnabled);
+          },
+        ),
       ),
     );
   }
-}
-
-
+} // class
 
 Widget sourceOrderInfo(ItemModel model, BuildContext context,
-    {Color background}) {
-  width =  MediaQuery.of(context).size.width;
-  final qtyItem = Provider.of<ItemQuantity>(context);
-  return  Container(
+    {Color background, String oID, bool isEButtonEnabled = true}) {
+  width = MediaQuery.of(context).size.width;
+  // final qtyItem = Provider.of<ItemQuantity>(context);
+
+  return Container(
     color: Colors.grey[100],
     height: 170.0,
     width: width,
@@ -76,7 +77,9 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
           model.thumbnailUrl,
           width: 180.0,
         ),
-        SizedBox(width: 10.0,),
+        SizedBox(
+          width: 10.0,
+        ),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,13 +94,16 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
                         model.title,
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 14.0,
-                        ),),
+                          fontSize: 16.0,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 5.0,),
+              SizedBox(
+                height: 5.0,
+              ),
               Container(
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
@@ -108,41 +114,24 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
                         style: TextStyle(
                           color: Colors.black54,
                           fontSize: 12.0,
-                        ),),
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 5.0,),
+              SizedBox(
+                height: 2.0,
+              ),
               Row(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: 5.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Qty: ${qtyItem.numberOfItems}',
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                color: Colors.grey,
-                              ),),
-
-                            // Text(
-                            //   (model.price).toString(),
-                            //   style: TextStyle(
-                            //     fontSize: 15.0,
-                            //     color: Colors.grey,
-                            //   ),),
-                          ],
-                        ),
-                      ),
                       Row(
                         children: [
                           Text(
-                            '=N= ${model.price}',
+                            'Unit: =N= ${model.price}',
                             style: TextStyle(
                               fontSize: 15.0,
                               color: Colors.green,
@@ -150,7 +139,44 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
                           ),
                         ],
                       ),
-
+                      isEButtonEnabled ?
+                      Row(
+                        children: [
+                          ElevatedButton(
+                            child: Text('Details'),
+                            onPressed: () {
+                              Route route;
+                           //   if (counter == 0) {
+                             //   counter = counter + 1;
+                                route =
+                                    MaterialPageRoute(builder: (c) => OrderDetails(orderID: oID));
+                                Navigator.push(context, route);
+                           //   }
+                            },
+                          ),
+                        ],
+                      )
+                      : Text('Nice shopping'),
+                      // Row(
+                      //   children: [
+                      //     ElevatedButton(
+                      //       child: Text('Clear'),
+                      //       onPressed: () {
+                      //       //  Route route = MaterialPageRoute(builder: (_) {
+                      //           EshopApp.firestore
+                      //               .collection(EshopApp.collectionUser)
+                      //               .doc(EshopApp.sharedPreferences
+                      //                   .getString(EshopApp.userUID))
+                      //               .collection(EshopApp.collectionOrders)
+                      //               .doc(oID)
+                      //               .delete();
+                      //           getOrderId = "";
+                      //        // });
+                      //        // Navigator.push(context, route);
+                      //       },
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ],
@@ -159,15 +185,14 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
                 child: Container(),
               ),
               Divider(
-                height: 10.0,
+                height: 4.0,
                 color: Colors.purpleAccent,
-                thickness: 0.5,),
+                thickness: 0.5,
+              ),
             ],
           ),
         ),
       ],
     ),
   );
-
-
 } // source order info

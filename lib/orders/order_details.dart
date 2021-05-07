@@ -10,6 +10,10 @@ import 'package:mirus_global/Widgets/order_card.dart';
 import 'package:mirus_global/models/address.dart';
 
 import 'package:intl/intl.dart';
+//import 'package:sms/sms.dart';
+import 'package:telephony/telephony.dart';
+
+
 
 String getOrderId="";
 class OrderDetails extends StatelessWidget {
@@ -27,6 +31,37 @@ class OrderDetails extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.white),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.deepPurple,
+                  Colors.blueGrey,
+                  Colors.orangeAccent],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: [0.4, 0.6, 1],
+                tileMode: TileMode.clamp,
+              ),
+            ),
+          ),
+          centerTitle: true,
+          title: Text(
+            'My Orders',
+            style: TextStyle(
+                color: Colors.white
+            ),),
+          // actions: [
+          //   IconButton(
+          //     icon: Icon(
+          //       Icons.arrow_drop_down_circle_rounded,
+          //       color: Colors.white,),
+          //      onPressed: () => SystemNavigator.pop(),
+          //   ),
+          // ],
+        ),
         body: SingleChildScrollView(
           child: FutureBuilder<DocumentSnapshot>(
             future: EshopApp.firestore
@@ -49,7 +84,7 @@ class OrderDetails extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.all(4.0),
                           child: Align(
-                            alignment: Alignment.centerLeft,
+                            alignment: Alignment.center,
                             child: Text(
                               '=N=${dataMap[EshopApp.totalAmount]}',
                               style: TextStyle(
@@ -60,7 +95,7 @@ class OrderDetails extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.all(4.0),
+                          padding: EdgeInsets.all(6.0),
                           child: Text("Order ID: $getOrderId"),
                         ),
                         Padding(
@@ -78,7 +113,7 @@ class OrderDetails extends StatelessWidget {
                         ),
                         Divider(height: 2.0,),
                         FutureBuilder<QuerySnapshot>(
-                          future: EshopApp.firestore
+                         future: EshopApp.firestore
                               .collection("items")
                               .where(
                               "shortInfo",
@@ -90,6 +125,7 @@ class OrderDetails extends StatelessWidget {
                                 OrderCard(
                                   itemCount: dataSnapshot.data.docs.length,
                                   data: dataSnapshot.data.docs,
+                                  isEnabled: false,
                                 ) : Center(child: circularProgress(),);
                           },
                         ),
@@ -192,6 +228,7 @@ class StatusBanner extends StatelessWidget {
 class ShippingDetails extends StatelessWidget {
 
   final AddressModel model;
+  final Telephony telephony = Telephony.instance;
 
   ShippingDetails({Key key, this.model}) : super(key: key);
 
@@ -204,12 +241,20 @@ class ShippingDetails extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(height: 20.0,),
+        Text(
+            'Confirm a successful bank transfer '
+        ),
+        Text(
+            'BEFORE you click below'
+        ),
+
+        SizedBox(height: 6.0,),
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: 10.0,
           ),
           child: Text(
-            "Delivery details",
+            "DELIVERY DETAILS",
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -281,14 +326,14 @@ class ShippingDetails extends StatelessWidget {
                     tileMode: TileMode.clamp,
                   ),
                 ),
-                width: MediaQuery.of(context).size.width - 40.0,
+                width: MediaQuery.of(context).size.width - 120.0,
                 height: 50.0,
                 child: Center(
                   child: Text(
-                    "I confirm order is received",
+                    'Confirm correct',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 15.0,
+                      fontSize: 18.0,
                     ),
                   ),
                 ),
@@ -300,19 +345,48 @@ class ShippingDetails extends StatelessWidget {
     );
   }
 
+  // void smsWork() {
+  //   For sms plugin in pubsec yaml
+  //   var sender = SmsSender();
+  //   String recipient = "09088018515";
+  //   var msg = SmsMessage(recipient, 'I just confirmed my order payment');
+  //   msg.onStateChanged.listen((event) {
+  //     if(event == SmsMessageState.Sent) {
+  //       Fluttertoast.showToast(msg: 'SMS confirmation sent to merchant',
+  //               toastLength: Toast.LENGTH_LONG);
+  //     } else if(event == SmsMessageState.Delivered) {
+  //       Fluttertoast.showToast(msg: 'Merchant has received SMS confirmation',
+  //           toastLength: Toast.LENGTH_LONG);
+  //     }
+  //   });
+  //   sender.sendSms(msg);
+  // }
+
   confirmOrderReceived(BuildContext context, String mOrderId) {
     EshopApp.firestore
         .collection(EshopApp.collectionUser)
         .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
         .collection(EshopApp.collectionOrders)
-        .doc(mOrderId).delete();
+        .doc(mOrderId).delete().then((value)  {
+        getOrderId = "";
+        // telephony.sendSms(
+        //     to: "09088018515",
+        //     message: "Order payment completed...");
+        Route route = MaterialPageRoute(builder: (c) => StoreHome());
+        Navigator.pushReplacement(context, route);
+    });
 
-    getOrderId = "";
-    Route route = MaterialPageRoute(builder: (c) => StoreHome());
-    Navigator.pushReplacement(context, route);
+    // getOrderId = "";
+    // Route route = MaterialPageRoute(builder: (c) => StoreHome());
+    // Navigator.pushReplacement(context, route);
+    //smsWork(); for sms plugin in pubsec
 
-    Fluttertoast.showToast(
-        msg: 'You just confirmed that you\'ve received your order');
+    // telephony.sendSms(
+    //     to: "09088018515",
+    //     message: "Order payment completed...");
+
+    // Fluttertoast.showToast(
+    //     msg: 'You just confirmed that you\'ve made payment');
   }
 
 

@@ -2,15 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mirus_global/config/config.dart';
 import 'package:flutter/services.dart';
+import 'package:mirus_global/orders/order_details.dart';
+import 'package:mirus_global/store/storehome.dart';
 import '../Widgets/loadingWidget.dart';
 import '../Widgets/order_card.dart';
 
+
 class MyOrders extends StatefulWidget {
+
   @override
   _MyOrdersState createState() => _MyOrdersState();
 }
-
-
 
 class _MyOrdersState extends State<MyOrders> {
 
@@ -59,10 +61,10 @@ class _MyOrdersState extends State<MyOrders> {
           actions: [
             IconButton(
               icon: Icon(
-                  Icons.arrow_drop_down_circle_outlined,
+                  Icons.arrow_drop_down_circle_rounded,
               color: Colors.white,),
              // onPressed: () => SystemNavigator.pop(),
-              onPressed: () => _showMyOrdersDropdown(context),
+              onPressed: () => null,
             ),
           ],
         ),
@@ -74,32 +76,49 @@ class _MyOrdersState extends State<MyOrders> {
 
           builder: (c, snapshot) {
             return snapshot.hasData ?
-                ListView.builder(
-                  itemCount: snapshot.data.docs.length,
-                  itemBuilder: (c, index) {
-                    return FutureBuilder<QuerySnapshot>(
-                      future: FirebaseFirestore.instance
-                          .collection("items")
-                          .where(
-                          "shortInfo",
-                          whereIn: snapshot.data.docs[index].data()[EshopApp.productID])
-                          .get(),
+            ListView.builder(
+              itemCount: snapshot.data.docs.length,
+              itemBuilder: (c, index) {
+                return FutureBuilder<QuerySnapshot>(
+                  future: FirebaseFirestore.instance
+                      .collection("items")
+                      .where(
+                      "shortInfo",
+                      whereIn: snapshot.data.docs[index].data()[EshopApp.productID])
+                      .get(),
 
-                      builder: (c, snap) {
-                        return snap.hasData ?
-                            OrderCard(
-                              itemCount: snap.data.docs.length,
-                              data: snap.data.docs,
-                              orderID: snapshot.data.docs[index].id,
-                            )
-                            : Center(child: circularProgress(),);
-                      },
-                    );
+                  builder: (c, snap) {
+                    return snap.hasData ?
+                    OrderCard(
+                      itemCount: snap.data.docs.length,
+                      data: snap.data.docs,
+                      orderID: snapshot.data.docs[index].id,
+                      isEnabled: true,
+                    )
+                        : Center(child: circularProgress(),);
                   },
-                ) : Center(child: circularProgress(),);
+                );
+              },
+            ) : Center(child: circularProgress(),);
           },
         ),
       ),
     );
+  } // build widget
+
+
+  confirmOrderReceived(BuildContext context, String mOrderId) {
+    EshopApp.firestore
+        .collection(EshopApp.collectionUser)
+        .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
+        .collection(EshopApp.collectionOrders)
+        .doc(mOrderId).delete().then((value) {
+      getOrderId = "";
+      Route route = MaterialPageRoute(builder: (c) => StoreHome());
+      Navigator.pushReplacement(context, route);
+    });
   }
-}
+
+
+
+} // class

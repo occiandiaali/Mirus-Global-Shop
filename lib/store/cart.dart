@@ -42,7 +42,7 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
-   final quantityOfItem = Provider.of<ItemQuantity>(context);
+   //final quantityOfItem = Provider.of<ItemQuantity>(context);
     return Scaffold(
         floatingActionButton: FloatingActionButton.extended(
           elevation: 10.0,
@@ -108,20 +108,27 @@ class _CartPageState extends State<CartPage> {
                     (context, index) {
                       ItemModel model = ItemModel.
                       fromJson(snapshot.data.docs[index].data());
-                      int len = snapshot.data.docs.length;
-                      int q = quantityOfItem.numberOfItems;
+                     // int len = snapshot.data.docs.length;
+                     // int q = quantityOfItem.numberOfItems;
 
-                      if(index == 0 && len >= 1) {
-                        totalAmount = 0;
+                      // if(index == 0 && len >= 1) {
+                      //   totalAmount = 0;
                        // totalAmount = model.price.toDouble();
                         // if(quantityOfItem.numberOfItems > 1) {
                         //   totalAmount -= model.price;
                         //   totalAmount = (model.price * quantityOfItem.numberOfItems).toDouble();
                         // }
-                        totalAmount += q > 1 ?
-                            model.price * q : model.price;
+                      //   totalAmount += q > 1 ?
+                      //       model.price * q : model.price;
+                      // } else {
+                      //   totalAmount += model.price;
+                      // }
+
+                      if(index == 0) {
+                        totalAmount = 0.00;
+                        totalAmount = model.price + totalAmount;
                       } else {
-                        totalAmount += model.price;
+                        totalAmount = model.price + totalAmount;
                       }
 
 

@@ -16,6 +16,7 @@ import '../Widgets/myDrawer.dart';
 import '../Widgets/searchBox.dart';
 import '../models/item.dart';
 
+
 double width;
 
 class StoreHome extends StatefulWidget {
@@ -134,32 +135,31 @@ class _StoreHomeState extends State<StoreHome> {
         ),
         drawer: MyDrawer(),
         body: CustomScrollView(
-          slivers: [
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: SearchBoxDelegate(),
-            ),
-
-            StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection("items")
-              .limit(15).orderBy("publishedDate", descending: true).snapshots(),
-              builder: (context, snapshot) {
-                return !snapshot.hasData ?
+              slivers: [
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: SearchBoxDelegate(),
+                ),
+                StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance.collection("items")
+                      .limit(15).orderBy("publishedDate", descending: true).snapshots(),
+                  builder: (context, snapshot) {
+                    return !snapshot.hasData ?
                     SliverToBoxAdapter(child: Center(child: circularProgress(),))
-                    : SliverStaggeredGrid.countBuilder(
-                  crossAxisCount: 1,
-                  staggeredTileBuilder: (c) => StaggeredTile.fit(1),
-                  itemBuilder: (context, index, {Color background, removeCartFunction}) {
-                    ItemModel model = ItemModel.fromJson(snapshot.data.docs[index].data());
-                    return removeCartFunction == null ?
-                      sourceInfo(model, context) : CartPage();
+                        : SliverStaggeredGrid.countBuilder(
+                      crossAxisCount: 1,
+                      staggeredTileBuilder: (c) => StaggeredTile.fit(1),
+                      itemBuilder: (context, index, {Color background, removeCartFunction}) {
+                        ItemModel model = ItemModel.fromJson(snapshot.data.docs[index].data());
+                        return removeCartFunction == null ?
+                        sourceInfo(model, context) : CartPage();
+                      },
+                      itemCount: snapshot.data.docs.length,
+                    );
                   },
-                  itemCount: snapshot.data.docs.length,
-                );
-              },
+                ),
+              ],
             ),
-          ],
-        ),
       ),
     );
 
@@ -170,188 +170,188 @@ class _StoreHomeState extends State<StoreHome> {
 
 Widget sourceInfo(ItemModel model, BuildContext context,{Color background, removeCartFunction}) {
   return InkWell(
-    onTap: () {
-      Route route = MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,));
-      Navigator.push(context, route);
-    },
-    splashColor: Colors.grey,
-    child: Padding(
-      padding: EdgeInsets.all(6.0),
-      child: Container(
-        height: 190.0,
-        width: width,
-        child: Row(
-          children: [
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  child: Image.network(
-                    model.thumbnailUrl,
-                    width: 120.0,
-                    height: 140.0,
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Row(
-                    children: [
-                      Text(
-                        '50% ',
-                        style: TextStyle(
-                            color: Colors.deepPurple,
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold
-                        ),
-                      ),
-                      Text(
-                        'OFF',
-                        style: TextStyle(
-                            color: Colors.deepPurple,
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.bold
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(width: 14.0,),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      onTap: () {
+        Route route = MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,));
+        Navigator.push(context, route);
+      },
+      splashColor: Colors.purpleAccent,
+      child: Padding(
+        padding: EdgeInsets.all(6.0),
+        child: Container(
+          height: 190.0,
+          width: width,
+          child: Row(
+            children: [
+              Stack(
                 children: [
-                  SizedBox(height: 45.0),
-                  Container(
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: Image.network(
+                      model.thumbnailUrl,
+                      width: 120.0,
+                      height: 140.0,
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomLeft,
                     child: Row(
-                      mainAxisSize: MainAxisSize.max,
                       children: [
-                        Expanded(
-                          child: Text(
-                            model.title,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18.0,
-                            ),),
+                        Text(
+                          '50% ',
+                          style: TextStyle(
+                              color: Colors.deepPurple,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        Text(
+                          'OFF',
+                          style: TextStyle(
+                              color: Colors.deepPurple,
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
                       ],
                     ),
                   ),
+                ],
+              ),
+              SizedBox(width: 14.0,),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 45.0),
+                    Container(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              model.title,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18.0,
+                              ),),
+                          ),
+                        ],
+                      ),
+                    ),
 
-                  SizedBox(height: 5.0,),
-                  Row(
-                    children: [
-                      SizedBox(width: 7.0,),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 0.0),
-                              child: Text(
-                                model.shortInfo,
+                    SizedBox(height: 5.0,),
+                    Row(
+                      children: [
+                        SizedBox(width: 7.0,),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(top: 0.0),
+                                child: Text(
+                                  model.shortInfo,
+                                ),
                               ),
-                            ),
-                            Padding(
+                              Padding(
+                                  padding: EdgeInsets.only(top: 0.0),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                            '=N=${(model.price + model.price)}',
+                                        style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Colors.grey,
+                                          decoration: TextDecoration.lineThrough,
+                                        ),
+                                        ),
+                                      SizedBox(width: 15.0,),
+                                      Text(
+                                          'Old',
+                                      style: TextStyle(
+                                          fontSize: 12.0,
+                                      color: Colors.grey),),
+
+                                    ],
+
+                                  ),
+                                ),
+
+                              Padding(
                                 padding: EdgeInsets.only(top: 0.0),
                                 child: Row(
                                   children: [
                                     Text(
-                                          '=N=${(model.price + model.price)}',
-                                      style: TextStyle(
-                                        fontSize: 14.0,
-                                        color: Colors.grey,
-                                        decoration: TextDecoration.lineThrough,
+                                        '=N= ${model.price}',
+                                        style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Colors.green,
+                                        ),
                                       ),
-                                      ),
-                                    SizedBox(width: 15.0,),
+                                    SizedBox(width: 8.0),
                                     Text(
-                                        'Old',
-                                    style: TextStyle(
-                                        fontSize: 12.0,
-                                    color: Colors.grey),),
+                                        'New',
+                                      style: TextStyle(
+                                          fontSize: 12.0,
+                                      color: Colors.green),),
 
                                   ],
-
+                                ),
+                              ),
+                            //  SizedBox(height: 5.0,),
+                              Padding(
+                                padding: EdgeInsets.only(top: 5.0),
+                                child: Text(
+                                  'category: ${model.category}',
+                                  style: TextStyle(color: Colors.grey),
                                 ),
                               ),
 
-                            Padding(
-                              padding: EdgeInsets.only(top: 0.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                      '=N= ${model.price}',
-                                      style: TextStyle(
-                                        fontSize: 14.0,
-                                        color: Colors.green,
-                                      ),
-                                    ),
-                                  SizedBox(width: 8.0),
-                                  Text(
-                                      'New',
-                                    style: TextStyle(
-                                        fontSize: 12.0,
-                                    color: Colors.green),),
+                            ], // kids
+                          ),
 
-                                ],
-                              ),
-                            ),
-                          //  SizedBox(height: 5.0,),
-                            Padding(
-                              padding: EdgeInsets.only(top: 5.0),
-                              child: Text(
-                                'category: ${model.category}',
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ),
-
-                          ], // kids
-                        ),
-
-                    ],
-                  ),
-                  Flexible(
-                    child: Container(),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                  //  child: removeCartFunction == null ?
-                    child: IconButton(
-                      onPressed: () {
-                        print("StoreHome ID: ${model.shortInfo}");
-                        print("StoreHome =N=: ${model.price}");
-                        checkItemInCart(
-                        model.shortInfo,
-                            context);
-                      },
-                      icon: Icon(
-                          Icons.add_shopping_cart,
-                      color: Colors.purpleAccent),
-                    )
-                    // : IconButton(
-                    //       onPressed: () {
-                    //         removeCartFunction();
-                    //         Route route = MaterialPageRoute(builder: (c) => StoreHome());
-                    //         Navigator.push(context, route);
-                    //       },
-                    //       icon: Icon(Icons.delete_forever,
-                    //           color: Colors.purpleAccent),
-                    //     ),
-                  ),
-                  Divider(
-                    height: 2.0,
-                    color: Colors.purpleAccent,
-                    thickness: 0.5,),
-                ],
+                      ],
+                    ),
+                    Flexible(
+                      child: Container(),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                    //  child: removeCartFunction == null ?
+                      child: IconButton(
+                        onPressed: () {
+                          // print("StoreHome ID: ${model.shortInfo}");
+                          // print("StoreHome =N=: ${model.price}");
+                          checkItemInCart(
+                          model.shortInfo,
+                              context);
+                        },
+                        icon: Icon(
+                            Icons.add_shopping_cart,
+                        color: Colors.purpleAccent),
+                      )
+                      // : IconButton(
+                      //       onPressed: () {
+                      //         removeCartFunction();
+                      //         Route route = MaterialPageRoute(builder: (c) => StoreHome());
+                      //         Navigator.push(context, route);
+                      //       },
+                      //       icon: Icon(Icons.delete_forever,
+                      //           color: Colors.purpleAccent),
+                      //     ),
+                    ),
+                    Divider(
+                      height: 2.0,
+                      color: Colors.purpleAccent,
+                      thickness: 0.5,),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
 
-    ),
-  );
+      ),
+    );
 } // source info
 
 // *******************************
@@ -389,41 +389,41 @@ addItemToCart(String shortInfoAsId, BuildContext context) {
       .getStringList(EshopApp.userCartList);
   tempCartList.add(shortInfoAsId);
 
-  if(tempCartList.length <= 2) {
-    EshopApp.firestore.collection(EshopApp.collectionUser)
-        .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
-        .set({
-      EshopApp.userCartList: tempCartList,
-    }).then((v) {
-      Fluttertoast.showToast(msg: 'Item added to cart!');
-
-      EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, tempCartList);
-
-      Provider.of<CartItemCounter>(context, listen: false).displayResult(EshopApp.userCartList.length);
-    }).catchError((e) => print("Error updating document: $e"));
-  } else {
-    Fluttertoast.showToast(
-        msg: 'Pls, add/process only one item in your cart at a time...',
-    gravity: ToastGravity.CENTER,
-    toastLength: Toast.LENGTH_LONG);
-  }
-  // EshopApp.firestore.collection(EshopApp.collectionUser)
-  //     .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
-  // .set({
-  //   EshopApp.userCartList: tempCartList,
-  // }).then((v) {
-  //   Fluttertoast.showToast(msg: 'Item added to cart!');
+  // if(tempCartList.length <= 2) {
+  //   EshopApp.firestore.collection(EshopApp.collectionUser)
+  //       .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
+  //       .set({
+  //     EshopApp.userCartList: tempCartList,
+  //   }).then((v) {
+  //     Fluttertoast.showToast(msg: 'Item added to cart!');
   //
-  //   EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, tempCartList);
+  //     EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, tempCartList);
   //
-  //   Provider.of<CartItemCounter>(context, listen: false).displayResult(EshopApp.userCartList.length);
-  // }).catchError((e) => print("Error updating document: $e"));
+  //     Provider.of<CartItemCounter>(context, listen: false).displayResult(EshopApp.userCartList.length);
+  //   }).catchError((e) => print("Error updating document: $e"));
+  // } else {
+  //   Fluttertoast.showToast(
+  //       msg: 'Pls, add/process only one item in your cart at a time...',
+  //   gravity: ToastGravity.CENTER,
+  //   toastLength: Toast.LENGTH_LONG);
+  // }
+  EshopApp.firestore.collection(EshopApp.collectionUser)
+      .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
+  .set({
+    EshopApp.userCartList: tempCartList,
+  }).then((v) {
+    Fluttertoast.showToast(msg: 'Item added to cart!');
+
+    EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, tempCartList);
+
+    Provider.of<CartItemCounter>(context, listen: false).displayResult(EshopApp.userCartList.length);
+  }).catchError((e) => print("Error updating document: $e"));
 } // add item to cart
 
 
 
 void checkItemInCart(String productID, BuildContext context) {
-  print('Check item in cart');
+ // print('Check item in cart');
   EshopApp.sharedPreferences
       .getStringList(EshopApp.userCartList)
       .contains(productID) ?

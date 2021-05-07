@@ -54,7 +54,7 @@ class _CartCardState extends State<CartCard> {
       child: Padding(
         padding: EdgeInsets.all(6.0),
         child: Container(
-          height: 230.0,
+          height: 190.0,
           width: width,
           child: Row(
             children: [
@@ -62,16 +62,16 @@ class _CartCardState extends State<CartCard> {
                 borderRadius: BorderRadius.circular(15.0),
                 child: Image.network(
                   widget.model.thumbnailUrl,
-                  width: 120.0,
-                  height: 140.0,
+                  width: 150.0,
+                  height: 160.0,
                 ),
               ),
-              SizedBox(width: 14.0,),
+              SizedBox(width: 15.0,),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 45.0),
+                    SizedBox(height: 47.0),
                     Container(
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
@@ -113,7 +113,8 @@ class _CartCardState extends State<CartCard> {
                             Padding(
                               padding: EdgeInsets.only(top: 0.0),
                               child: Text(
-                                '${widget.model.qty - itemQty} pieces in stock',
+                               // '${widget.model.qty - itemQty} pieces in stock',
+                                '50% discount applied',
                               ),
                             ),
                             Padding(
@@ -121,7 +122,8 @@ class _CartCardState extends State<CartCard> {
                               child: Row(
                                 children: [
                                   Text(
-                                    '=N= ${widget.model.price * itemQty}',
+                                    // '=N= ${widget.model.price * itemQty}',
+                                    '=N= ${widget.model.price}',
                                     style: TextStyle(
                                       fontSize: 19.0,
                                       color: Colors.green,
@@ -135,7 +137,7 @@ class _CartCardState extends State<CartCard> {
                               child: Row(
                                 children: [
                                   Text(
-                                    'Shipping: =N= ${widget.model.price * (10 / 100)}',
+                                    'Delivery: =N= ${widget.model.price * (5 / 100)}',
                                     style: TextStyle(
                                       fontSize: 12.0,
                                       color: Colors.green,
@@ -144,43 +146,43 @@ class _CartCardState extends State<CartCard> {
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 2.0),
-                              child: Row(
-                                children: [
-                                  Text('Quantity: '),
-                                  // qtyPicker(),
-                                  NumberPicker(
-                                      minValue: 1,
-                                      maxValue: 50,
-                                      axis: Axis.horizontal,
-                                      itemWidth: 40,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                                        border: Border.all(color: Colors.deepPurple),
-                                      ),
-                                      // textStyle: numPickerStyle,
-                                      value: itemQty,
-                                      onChanged: (value) => setState(() {
-                                        itemQty = value;
-                                        widget.model.qty -= value;
-                                       // print("widget.qtyOfItem: $itemQty");
-                                        // Provider for qty of each ordered item
-                                        Provider.of<ItemQuantity>(
-                                            context,
-                                            listen: false,
-                                        ).qtyOfItem(itemQty);
-
-                                        // Provider for items in stock
-                                        Provider.of<ItemQuantity>(
-                                          context,
-                                          listen: false,
-                                        ).qtyOfItemInStock(widget.model.qty);
-                                      }),
-                                  )
-                                ],
-                              ),
-                            ),
+                            // Padding(
+                            //   padding: EdgeInsets.only(top: 2.0),
+                            //   child: Row(
+                            //     children: [
+                            //       Text('Quantity: '),
+                            //       // qtyPicker(),
+                            //       NumberPicker(
+                            //           minValue: 1,
+                            //           maxValue: 50,
+                            //           axis: Axis.horizontal,
+                            //           itemWidth: 29,
+                            //           decoration: BoxDecoration(
+                            //             borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                            //             border: Border.all(color: Colors.deepPurple),
+                            //           ),
+                            //           // textStyle: numPickerStyle,
+                            //           value: itemQty,
+                            //           onChanged: (value) => setState(() {
+                            //             itemQty = value;
+                            //             widget.model.qty -= value;
+                            //            // print("widget.qtyOfItem: $itemQty");
+                            //             // Provider for qty of each ordered item
+                            //             Provider.of<ItemQuantity>(
+                            //                 context,
+                            //                 listen: false,
+                            //             ).qtyOfItem(itemQty);
+                            //
+                            //             // Provider for items in stock
+                            //             Provider.of<ItemQuantity>(
+                            //               context,
+                            //               listen: false,
+                            //             ).qtyOfItemInStock(widget.model.qty);
+                            //           }),
+                            //       )
+                            //     ],
+                            //   ),
+                            // ),
                           ],
                         ),
                       ],

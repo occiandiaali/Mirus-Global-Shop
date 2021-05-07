@@ -2,6 +2,7 @@ import 'package:mirus_global/address/add_address.dart';
 import 'package:mirus_global/authentication/auth_screen.dart';
 import 'package:mirus_global/config/config.dart';
 import 'package:mirus_global/orders/my_orders.dart';
+import 'package:mirus_global/orders/order_details.dart';
 //import 'package:mirus_global/address/addAddress.dart';
 //import 'package:mirus_global/store/Search.dart';
 import 'package:mirus_global/store/cart.dart';
@@ -37,14 +38,17 @@ class MyDrawer extends StatelessWidget {
                   child: Container(
                     height: 160.0,
                     width: 160.0,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.deepPurple,
-                      radius: 16.0,
-                      backgroundImage: NetworkImage(
-                        EshopApp.sharedPreferences.getString(EshopApp.userAvatarUrl) ??
-                            'https://vc.bridgew.edu/context/hoba/article/1008/type/native/viewcontent',
-                    ),
+                    child: GestureDetector(
+                      child: CircleAvatar(
+                        backgroundColor: Colors.deepPurple,
+                        radius: 16.0,
+                        backgroundImage: NetworkImage(
+                          EshopApp.sharedPreferences.getString(EshopApp.userAvatarUrl) ??
+                              'https://vc.bridgew.edu/context/hoba/article/1008/type/native/viewcontent',
+                      ),
 
+                      ),
+                      onTap: () => print('Tapped avatar'),
                     ),
                   ),
                 ),
@@ -164,5 +168,75 @@ class MyDrawer extends StatelessWidget {
         ],
       ),
     );
-  }
-}
+  } // build Widget
+
+  // image update section
+  // takePhotoWithCamera() async {
+  //   Navigator.pop(context);
+  //   final picker = ImagePicker();
+  //   PickedFile photoFile = await picker
+  //       .getImage(
+  //     source: ImageSource.camera,
+  //     maxHeight: 680.0,
+  //     maxWidth: 970.0,
+  //   );
+  //   setState(() {
+  //     fileImage = File(photoFile.path);
+  //   });
+  // }
+  //
+  // selectGalleryPhoto() async {
+  //   Navigator.pop(context);
+  //   final picker = ImagePicker();
+  //   PickedFile photoFile = await picker
+  //       .getImage(
+  //     source: ImageSource.gallery,
+  //   );
+  //   setState(() {
+  //     fileImage = File(photoFile.path);
+  //   });
+  // }
+  //
+  // selectImage(mContext) {
+  //   return showDialog(
+  //       context: mContext,
+  //       builder: (context) {
+  //         return SimpleDialog(
+  //           children: [
+  //             SimpleDialogOption(
+  //               child: Text(
+  //                 'Take a photo',
+  //                 style: TextStyle(
+  //                   color: Colors.purple,
+  //                 ),
+  //               ),
+  //               onPressed: () => takePhotoWithCamera(),
+  //             ),
+  //             SimpleDialogOption(
+  //               child: Text(
+  //                 'Select image from gallery',
+  //                 style: TextStyle(
+  //                   color: Colors.purple,
+  //                 ),
+  //               ),
+  //               onPressed: () => selectGalleryPhoto(),
+  //             ),
+  //             SimpleDialogOption(
+  //                 child: Text(
+  //                   'Cancel',
+  //                   style: TextStyle(
+  //                     color: Colors.purple,
+  //                   ),
+  //                 ),
+  //                 onPressed: () => Navigator.pop(context)
+  //             ),
+  //           ],
+  //         );
+  //       });
+  // }
+
+
+
+
+
+} // class
