@@ -41,6 +41,11 @@ dependencies:
   firebase_storage: ^8.0.1
   flutter_staggered_grid_view: ^0.3.0
   numberpicker: ^2.1.1
+  #carousel_slider: ^3.0.0
+  url_launcher: ^6.0.3
+  telephony: ^0.1.2
+  #flutter_sms: ^2.3.1
+  #sms: ^0.2.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -56,7 +61,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 flutter_icons:
   android: true
-  image_path: "images/mg_logo_launch.png"
+  image_path: "images/mg_launch.png"
 
 # The following section is specific to Flutter.
 flutter:
