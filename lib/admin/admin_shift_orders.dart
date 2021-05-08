@@ -40,15 +40,15 @@ class _MyOrdersState extends State<AdminShiftOrders> {
             style: TextStyle(
                 color: Colors.white
             ),),
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.arrow_drop_down_circle_outlined,
-                color: Colors.white,),
-              // onPressed: () => SystemNavigator.pop(),
-              onPressed: () => print('Placed Orders dropdown functionality here...'),
-            ),
-          ],
+          // actions: [
+          //   IconButton(
+          //     icon: Icon(
+          //       Icons.arrow_drop_down_circle_outlined,
+          //       color: Colors.white,),
+          //     // onPressed: () => SystemNavigator.pop(),
+          //     onPressed: () => print('Placed Orders dropdown functionality here...'),
+          //   ),
+          // ],
         ),
         body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
@@ -73,15 +73,36 @@ class _MyOrdersState extends State<AdminShiftOrders> {
                     AdminOrderCard(
                       itemCount: snap.data.docs.length,
                       data: snap.data.docs,
+                      isEnabled: true,
+                      isAdmin: true,
                       orderID: snapshot.data.docs[index].id,
                       orderBy: snapshot.data.docs[index].data()["orderBy"],
                       addressID: snapshot.data.docs[index].data()["addressID"],
                     )
-                        : Center(child: circularProgress(),);
+                        : Center(
+                      child: circularProgress(),
+                     //  child: Text(
+                     //    'No orders have been placed...',
+                     //    style: TextStyle(
+                     //      color: Colors.grey,
+                     //      fontSize: 18.0,
+                     //    ),
+                     //  ),
+                    );
                   },
                 );
               },
-            ) : Center(child: circularProgress(),);
+            )
+                : Center(
+              child: circularProgress(),
+              // child: Text(
+              //   'No orders have been placed...',
+              //   style: TextStyle(
+              //     color: Colors.grey,
+              //     fontSize: 18.0,
+              //   ),
+              // ),
+            );
           },
         ),
       ),

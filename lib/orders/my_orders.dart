@@ -58,15 +58,15 @@ class _MyOrdersState extends State<MyOrders> {
             style: TextStyle(
               color: Colors.white
             ),),
-          actions: [
-            IconButton(
-              icon: Icon(
-                  Icons.arrow_drop_down_circle_rounded,
-              color: Colors.white,),
-             // onPressed: () => SystemNavigator.pop(),
-              onPressed: () => null,
-            ),
-          ],
+          // actions: [
+          //   IconButton(
+          //     icon: Icon(
+          //         Icons.arrow_drop_down_circle_rounded,
+          //     color: Colors.white,),
+          //    // onPressed: () => SystemNavigator.pop(),
+          //     onPressed: () => null,
+          //   ),
+          // ],
         ),
         body: StreamBuilder<QuerySnapshot>(
           stream: EshopApp.firestore

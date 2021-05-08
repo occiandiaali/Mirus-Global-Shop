@@ -157,18 +157,6 @@ class _OrderPaymentState extends State<OrderPayment> {
                 ),
               ),
               SizedBox(height: 7.0,),
-              // TextButton(
-              //   child: Text('I Agree'),
-              //   style: TextButton.styleFrom(
-              //     elevation: 10.0,
-              //
-              //     textStyle: TextStyle(
-              //       color: Colors.white,
-              //       fontSize: 20.0,
-              //     ),
-              //   ),
-              //   onPressed: () => addOrderDetails(),
-              // ),
               OutlinedButton(
                 onPressed: () {
                   // telephony.sendSms(

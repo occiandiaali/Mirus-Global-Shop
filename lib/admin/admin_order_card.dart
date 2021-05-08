@@ -16,6 +16,8 @@ class AdminOrderCard extends StatelessWidget {
   final String orderID;
   final String addressID;
   final String orderBy;
+  final bool isEnabled;
+  final bool isAdmin;
 
   AdminOrderCard({
     Key key,
@@ -23,24 +25,27 @@ class AdminOrderCard extends StatelessWidget {
     this.data,
     this.orderID,
     this.addressID,
-    this.orderBy
+    this.orderBy,
+    this.isEnabled,
+    this.isAdmin
 }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return  InkWell(
-      onTap: () {
-        Route route;
-        if(counter == 0) {
-          counter = counter + 1;
-          route = MaterialPageRoute(
-              builder: (c) => AdminOrderDetails(
-                  orderID: orderID,
-              orderBy: orderBy,
-              addressID: addressID));
-        }
-        Navigator.push(context, route);
-      },
+      // onTap: () {
+      //   Route route;
+      //   if(counter == 0) {
+      //     counter = counter + 1;
+      //     route = MaterialPageRoute(
+      //         builder: (c) => AdminOrderDetails(
+      //             orderID: orderID,
+      //         orderBy: orderBy,
+      //         addressID: addressID
+      //         ));
+      //   }
+      //   Navigator.push(context, route);
+      // },
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -62,9 +67,140 @@ class AdminOrderCard extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (c, index) {
             ItemModel model = ItemModel.fromJson(data[index].data());
-            return sourceOrderInfo(model, context);
+            return sourceOrderInfo(model,
+                context,
+                oID: orderID,
+                orderBy: orderBy,
+                addressID: addressID,
+                isEButtonEnabled: isEnabled,
+                isUserAdmin: isAdmin);
           },),
       ),
     );
   }
 } // class
+
+Widget sourceOrderInfo(ItemModel model, BuildContext context,
+    {Color background,
+      String oID,
+      bool isEButtonEnabled = true,
+      bool isUserAdmin = false,
+      String orderBy,
+      String addressID}) {
+  width = MediaQuery.of(context).size.width;
+  // final qtyItem = Provider.of<ItemQuantity>(context);
+
+  return Container(
+    color: Colors.grey[100],
+    height: 170.0,
+    width: width,
+    child: Row(
+      children: [
+        Image.network(
+          model.thumbnailUrl,
+          width: 180.0,
+        ),
+        SizedBox(
+          width: 10.0,
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 15.0),
+              Container(
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        model.title,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              Container(
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        model.shortInfo,
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 12.0,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 2.0,
+              ),
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Unit: =N= ${model.price}',
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              color: Colors.green,
+                            ),
+                          ),
+                        ],
+                      ),
+                     isEButtonEnabled ?
+                      Row(
+                        children: [
+                          ElevatedButton(
+                            child: Text('Details'),
+                            onPressed: () {
+                              Route route;
+                              //   if (counter == 0) {
+                              //   counter = counter + 1;
+                              route =
+                                  MaterialPageRoute(builder: (c) =>
+                                      AdminOrderDetails(
+                                          orderID: oID,
+                                      orderBy: orderBy,
+                                      addressID: addressID,));
+                              Navigator.push(context, route);
+                              //   }
+                            },
+                          ),
+                        ],
+                      )
+                      // : Text('Looking good...'),
+                          : Icon(Icons.check_circle_outline),
+                    ],
+                  ),
+                ],
+              ),
+              Flexible(
+                child: Container(),
+              ),
+              Divider(
+                height: 4.0,
+                color: Colors.purpleAccent,
+                thickness: 0.5,
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+} // source order info

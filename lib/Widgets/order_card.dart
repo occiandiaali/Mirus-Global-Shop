@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mirus_global/admin/admin_order_details.dart';
 import 'package:mirus_global/config/config.dart';
 import 'package:mirus_global/counters/item_quantity.dart';
 import 'package:mirus_global/orders/order_details.dart';
@@ -15,27 +16,31 @@ class OrderCard extends StatelessWidget {
   final List<DocumentSnapshot> data;
   final String orderID;
   final bool isEnabled;
+  final String orderBy;
+  final String addressID;
 
   OrderCard({Key key,
     this.itemCount,
     this.data,
     this.orderID,
-  this.isEnabled})
+  this.isEnabled,
+  this.orderBy,
+  this.addressID})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Route route;
-        if (counter == 0) {
-          counter = counter + 1;
-          route =
-              MaterialPageRoute(builder: (c) => OrderDetails(orderID: orderID));
-          Navigator.push(context, route);
-        }
-        // Navigator.push(context, route);
-      },
+      // onTap: () {
+      //   Route route;
+      //   if (counter == 0) {
+      //     counter = counter + 1;
+      //     route =
+      //         MaterialPageRoute(builder: (c) => OrderDetails(orderID: orderID));
+      //     Navigator.push(context, route);
+      //   }
+      //   // Navigator.push(context, route);
+      // },
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -54,7 +59,10 @@ class OrderCard extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (c, index) {
             ItemModel model = ItemModel.fromJson(data[index].data());
-            return sourceOrderInfo(model, context, oID: orderID, isEButtonEnabled: isEnabled);
+            return sourceOrderInfo(model,
+                context,
+                oID: orderID,
+                isEButtonEnabled: isEnabled);
           },
         ),
       ),
@@ -63,7 +71,9 @@ class OrderCard extends StatelessWidget {
 } // class
 
 Widget sourceOrderInfo(ItemModel model, BuildContext context,
-    {Color background, String oID, bool isEButtonEnabled = true}) {
+    {Color background,
+      String oID,
+      bool isEButtonEnabled = true}) {
   width = MediaQuery.of(context).size.width;
   // final qtyItem = Provider.of<ItemQuantity>(context);
 
@@ -156,27 +166,7 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
                           ),
                         ],
                       )
-                      : Text('Nice shopping'),
-                      // Row(
-                      //   children: [
-                      //     ElevatedButton(
-                      //       child: Text('Clear'),
-                      //       onPressed: () {
-                      //       //  Route route = MaterialPageRoute(builder: (_) {
-                      //           EshopApp.firestore
-                      //               .collection(EshopApp.collectionUser)
-                      //               .doc(EshopApp.sharedPreferences
-                      //                   .getString(EshopApp.userUID))
-                      //               .collection(EshopApp.collectionOrders)
-                      //               .doc(oID)
-                      //               .delete();
-                      //           getOrderId = "";
-                      //        // });
-                      //        // Navigator.push(context, route);
-                      //       },
-                      //     ),
-                      //   ],
-                      // ),
+                      : Text('Shop with us again!!!'),
                     ],
                   ),
                 ],

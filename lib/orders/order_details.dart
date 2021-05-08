@@ -49,7 +49,7 @@ class OrderDetails extends StatelessWidget {
           ),
           centerTitle: true,
           title: Text(
-            'My Orders',
+            'Order Details',
             style: TextStyle(
                 color: Colors.white
             ),),
@@ -126,7 +126,8 @@ class OrderDetails extends StatelessWidget {
                                   itemCount: dataSnapshot.data.docs.length,
                                   data: dataSnapshot.data.docs,
                                   isEnabled: false,
-                                ) : Center(child: circularProgress(),);
+                                )
+                                : Center(child: circularProgress(),);
                           },
                         ),
                         Divider(height: 2.0,),
@@ -228,7 +229,7 @@ class StatusBanner extends StatelessWidget {
 class ShippingDetails extends StatelessWidget {
 
   final AddressModel model;
-  final Telephony telephony = Telephony.instance;
+ // final Telephony telephony = Telephony.instance;
 
   ShippingDetails({Key key, this.model}) : super(key: key);
 

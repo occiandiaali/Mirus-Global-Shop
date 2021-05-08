@@ -28,7 +28,7 @@ class _AdminManageState extends State<AdminManage> {
         context: ctx,
         builder: (ctx) => Container(
           width: 300,
-          height: 250,
+          height: 100,
           color: Colors.white54,
           alignment: Alignment.center,
           child: Text(
@@ -118,7 +118,7 @@ class _AdminManageState extends State<AdminManage> {
 
 Widget sourceInfo(ItemModel model, BuildContext context, String id,
     {Color background, removeCartFunction}) {
-  int timesOrdered = 0; // placeholder value
+ // int timesOrdered = 0; // placeholder value
   return InkWell(
     onTap: () {
       Route route = MaterialPageRoute(builder: (c) => EditProductPage(itemModel: model, docID: id,));
@@ -140,7 +140,7 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
                 height: 140.0,
               ),
             ),
-            SizedBox(width: 4.0,),
+            SizedBox(width: 30.0,),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,18 +180,18 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
                   SizedBox(height: 5.0,),
                   Row(
                     children: [
-                      SizedBox(width: 10.0,),
+                      SizedBox(width: 4.0,),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 0.0),
-                            child: Row(
-                              children: [
-                                Text('Ordered $timesOrdered time(s)'),
-                              ],
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: EdgeInsets.only(top: 0.0),
+                          //   child: Row(
+                          //     children: [
+                          //       Text('Ordered $timesOrdered time(s)'),
+                          //     ],
+                          //   ),
+                          // ),
                           Padding(
                             padding: EdgeInsets.only(top: 5.0),
                             child: Row(

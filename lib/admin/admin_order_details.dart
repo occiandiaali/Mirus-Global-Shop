@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mirus_global/address/address.dart';
-import 'package:mirus_global/admin/admin_manage.dart';
 import 'package:mirus_global/admin/admin_order_card.dart';
 import 'package:mirus_global/admin/admin_shift_orders.dart';
-import 'package:mirus_global/admin/uploaditems.dart';
 import 'package:mirus_global/config/config.dart';
 import 'package:mirus_global/Widgets/loadingWidget.dart';
-import 'package:mirus_global/Widgets/order_card.dart';
 import 'package:mirus_global/models/address.dart';
 
 import 'package:intl/intl.dart';
+import 'package:telephony/telephony.dart';
+
 
 String getOrderId = "";
+String getOrderBy = "";
+String getAddressId = "";
 
 class AdminOrderDetails extends StatelessWidget {
 
@@ -34,14 +33,47 @@ class AdminOrderDetails extends StatelessWidget {
   Widget build(BuildContext context) {
 
     getOrderId = orderID;
+    getOrderBy = orderBy;
+    getAddressId = addressID;
 
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.white),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.deepPurple,
+                  Colors.blueGrey,
+                  Colors.orangeAccent],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: [0.4, 0.6, 1],
+                tileMode: TileMode.clamp,
+              ),
+            ),
+          ),
+          centerTitle: true,
+          title: Text(
+            'Customer Orders',
+            style: TextStyle(
+                color: Colors.white
+            ),),
+          // actions: [
+          //   IconButton(
+          //     icon: Icon(
+          //       Icons.arrow_drop_down_circle_rounded,
+          //       color: Colors.white,),
+          //      onPressed: () => SystemNavigator.pop(),
+          //   ),
+          // ],
+        ),
         body: SingleChildScrollView(
           child: FutureBuilder<DocumentSnapshot>(
             future: EshopApp.firestore
                 .collection(EshopApp.collectionOrders)
-                .doc(getOrderId).get(),
+                .doc(orderID).get(),
 
             builder: (c, snapshot) {
               Map dataMap;
@@ -57,7 +89,7 @@ class AdminOrderDetails extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.all(4.0),
                       child: Align(
-                        alignment: Alignment.centerLeft,
+                        alignment: Alignment.center,
                         child: Text(
                           '=N=${dataMap[EshopApp.totalAmount]}',
                           style: TextStyle(
@@ -95,10 +127,13 @@ class AdminOrderDetails extends StatelessWidget {
 
                       builder: (c, dataSnapshot) {
                         return dataSnapshot.hasData ?
-                        OrderCard(
+                        AdminOrderCard(
                           itemCount: dataSnapshot.data.docs.length,
                           data: dataSnapshot.data.docs,
-                        ) : Center(child: circularProgress(),);
+                          isEnabled: false,
+                          isAdmin: true,
+                        )
+                            : Center(child: circularProgress(),);
                       },
                     ),
                     Divider(height: 2.0,),
@@ -128,6 +163,23 @@ class AdminOrderDetails extends StatelessWidget {
     );
   }
 }
+
+// void _showAdm(BuildContext ctx) {
+//   showModalBottomSheet(
+//       elevation: 10,
+//       backgroundColor: Colors.amber,
+//       context: ctx,
+//       builder: (ctx) => Container(
+//         padding: EdgeInsets.all(8.0),
+//         width: 300,
+//         height: 100,
+//         color: Colors.white54,
+//         alignment: Alignment.center,
+//         child: Text(
+//           'Ensure you select image and fill fields!',
+//           style: TextStyle(color: Colors.deepPurple, fontSize: 23.0),),
+//       ));
+// }
 
 class AdminStatusBanner extends StatelessWidget {
   final bool status;
@@ -161,18 +213,18 @@ class AdminStatusBanner extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () => print("icon tapped"),
-            child: Container(
-              child: Icon(
-                Icons.arrow_drop_down_circle_outlined,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          SizedBox(width: 20.0,),
+          // GestureDetector(
+          //   onTap: () => print("icon tapped"),
+          //   child: Container(
+          //     child: Icon(
+          //       Icons.arrow_drop_down_circle_outlined,
+          //       color: Colors.white,
+          //     ),
+          //   ),
+          // ),
+          //SizedBox(width: 20.0,),
           Text(
-            'Order Shipped: $msg',
+            'Order Received: $msg',
             style: TextStyle(color: Colors.white),
           ),
           SizedBox(width: 5.0,),
@@ -195,6 +247,7 @@ class AdminStatusBanner extends StatelessWidget {
 
 class AdminShippingDetails extends StatelessWidget {
   final AddressModel model;
+  final Telephony telephony = Telephony.instance;
 
   AdminShippingDetails({Key key, this.model}) : super(key: key);
 
@@ -204,7 +257,7 @@ class AdminShippingDetails extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(height: 20.0,),
         Padding(
@@ -212,13 +265,14 @@ class AdminShippingDetails extends StatelessWidget {
             horizontal: 10.0,
           ),
           child: Text(
-            "Delivery details",
+            "DELIVERY DETAILS",
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
+        SizedBox(height: 5.0,),
         Container(
           padding: EdgeInsets.symmetric(
             horizontal: 90.0,
@@ -288,7 +342,7 @@ class AdminShippingDetails extends StatelessWidget {
                 height: 50.0,
                 child: Center(
                   child: Text(
-                    "Confirm order has been shipped",
+                    "Clear if order has been shipped",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 15.0,
@@ -308,7 +362,9 @@ class AdminShippingDetails extends StatelessWidget {
         .collection(EshopApp.collectionOrders)
         .doc(mOrderId)
         .delete();
-
+    telephony.sendSms(
+        to: model.phoneNumber,
+        message: "Your order has been shipped");
     getOrderId = "";
     Route route = MaterialPageRoute(builder: (c) => AdminShiftOrders());
     Navigator.pushReplacement(context, route);
