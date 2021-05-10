@@ -12,9 +12,9 @@ import 'package:mirus_global/config/config.dart';
 
 import 'package:mirus_global/counters/cartitemcounter.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:telephony/telephony.dart';
 
-const _mailUrl = 'mailto:treasureevent48@gmail.com?subject=MG Shop order placement';
+
+const _mailUrl = 'mailto:mirusglobalimportation@gmail.com?subject=Concerning my order placement';
 
 class OrderPayment extends StatefulWidget {
 
@@ -31,7 +31,7 @@ class OrderPayment extends StatefulWidget {
 }
 
 class _OrderPaymentState extends State<OrderPayment> {
-  final Telephony telephony = Telephony.instance;
+ // final Telephony telephony = Telephony.instance;
 
   // void _sendSMS(String msg, List<String> recipients) async {
   //   await sendSMS(message: msg, recipients: recipients)
@@ -46,7 +46,7 @@ class _OrderPaymentState extends State<OrderPayment> {
   void _launchURL() async {
     await canLaunch(_mailUrl) ?
     await launch(_mailUrl) : Fluttertoast.showToast(
-        msg: 'Could not launch Email service...',
+        msg: 'Make sure that you can send emails from this device...',
         toastLength: Toast.LENGTH_LONG);
   }
 
@@ -75,24 +75,19 @@ class _OrderPaymentState extends State<OrderPayment> {
                 child: Column(
                   children: [
                     Text(
-                      'Enquiries? Call the number below :',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                      ),
+                      'Questions or Complaints?',
+                      style: TextStyle(color: Colors.white, fontSize: 17.0),
                     ),
+                    SizedBox(height: 3.0,),
                     Text(
-                      'Customer Care',
-                      style: TextStyle(color: Colors.white, fontSize: 18.0),
-                    ),
-                    Text(
-                      '+234-908-801-8515',
+                      '09038717572 (WhatsApp ONLY)',
                       style: TextStyle(color: Colors.white, fontSize: 21.0),
                     ),
+                    SizedBox(height: 3.0,),
                     Text(
                       'OR',
                       style: TextStyle(
-                        fontSize: 23,
+                        fontSize: 19,
                         color: Colors.white,
                         fontWeight: FontWeight.bold
                       ),
@@ -114,7 +109,7 @@ class _OrderPaymentState extends State<OrderPayment> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 6.0,),
+                    SizedBox(height: 10.0,),
                     Text(
                       'Kindly pay to below account',
                       style: TextStyle(
@@ -123,24 +118,24 @@ class _OrderPaymentState extends State<OrderPayment> {
                       ),
                     ),
                     SizedBox(height: 7.0,),
+                    // Text(
+                    //     'Bank Transfer Details',
+                    // style: TextStyle(
+                    //   fontSize: 21.0,
+                    //   color: Colors.white,
+                    // ),),
                     Text(
-                        'Bank Transfer Details',
-                    style: TextStyle(
-                      fontSize: 21.0,
-                      color: Colors.white,
-                    ),),
-                    Text(
-                        'Mirus Global Shipping Ltd.',
+                        'AJAYI IRETIOGO ESTHER',
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 26.0),
                     ),
                     Text(
-                        'UBA account no. 0031236789',
+                        'UBA account no. 2100613436',
                       style: TextStyle(color: Colors.white, fontSize: 21.0),
                     ),
-                    SizedBox(height: 6.0,),
+                    SizedBox(height: 12.0,),
                     Text(
                       'Payment must be confirmed BEFORE delivery.',
                       style: TextStyle(color: Colors.yellow, fontSize: 16.0),
@@ -149,6 +144,7 @@ class _OrderPaymentState extends State<OrderPayment> {
                       'NO RETURN policy on already shipped orders.',
                       style: TextStyle(color: Colors.yellow, fontSize: 16.0),
                     ),
+                    SizedBox(height: 9.0,),
                     Text(
                       'Accept terms, or cancel, by clicking below',
                       style: TextStyle(color: Colors.yellow, fontSize: 16.0),

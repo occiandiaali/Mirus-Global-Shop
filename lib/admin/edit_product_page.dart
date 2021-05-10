@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mirus_global/Widgets/customAppBar.dart';
@@ -27,13 +28,10 @@ class EditProductPage extends StatefulWidget {
   _EditProductPageState createState() => _EditProductPageState();
 }
 
-
-
 class _EditProductPageState extends State<EditProductPage> {
 
   int qtyOfItems = 1;
   File fileImage; // storage place for captured image
-  
 
   // variables for item uploads
   final _itemCategoryEditingController = TextEditingController();
@@ -329,15 +327,16 @@ class _EditProductPageState extends State<EditProductPage> {
               color: Colors.pink,),
             title: Container(
               width: 250.0,
-              child: TextField(
-                style: TextStyle(color: Colors.deepPurple),
-                controller: _itemCategoryEditingController,
-                decoration: InputDecoration(
-                  hintText: widget.itemModel.category,
-                  hintStyle: TextStyle(color: Colors.deepPurpleAccent),
-                  border: InputBorder.none,
+                child: TextField(
+                  style: TextStyle(color: Colors.deepPurple),
+                  controller: _itemCategoryEditingController,
+                  decoration: InputDecoration(
+                    hintText: widget.itemModel.category,
+                    hintStyle: TextStyle(color: Colors.deepPurpleAccent),
+                    border: InputBorder.none,
+                  ),
                 ),
-              ),
+
             ),
           ),
           Divider(color: Colors.deepPurple,),
@@ -354,6 +353,11 @@ class _EditProductPageState extends State<EditProductPage> {
                   hintText: widget.itemModel.shortInfo,
                   hintStyle: TextStyle(color: Colors.deepPurpleAccent),
                   border: InputBorder.none,
+                  suffixIcon: IconButton(
+                    alignment: Alignment.centerLeft,
+                    icon: Icon(Icons.copy_outlined),
+                    onPressed: () => _copyToClipboard('${widget.itemModel.shortInfo}'),
+                  ),
                 ),
               ),
             ),
@@ -373,6 +377,11 @@ class _EditProductPageState extends State<EditProductPage> {
                   hintText: widget.itemModel.title,
                   hintStyle: TextStyle(color: Colors.deepPurpleAccent),
                   border: InputBorder.none,
+                  suffixIcon: IconButton(
+                    alignment: Alignment.centerLeft,
+                    icon: Icon(Icons.copy_outlined),
+                    onPressed: () => _copyToClipboard('${widget.itemModel.title}'),
+                  ),
                 ),
               ),
             ),
@@ -384,38 +393,44 @@ class _EditProductPageState extends State<EditProductPage> {
               Icons.info_outline,
               color: Colors.pink,),
             title: Container(
-              width: 250.0,
-              child: TextField(
-                style: TextStyle(color: Colors.deepPurple),
-                controller: _itemDescEditingController,
-                decoration: InputDecoration(
-                  hintText: widget.itemModel.longDescription,
-                  hintStyle: TextStyle(color: Colors.deepPurpleAccent),
-                  border: InputBorder.none,
-                ),
+                width: 250.0,
+                  child: TextField(
+                    style: TextStyle(color: Colors.deepPurple),
+                    controller: _itemDescEditingController,
+                    decoration: InputDecoration(
+                      hintText: widget.itemModel.longDescription,
+                      hintStyle: TextStyle(color: Colors.deepPurpleAccent),
+                      border: InputBorder.none,
+                      suffixIcon: IconButton(
+                        alignment: Alignment.centerLeft,
+                        icon: Icon(Icons.copy_outlined),
+                        onPressed: () => _copyToClipboard('${widget.itemModel.longDescription}'),
+                      ),
+                    ),
+                  ),
+
               ),
-            ),
           ),
           Divider(color: Colors.deepPurple,),
 
-          ListTile(
-            leading: Icon(
-              Icons.wysiwyg,
-              color: Colors.pink,),
-            title: Container(
-              width: 250.0,
-              child: TextField(
-                style: TextStyle(color: Colors.deepPurple),
-                controller: _qtyEditingController,
-                decoration: InputDecoration(
-                  hintText: widget.itemModel.qty.toString(),
-                  hintStyle: TextStyle(color: Colors.deepPurpleAccent),
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-          ),
-          Divider(color: Colors.deepPurple,),
+          // ListTile(
+          //   leading: Icon(
+          //     Icons.wysiwyg,
+          //     color: Colors.pink,),
+          //   title: Container(
+          //     width: 250.0,
+          //     child: TextField(
+          //       style: TextStyle(color: Colors.deepPurple),
+          //       controller: _qtyEditingController,
+          //       decoration: InputDecoration(
+          //         hintText: widget.itemModel.qty.toString(),
+          //         hintStyle: TextStyle(color: Colors.deepPurpleAccent),
+          //         border: InputBorder.none,
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // Divider(color: Colors.deepPurple,),
 
           ListTile(
             leading: Icon(
@@ -448,6 +463,13 @@ class _EditProductPageState extends State<EditProductPage> {
   } // display upload form
 
 // ================================
+
+  Future<void> _copyToClipboard(String str) async {
+   await Clipboard.setData(ClipboardData(text: str));
+   // Fluttertoast.showToast(msg: 'Copied');
+  }
+
+
 
 } // class
 

@@ -132,16 +132,29 @@ class MyDrawer extends StatelessWidget {
 
                 ListTile(
                   leading: Icon(Icons.add_location_outlined, color: Colors.white,),
-                  title: Text('Add address', style: TextStyle(color: Colors.white),),
+                  title: Text('Delivery address', style: TextStyle(color: Colors.white),),
                   onTap: () {
                     Route route = MaterialPageRoute(builder: (c) => AddAddress());
                     Navigator.push(context, route);
                   },
                 ),
+                // Divider(
+                //   height: 10.0,
+                //   color: Colors.white,
+                //   thickness: 6.0,),
+                //
+                // ListTile(
+                //   leading: Icon(Icons.settings, color: Colors.white,),
+                //   title: Text('Settings', style: TextStyle(color: Colors.white),),
+                //   onTap: () {
+                //     Route route = MaterialPageRoute(builder: (c) => null);
+                //     Navigator.push(context, route);
+                //   },
+                // ),
                 Divider(
-                  height: 10.0,
+                  height: 30.0,
                   color: Colors.white,
-                  thickness: 6.0,),
+                  thickness: 18.0,),
 
                 ListTile(
                   leading: Icon(Icons.logout, color: Colors.white,),

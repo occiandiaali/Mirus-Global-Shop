@@ -96,7 +96,15 @@ class OrderDetails extends StatelessWidget {
                         ),
                         Padding(
                           padding: EdgeInsets.all(6.0),
-                          child: Text("Order ID: $getOrderId"),
+                          //child: Text("Order ID: $getOrderId"),
+                          child: SelectableText(
+                            "Order ID: $getOrderId",
+                            showCursor: true,
+                            cursorColor: Colors.deepPurple,
+                            cursorWidth: 5,
+                            cursorRadius: Radius.circular(5),
+                            toolbarOptions: ToolbarOptions(copy: true),
+                          ),
                         ),
                         Padding(
                           padding: EdgeInsets.all(4.0),

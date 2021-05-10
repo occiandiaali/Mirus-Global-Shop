@@ -101,7 +101,15 @@ class AdminOrderDetails extends StatelessWidget {
                     ),
                     Padding(
                       padding: EdgeInsets.all(4.0),
-                      child: Text("Order ID: $getOrderId"),
+                      //child: Text("Order ID: $getOrderId"),
+                      child: SelectableText(
+                        "Order ID: $getOrderId",
+                        showCursor: true,
+                        cursorColor: Colors.deepPurple,
+                        cursorWidth: 5,
+                        cursorRadius: Radius.circular(5),
+                        toolbarOptions: ToolbarOptions(copy: true),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.all(4.0),
@@ -364,7 +372,12 @@ class AdminShippingDetails extends StatelessWidget {
         .delete();
     telephony.sendSms(
         to: model.phoneNumber,
-        message: "Your order has been shipped");
+        message: '''
+        Your order has been processed.
+        Order ID: $getOrderId
+        Please, note that due to international shipping 
+        and merchant delays delivery takes a MINIMUM of 30 days.
+        ''');
     getOrderId = "";
     Route route = MaterialPageRoute(builder: (c) => AdminShiftOrders());
     Navigator.pushReplacement(context, route);

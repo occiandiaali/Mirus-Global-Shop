@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:mirus_global/store/cart.dart';
 import 'package:mirus_global/admin/edit_product_page.dart';
-import 'package:mirus_global/store/product_page.dart';
-import 'package:mirus_global/counters/cartitemcounter.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
-import 'package:mirus_global/config/config.dart';
 import '../Widgets/loadingWidget.dart';
-import '../Widgets/myDrawer.dart';
-import '../Widgets/searchBox.dart';
 import '../models/item.dart';
+import 'package:flutter_mailer/flutter_mailer.dart';
+
+
 
 double width;
 class AdminManage extends StatefulWidget {
@@ -21,21 +16,32 @@ class AdminManage extends StatefulWidget {
 
 class _AdminManageState extends State<AdminManage> {
 
-  void _show(BuildContext ctx) {
-    showModalBottomSheet(
-        elevation: 10,
-        backgroundColor: Colors.amber,
-        context: ctx,
-        builder: (ctx) => Container(
-          width: 300,
-          height: 100,
-          color: Colors.white54,
-          alignment: Alignment.center,
-          child: Text(
-              'Admin settings will show here...',
-            style: TextStyle(color: Colors.deepPurple, fontSize: 23.0),),
-        ));
+  // void _show(BuildContext ctx) {
+  //   showModalBottomSheet(
+  //       elevation: 10,
+  //       backgroundColor: Colors.amber,
+  //       context: ctx,
+  //       builder: (ctx) => Container(
+  //         width: 300,
+  //         height: 100,
+  //         color: Colors.white54,
+  //         alignment: Alignment.center,
+  //         child: Text(
+  //             'Admin settings will show here...',
+  //           style: TextStyle(color: Colors.deepPurple, fontSize: 23.0),),
+  //       ));
+  // }
+
+  void _sendBulkMails() async {
+    final MailOptions mailOptions = MailOptions(
+      subject: 'Email subject',
+      recipients: ['email1@addy.com', 'email2@addy.com'],
+      attachments: ['path/to/image1.png', 'path/to/image2.png']
+    );
+    await FlutterMailer.send(mailOptions);
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +75,9 @@ class _AdminManageState extends State<AdminManage> {
               children: [
                 IconButton(
                   icon: Icon(
-                    Icons.settings_applications_outlined,
+                    Icons.mail,
                     color: Colors.white,),
-                  onPressed: () => _show(context),
+                  onPressed: () => _sendBulkMails()
                 ),
 
               ],
