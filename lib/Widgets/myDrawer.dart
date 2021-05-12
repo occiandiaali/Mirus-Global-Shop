@@ -132,7 +132,7 @@ class MyDrawer extends StatelessWidget {
 
                 ListTile(
                   leading: Icon(Icons.add_location_outlined, color: Colors.white,),
-                  title: Text('Delivery address', style: TextStyle(color: Colors.white),),
+                  title: Text('Add address', style: TextStyle(color: Colors.white),),
                   onTap: () {
                     Route route = MaterialPageRoute(builder: (c) => AddAddress());
                     Navigator.push(context, route);

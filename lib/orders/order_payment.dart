@@ -146,7 +146,11 @@ class _OrderPaymentState extends State<OrderPayment> {
                     ),
                     SizedBox(height: 9.0,),
                     Text(
-                      'Accept terms, or cancel, by clicking below',
+                      'Click I ACCEPT to place order',
+                      style: TextStyle(color: Colors.yellow, fontSize: 16.0),
+                    ),
+                    Text(
+                      'Click CANCEL to cancel order placement',
                       style: TextStyle(color: Colors.yellow, fontSize: 16.0),
                     ),
                   ],
@@ -221,7 +225,7 @@ class _OrderPaymentState extends State<OrderPayment> {
           .displayResult(EshopApp.userCartList.length);
     });
     Fluttertoast.showToast(
-        msg: 'Full payment must be confirmed BEFORE delivery.',
+        msg: '',
     gravity: ToastGravity.CENTER,
     toastLength: Toast.LENGTH_LONG);
 

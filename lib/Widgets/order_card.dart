@@ -19,13 +19,14 @@ class OrderCard extends StatelessWidget {
   final String orderBy;
   final String addressID;
 
-  OrderCard({Key key,
-    this.itemCount,
-    this.data,
-    this.orderID,
-  this.isEnabled,
-  this.orderBy,
-  this.addressID})
+  OrderCard(
+      {Key key,
+      this.itemCount,
+      this.data,
+      this.orderID,
+      this.isEnabled,
+      this.orderBy,
+      this.addressID})
       : super(key: key);
 
   @override
@@ -59,10 +60,8 @@ class OrderCard extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (c, index) {
             ItemModel model = ItemModel.fromJson(data[index].data());
-            return sourceOrderInfo(model,
-                context,
-                oID: orderID,
-                isEButtonEnabled: isEnabled);
+            return sourceOrderInfo(model, context,
+                oID: orderID, isEButtonEnabled: isEnabled);
           },
         ),
       ),
@@ -71,118 +70,131 @@ class OrderCard extends StatelessWidget {
 } // class
 
 Widget sourceOrderInfo(ItemModel model, BuildContext context,
-    {Color background,
-      String oID,
-      bool isEButtonEnabled = true}) {
+    {Color background, String oID, bool isEButtonEnabled = true}) {
   width = MediaQuery.of(context).size.width;
-  // final qtyItem = Provider.of<ItemQuantity>(context);
 
   return Container(
-    color: Colors.grey[100],
-    height: 170.0,
-    width: width,
-    child: Row(
-      children: [
-        Image.network(
-          model.thumbnailUrl,
-          width: 180.0,
-        ),
-        SizedBox(
-          width: 10.0,
-        ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          color: Colors.grey[100],
+          height: 170.0,
+          width: width,
+          child: Row(
             children: [
-              SizedBox(height: 15.0),
-              Container(
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        model.title,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              Image.network(
+                model.thumbnailUrl,
+                width: 180.0,
               ),
               SizedBox(
-                height: 5.0,
+                width: 10.0,
               ),
-              Container(
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        model.shortInfo,
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 12.0,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 2.0,
-              ),
-              Row(
-                children: [
-                  Column(
+              Expanded(
+                child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(height: 37.0),
+                      Container(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                model.title,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                model.shortInfo,
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 9.0),
                       Row(
                         children: [
-                          Text(
-                            'Unit: =N= ${model.price}',
-                            style: TextStyle(
-                              fontSize: 15.0,
-                              color: Colors.green,
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    'Unit: =N= ${model.price}',
+                                    style: TextStyle(
+                                      fontSize: 15.0,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 9.0),
+                              isEButtonEnabled ?
+                              Row(
+                                children: [
+                                  Text('Order Details ',),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Route route;
+                                          //   if (counter == 0) {
+                                          //   counter = counter + 1;
+                                          route = MaterialPageRoute(
+                                              builder: (c) =>
+                                                  OrderDetails(orderID: oID));
+                                          Navigator.push(context, route);
+                                    },
+                                    child: Icon(
+                                      Icons.check_circle,
+                                      size: 23.0,
+                                      color: Colors.deepPurple,
+                                    ),
+                                  ),
+                                  // ElevatedButton(
+                                  //   child: Text('Details'),
+                                  //   onPressed: () {
+                                  //     Route route;
+                                  //     //   if (counter == 0) {
+                                  //     //   counter = counter + 1;
+                                  //     route =
+                                  //         MaterialPageRoute(builder: (c) => OrderDetails(orderID: oID));
+                                  //     Navigator.push(context, route);
+                                  //     //   }
+                                  //   },
+                                  // ),
+                                ],
+                              )
+                                  : Text('Shop with us again!!!'),
+                            ],
                           ),
                         ],
                       ),
-                      isEButtonEnabled ?
-                      Row(
-                        children: [
-                          ElevatedButton(
-                            child: Text('Details'),
-                            onPressed: () {
-                              Route route;
-                           //   if (counter == 0) {
-                             //   counter = counter + 1;
-                                route =
-                                    MaterialPageRoute(builder: (c) => OrderDetails(orderID: oID));
-                                Navigator.push(context, route);
-                           //   }
-                            },
-                          ),
-                        ],
-                      )
-                      : Text('Shop with us again!!!'),
+                      Flexible(
+                        child: Container(),
+                      ),
+                      Divider(
+                        height: 4.0,
+                        color: Colors.purpleAccent,
+                        thickness: 0.5,
+                      ),
                     ],
                   ),
-                ],
-              ),
-              Flexible(
-                child: Container(),
-              ),
-              Divider(
-                height: 4.0,
-                color: Colors.purpleAccent,
-                thickness: 0.5,
               ),
             ],
           ),
-        ),
-      ],
-    ),
-  );
+        );
 } // source order info

@@ -91,11 +91,20 @@ class AdminOrderDetails extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          '=N=${dataMap[EshopApp.totalAmount]}',
+                          'Total: =N= ${dataMap[EshopApp.totalAmount]}',
                           style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
                           ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          '(Remember to add delivery fees)'
                         ),
                       ),
                     ),

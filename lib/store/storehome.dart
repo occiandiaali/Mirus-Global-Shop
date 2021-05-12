@@ -105,10 +105,9 @@ class _StoreHomeState extends State<StoreHome> {
                             //   ),
                             // );
                             return counter.count != null ?
-                                Text(
+                            Text(
                                 (EshopApp.sharedPreferences
-                                        .getStringList(EshopApp.userCartList)
-                                        .length - 1).toString(),
+                                        .getStringList(EshopApp.userCartList).length - 1).toString(),
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 12.0,

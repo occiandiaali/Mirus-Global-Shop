@@ -36,6 +36,7 @@ class _AdminManageState extends State<AdminManage> {
     final MailOptions mailOptions = MailOptions(
       subject: 'Email subject',
       recipients: ['email1@addy.com', 'email2@addy.com'],
+      ccRecipients: ['email13@addy.com', 'email4@addy.com'],
       attachments: ['path/to/image1.png', 'path/to/image2.png']
     );
     await FlutterMailer.send(mailOptions);

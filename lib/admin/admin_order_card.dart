@@ -107,7 +107,7 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 15.0),
+              SizedBox(height: 37.0),
               Container(
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
@@ -165,26 +165,46 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
                      isEButtonEnabled ?
                       Row(
                         children: [
-                          ElevatedButton(
-                            child: Text('Details'),
-                            onPressed: () {
+                          Text('Order Details ',),
+                          GestureDetector(
+                            onTap: () {
                               Route route;
                               //   if (counter == 0) {
                               //   counter = counter + 1;
-                              route =
-                                  MaterialPageRoute(builder: (c) =>
+                              route = MaterialPageRoute(
+                                  builder: (c) =>
                                       AdminOrderDetails(
                                           orderID: oID,
-                                      orderBy: orderBy,
-                                      addressID: addressID,));
+                                        orderBy: orderBy,
+                                         addressID: addressID
+                                      ));
                               Navigator.push(context, route);
-                              //   }
                             },
+                            child: Icon(
+                              Icons.check_circle,
+                              size: 23.0,
+                              color: Colors.deepPurple,
+                            ),
                           ),
+                          // ElevatedButton(
+                          //   child: Text('Details'),
+                          //   onPressed: () {
+                          //     Route route;
+                          //     //   if (counter == 0) {
+                          //     //   counter = counter + 1;
+                          //     route =
+                          //         MaterialPageRoute(builder: (c) =>
+                          //             AdminOrderDetails(
+                          //                 orderID: oID,
+                          //             orderBy: orderBy,
+                          //             addressID: addressID,));
+                          //     Navigator.push(context, route);
+                          //     //   }
+                          //   },
+                          // ),
                         ],
                       )
-                      // : Text('Looking good...'),
-                          : Icon(Icons.check_circle_outline),
+                       : Text(''),
                     ],
                   ),
                 ],

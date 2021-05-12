@@ -114,18 +114,18 @@ class _CartCardState extends State<CartCard> {
                               padding: EdgeInsets.only(top: 0.0),
                               child: Text(
                                // '${widget.model.qty - itemQty} pieces in stock',
-                                '50% discount applied',
+                                'Discount applied',
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(top: 0.0),
+                              padding: EdgeInsets.only(top: 8.0),
                               child: Row(
                                 children: [
                                   Text(
                                     // '=N= ${widget.model.price * itemQty}',
                                     '=N= ${widget.model.price}',
                                     style: TextStyle(
-                                      fontSize: 19.0,
+                                      fontSize: 21.0,
                                       color: Colors.green,
                                     ),
                                   ),
@@ -137,10 +137,11 @@ class _CartCardState extends State<CartCard> {
                               child: Row(
                                 children: [
                                   Text(
-                                    'Delivery: =N= ${widget.model.price * (5 / 100)}',
+                                   // 'Delivery: =N= ${widget.model.price * (5 / 100)}',
+                                    '(EXCLUDING delivery fee)',
                                     style: TextStyle(
                                       fontSize: 12.0,
-                                      color: Colors.green,
+                                      color: Colors.deepPurple,
                                     ),
                                   ),
                                 ],

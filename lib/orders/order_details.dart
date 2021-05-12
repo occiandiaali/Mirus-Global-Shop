@@ -86,7 +86,7 @@ class OrderDetails extends StatelessWidget {
                           child: Align(
                             alignment: Alignment.center,
                             child: Text(
-                              '=N=${dataMap[EshopApp.totalAmount]}',
+                              'Pay: =N= ${dataMap[EshopApp.totalAmount]}',
                               style: TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
@@ -94,6 +94,45 @@ class OrderDetails extends StatelessWidget {
                             ),
                           ),
                         ),
+                        Padding(
+                          padding: EdgeInsets.all(4.0),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              '(delivery fee not included)',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                          Padding(
+                          padding: EdgeInsets.all(4.0),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'To: AJAYI IRETIOGO ESTHER,',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'UBA account no. 2100613436',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
                         Padding(
                           padding: EdgeInsets.all(6.0),
                           //child: Text("Order ID: $getOrderId"),
@@ -201,15 +240,15 @@ class StatusBanner extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () => print("icon tapped"),
-            child: Container(
-              child: Icon(
-                Icons.arrow_drop_down_circle_outlined,
-                color: Colors.white,
-              ),
-            ),
-          ),
+          // GestureDetector(
+          //   onTap: () => print("icon tapped"),
+          //   child: Container(
+          //     child: Icon(
+          //       Icons.arrow_drop_down_circle_outlined,
+          //       color: Colors.white,
+          //     ),
+          //   ),
+          // ),
           SizedBox(width: 20.0,),
           Text(
             'Order Placed: $msg',
@@ -250,14 +289,6 @@ class ShippingDetails extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(height: 20.0,),
-        Text(
-            'Confirm a successful bank transfer '
-        ),
-        Text(
-            'BEFORE you click below'
-        ),
-
-        SizedBox(height: 6.0,),
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: 10.0,
@@ -324,6 +355,7 @@ class ShippingDetails extends StatelessWidget {
               onTap: () => confirmOrderReceived(context, getOrderId),
               child: Container(
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(9.0),
                   gradient: LinearGradient(
                     colors: [
                       Colors.deepPurple,
@@ -335,11 +367,11 @@ class ShippingDetails extends StatelessWidget {
                     tileMode: TileMode.clamp,
                   ),
                 ),
-                width: MediaQuery.of(context).size.width - 120.0,
+                width: MediaQuery.of(context).size.width - 170.0,
                 height: 50.0,
                 child: Center(
                   child: Text(
-                    'Confirm correct',
+                    'All Correct',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18.0,
