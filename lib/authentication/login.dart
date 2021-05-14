@@ -180,11 +180,12 @@ class _LoginState extends State<Login> {
       );
     });
     if(adminUser != null) {
-      String adminName = "Admin";
+     // String adminName = "Admin";
+      // firestore issue: https://stackoverflow.com/questions/52024666/firestore-delete-document-and-security-rules
       readInfoData(adminUser)
           .then((_) {
         Navigator.pop(context);
-        Route route = MaterialPageRoute(builder: (c) => UploadPage(adminName));
+        Route route = MaterialPageRoute(builder: (c) => UploadPage(adminUser.email));
         Navigator.pushReplacement(context, route);
       }).catchError((e) {});
     }
