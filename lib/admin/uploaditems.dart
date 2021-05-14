@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mirus_global/admin/admin_manage.dart';
 import 'package:mirus_global/authentication/auth_screen.dart';
 //import 'package:mirus_global/admin/adminShiftOrders.dart';
@@ -59,7 +60,18 @@ class _UploadPageState extends State<UploadPage>
 
   @override
   Widget build(BuildContext context) {
-    return imageFile == null ? displayAdminScreen() : displayUploadForm();
+   // return imageFile == null ? displayAdminScreen() : displayUploadForm();
+    return WillPopScope(
+        child: imageFile == null ? displayAdminScreen() : displayUploadForm(),
+        onWillPop: () async {
+          Fluttertoast.showToast(
+              msg: 'Sign out for safety...',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER
+          );
+          return false;
+        });
+
   }
 
   displayAdminScreen() {
