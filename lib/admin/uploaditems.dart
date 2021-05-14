@@ -63,6 +63,13 @@ class _UploadPageState extends State<UploadPage>
   }
 
   displayAdminScreen() {
+    // Regex section for extracting xters
+    // before '@' in user email
+    // useful in welcome message on login
+    var exp = RegExp(r"^.*?(?=@)");
+    String re = exp.stringMatch(widget.adminUser);
+    String user = re[0].toUpperCase() + re.substring(1);
+    // =========================
     return Scaffold (
         appBar: AppBar(
           flexibleSpace: Container(
@@ -130,10 +137,11 @@ class _UploadPageState extends State<UploadPage>
                   height: 21.0,
                 ),
                 Text(
-                  'Welcome, ${widget.adminUser}',
+                 // 'Welcome, ${widget.adminUser}',
+                  'Welcome, $user',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 28.0,
+                    fontSize: 24.0,
                   ),
                 ),
                 SizedBox(
