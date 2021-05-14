@@ -94,7 +94,10 @@ class _LoginState extends State<Login> {
               onPressed: () {
                 if(_emailController.text.isNotEmpty &&
                     _passwordController.text.isNotEmpty) {
-                   _emailController.text == 'adminone@gmail.com' ?
+                  (
+                      _emailController.text == 'adminone@gmail.com' ||
+                          _emailController.text == 'treasureevent48@gmail.com'
+                  ) ?
                       _loginAdmin() : _loginUser();
                 } else {
                   showDialog(
