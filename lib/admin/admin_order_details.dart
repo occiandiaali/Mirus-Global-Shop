@@ -384,8 +384,8 @@ class AdminShippingDetails extends StatelessWidget {
         message: '''
         Your order has been processed.
         Order ID: $getOrderId
-        Please, note that due to international shipping 
-        and merchant delays delivery takes a MINIMUM of 30 days.
+        Due to international shipping 
+        and/or merchant delays delivery takes a MINIMUM of 30 days.
         ''');
     getOrderId = "";
     Route route = MaterialPageRoute(builder: (c) => AdminShiftOrders());

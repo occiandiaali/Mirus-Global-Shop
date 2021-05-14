@@ -75,7 +75,26 @@ class _MyOrdersState extends State<MyOrders> {
               .collection(EshopApp.collectionOrders).snapshots(),
 
           builder: (c, snapshot) {
-            return snapshot.hasData ?
+          //  return !snapshot.hasData ?
+            return snapshot.data.size < 1 ?
+            Column(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    'images/storefront.png',
+                    height: 450.0,
+                    width: 350.0,),
+                ),
+                Text(
+                  'No orders here yet...',
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ) :
             ListView.builder(
               itemCount: snapshot.data.docs.length,
               itemBuilder: (c, index) {
@@ -96,10 +115,12 @@ class _MyOrdersState extends State<MyOrders> {
                       isEnabled: true,
                     )
                         : Center(child: circularProgress(),);
+
                   },
                 );
               },
-            ) : Center(child: circularProgress(),);
+            );
+               // : Center(child: circularProgress(),);
           },
         ),
       ),

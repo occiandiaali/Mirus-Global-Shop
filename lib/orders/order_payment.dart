@@ -225,7 +225,7 @@ class _OrderPaymentState extends State<OrderPayment> {
           .displayResult(EshopApp.userCartList.length);
     });
     Fluttertoast.showToast(
-        msg: '',
+        msg: 'Order placed. Check your ORDERS tab for details',
     gravity: ToastGravity.CENTER,
     toastLength: Toast.LENGTH_LONG);
 

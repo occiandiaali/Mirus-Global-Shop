@@ -56,7 +56,26 @@ class _MyOrdersState extends State<AdminShiftOrders> {
               .snapshots(),
 
           builder: (c, snapshot) {
-            return snapshot.hasData ?
+           // return snapshot.hasData ?
+            return snapshot.data.size < 1 ?
+            Column(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    'images/mg_launch.png',
+                    height: 450.0,
+                    width: 350.0,),
+                ),
+                Text(
+                    'No orders placed yet...',
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ) :
             ListView.builder(
               itemCount: snapshot.data.docs.length,
               itemBuilder: (c, index) {
@@ -81,27 +100,11 @@ class _MyOrdersState extends State<AdminShiftOrders> {
                     )
                         : Center(
                       child: circularProgress(),
-                     //  child: Text(
-                     //    'No orders have been placed...',
-                     //    style: TextStyle(
-                     //      color: Colors.grey,
-                     //      fontSize: 18.0,
-                     //    ),
-                     //  ),
+
                     );
                   },
                 );
               },
-            )
-                : Center(
-              child: circularProgress(),
-              // child: Text(
-              //   'No orders have been placed...',
-              //   style: TextStyle(
-              //     color: Colors.grey,
-              //     fontSize: 18.0,
-              //   ),
-              // ),
             );
           },
         ),

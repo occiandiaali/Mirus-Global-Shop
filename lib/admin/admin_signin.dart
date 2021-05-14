@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mirus_global/admin/uploaditems.dart';
 import 'package:mirus_global/authentication/auth_screen.dart';
+import 'package:mirus_global/config/config.dart';
 import 'package:mirus_global/dialog_box/error_dialog.dart';
 //import 'package:mirus_global/admin/uploadItems.dart';
 //import 'package:mirus_global/authentication/authenication.dart';
@@ -102,7 +104,7 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
                 children: [
                   CustomTextField(
                     controller: _adminIDEditingController,
-                    data: Icons.badge,
+                    data: Icons.wc_rounded,
                     hintText: 'Admin ID',
                     isObscured: false,
                   ),
@@ -149,7 +151,8 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
         ),
       ),
     );
-  }
+  } // build widget
+
 
   loginAdmin() {
     FirebaseFirestore.instance.collection("admins")
@@ -162,14 +165,15 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
             } else {
              // Scaffold.of(context).showBottomSheet((context) => Text('Welcome, ${result.data()['name']}!'));
               String adminUser = result.data()['name'].toString(); // get string value admin name
-              setState(() {
-                _adminIDEditingController.text = "";
-                _passwordEditingController.text = "";
-              });
+                setState(() {
+                  _adminIDEditingController.text = "";
+                  _passwordEditingController.text = "";
+                });
+                Route route = MaterialPageRoute(
+                    builder: (c) => UploadPage(adminUser));
+                Navigator.pushReplacement(context, route);
+                // Navigator.push(context, route);
 
-              Route route = MaterialPageRoute(builder: (c) => UploadPage(adminUser));
-              Navigator.pushReplacement(context, route);
-             // Navigator.push(context, route);
             }
           });
     });

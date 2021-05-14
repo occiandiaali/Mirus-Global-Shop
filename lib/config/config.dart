@@ -21,6 +21,7 @@ class EshopApp {
   static final String userPhotoUrl = 'photoUrl';
   static final String userUID = 'uid';
   static final String userAvatarUrl = 'url';
+  static final bool isAdmin = false;
 
   static final String addressID = 'addressID';
   static final String totalAmount = 'totalAmount';

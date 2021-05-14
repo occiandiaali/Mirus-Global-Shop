@@ -4,9 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mirus_global/admin/uploaditems.dart';
+import 'package:mirus_global/authentication/auth_screen.dart';
 import 'package:mirus_global/config/config.dart';
 import 'package:mirus_global/dialog_box/error_dialog.dart';
 import 'package:mirus_global/dialog_box/loading_dialog.dart';
+import 'package:mirus_global/main.dart';
 import 'package:mirus_global/store/storehome.dart';
 import 'package:mirus_global/Widgets/customTextField.dart';
 import 'package:image_picker/image_picker.dart';
@@ -280,11 +284,12 @@ void _registerUser() async {
   if (firebaseUser != null) {
     saveUserInfoToFireStore(firebaseUser).then((value) {
       Navigator.pop(context);
-      Route route = MaterialPageRoute(builder: (c) => StoreHome());
+      Route route = MaterialPageRoute(builder: (c) => AuthScreen());
       Navigator.pushReplacement(context, route);
+      Fluttertoast.showToast(msg: "Your account has been created, you can login...");
     });
   }
-}
+} // _register user
 
 Future saveUserInfoToFireStore(User fUser) async {
   FirebaseFirestore.instance.collection("users").add({
@@ -292,6 +297,7 @@ Future saveUserInfoToFireStore(User fUser) async {
     "name": _nameController.text.trim(),
     "email": fUser.email,
     "url": userImageUrl,
+    "isAdmin": false,
     EshopApp.userCartList: ["garbageValue"],
   }).then((s) {
     print("Collection created...");
@@ -301,6 +307,7 @@ Future saveUserInfoToFireStore(User fUser) async {
 
   await EshopApp.sharedPreferences.setString("uid", fUser.uid);
   await EshopApp.sharedPreferences.setString(EshopApp.userEmail, fUser.email);
+  await EshopApp.sharedPreferences.setBool("isAdmin", EshopApp.isAdmin);
   await EshopApp.sharedPreferences.setString(EshopApp.userName, _nameController.text);
   await EshopApp.sharedPreferences.setString(EshopApp.userAvatarUrl, userImageUrl);
   await EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, ["garbageValue"]);

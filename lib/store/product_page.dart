@@ -106,6 +106,7 @@ class _ProductPageState extends State<ProductPage> {
                           //   style: boldTextStyle,
                           // ),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
                                         "=N= ${widget.itemModel.price}",

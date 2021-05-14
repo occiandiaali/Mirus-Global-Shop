@@ -38,7 +38,7 @@ class _UploadPageState extends State<UploadPage>
   final _itemDescEditingController = TextEditingController();
   final _itemPriceEditingController = TextEditingController();
   final _searchInfoEditingController = TextEditingController();
-  final _qtyEditingController = TextEditingController();
+ // final _qtyEditingController = TextEditingController();
  // final _itemQtyController = TextEditingController();
 
   String itemId = DateTime.now().millisecondsSinceEpoch.toString();
@@ -52,7 +52,7 @@ class _UploadPageState extends State<UploadPage>
     _itemDescEditingController.dispose();
     _itemPriceEditingController.dispose();
     _searchInfoEditingController.dispose();
-    _qtyEditingController.dispose();
+   // _qtyEditingController.dispose();
    // _itemQtyController.dispose();
     super.dispose();
   }
@@ -60,7 +60,6 @@ class _UploadPageState extends State<UploadPage>
   @override
   Widget build(BuildContext context) {
     return imageFile == null ? displayAdminScreen() : displayUploadForm();
-
   }
 
   displayAdminScreen() {
@@ -80,7 +79,8 @@ class _UploadPageState extends State<UploadPage>
           actions: [
             IconButton(
               icon: Icon(
-                Icons.border_color,
+               // Icons.border_color,
+                Icons.list_alt_outlined,
                 color: Colors.white,
               ),
               onPressed: () {
@@ -89,7 +89,22 @@ class _UploadPageState extends State<UploadPage>
                 Navigator.push(context, route);
               },
             ),
-
+            IconButton(
+              icon: Icon(
+                Icons.logout,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                EshopApp.auth.signOut().then((c) {
+                  Navigator.of(context).pushAndRemoveUntil(
+                    // context,
+                    MaterialPageRoute(builder: (c) => AuthScreen()),
+                        (route) => false,
+                  );
+                  // Navigator.pushReplacement(context, route);
+                });
+              },
+            ),
           ],
         ),
         body: Container(
@@ -107,9 +122,9 @@ class _UploadPageState extends State<UploadPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'images/mg_launch.png',
-                  height: 150.0,
-                  width: 150.0,
+                  'images/adminlogo.png',
+                  height: 100.0,
+                  width: 100.0,
                 ),
                 SizedBox(
                   height: 21.0,
@@ -119,12 +134,6 @@ class _UploadPageState extends State<UploadPage>
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 28.0,
-                  ),
-                ),
-                Text(
-                  '(back arrow logs you out)',
-                  style: TextStyle(
-                      color: Colors.white
                   ),
                 ),
                 SizedBox(
@@ -332,26 +341,26 @@ class _UploadPageState extends State<UploadPage>
               ),
             ),
           ),
-          Divider(color: Colors.deepPurple,),
-
-          ListTile(
-            leading: Icon(
-              Icons.wysiwyg,
-              color: Colors.deepPurple,),
-            title: Container(
-              width: 250.0,
-              child: TextField(
-                keyboardType: TextInputType.number,
-                style: TextStyle(color: Colors.deepPurple),
-                controller: _qtyEditingController,
-                decoration: InputDecoration(
-                  hintText: 'Quantity in stock',
-                  hintStyle: TextStyle(color: Colors.deepPurpleAccent),
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-          ),
+          // Divider(color: Colors.deepPurple,),
+          //
+          // ListTile(
+          //   leading: Icon(
+          //     Icons.wysiwyg,
+          //     color: Colors.deepPurple,),
+          //   title: Container(
+          //     width: 250.0,
+          //     child: TextField(
+          //       keyboardType: TextInputType.number,
+          //       style: TextStyle(color: Colors.deepPurple),
+          //       controller: _qtyEditingController,
+          //       decoration: InputDecoration(
+          //         hintText: 'Quantity in stock',
+          //         hintStyle: TextStyle(color: Colors.deepPurpleAccent),
+          //         border: InputBorder.none,
+          //       ),
+          //     ),
+          //   ),
+          // ),
           Divider(color: Colors.deepPurple,),
 
           ListTile(
@@ -385,7 +394,7 @@ class _UploadPageState extends State<UploadPage>
     _itemNameEditingController.clear();
     _itemDescEditingController.clear();
     _itemPriceEditingController.clear();
-    _qtyEditingController.clear();
+   // _qtyEditingController.clear();
   }
 
   uploadAndSaveItem() async {
@@ -411,7 +420,7 @@ class _UploadPageState extends State<UploadPage>
       "category": _itemCategoryEditingController.text.trim(),
       "shortInfo": _searchInfoEditingController.text.trim(),
       "longDescription": _itemDescEditingController.text.trim(),
-      "quantity": int.parse(_qtyEditingController.text),
+      //"quantity": int.parse(_qtyEditingController.text),
       "price": int.parse(_itemPriceEditingController.text),
       "publishedDate": DateTime.now(),
       "status": "available",
@@ -427,7 +436,7 @@ class _UploadPageState extends State<UploadPage>
         _itemDescEditingController.clear();
         _itemPriceEditingController.clear();
         _searchInfoEditingController.clear();
-        _qtyEditingController.clear();
+      //  _qtyEditingController.clear();
       });
     }).catchError((e) => print("Error: $e"));
 
