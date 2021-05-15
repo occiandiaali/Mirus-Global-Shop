@@ -16,22 +16,6 @@ class AdminManage extends StatefulWidget {
 
 class _AdminManageState extends State<AdminManage> {
 
-  // void _show(BuildContext ctx) {
-  //   showModalBottomSheet(
-  //       elevation: 10,
-  //       backgroundColor: Colors.amber,
-  //       context: ctx,
-  //       builder: (ctx) => Container(
-  //         width: 300,
-  //         height: 100,
-  //         color: Colors.white54,
-  //         alignment: Alignment.center,
-  //         child: Text(
-  //             'Admin settings will show here...',
-  //           style: TextStyle(color: Colors.deepPurple, fontSize: 23.0),),
-  //       ));
-  // }
-
   void _sendBulkMails() async {
     final MailOptions mailOptions = MailOptions(
       subject: 'Email subject',

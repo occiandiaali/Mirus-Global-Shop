@@ -82,15 +82,6 @@ class _LoginState extends State<Login> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              // onPressed: () {
-              //   _emailController.text.isNotEmpty &&
-              //       _passwordController.text.isNotEmpty
-              //       ? loginUserToo()
-              //       : showDialog(
-              //     context: context,
-              //     builder: (c) => ErrorAlertDialog(message: 'Email AND Password are required',)
-              //   );
-              // },
               onPressed: () {
                 if(_emailController.text.isNotEmpty &&
                     _passwordController.text.isNotEmpty) {
@@ -113,28 +104,11 @@ class _LoginState extends State<Login> {
               height: 30.0,
             ),
 
-            // TextButton.icon(
-            //   onPressed: () => Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //       builder: (context) => AdminSignIn())),
-            //   icon: Icon(
-            //       Icons.admin_panel_settings_outlined,
-            //   color: Colors.white,),
-            //   label: Text(
-            //       'Are you Admin?',
-            //   style: TextStyle(
-            //     color: Colors.white,
-            //     fontWeight: FontWeight.bold,
-            //   ),),
-            // ),
           ],
         ),
       ),
     );
   }
-
- // FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future readInfoData(User fUser) async {
     FirebaseFirestore.instance.collection("users")
