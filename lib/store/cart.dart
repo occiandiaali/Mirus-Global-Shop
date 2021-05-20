@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mirus_global/Widgets/customAppBar.dart';
@@ -28,21 +29,21 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
 
   double totalAmount;
+  int numItems;
 
   @override
   void initState() {
     super.initState();
 
     totalAmount = 0.0;
-   // numberOfItems = 1;
-  // numberOfItems = Provider.of<ItemQuantity>(context, listen: false).numberOfItems;
+   
     Provider.of<TotalAmount>(context, listen: false).display(0);
-
   }
 
   @override
   Widget build(BuildContext context) {
-   //final quantityOfItem = Provider.of<ItemQuantity>(context);
+    numItems = Provider.of<ItemQuantity>(context).numberOfItems;
+    final cCy = NumberFormat("#,##0.00");
     return Scaffold(
         floatingActionButton: FloatingActionButton.extended(
           elevation: 10.0,
@@ -53,7 +54,8 @@ class _CartPageState extends State<CartPage> {
                 Fluttertoast.showToast(msg: 'Your Cart is empty');
               } else {
                 Route route = MaterialPageRoute(
-                  builder: (c) => Address(totalAmount: totalAmount)
+                  builder: (c) => Address(
+                      totalAmount: totalAmount)
                 );
                 Navigator.push(context, route);
               }
@@ -75,7 +77,7 @@ class _CartPageState extends State<CartPage> {
                     child: cartProvider.count == 0 ?
                     Container()
                         : Text(
-                      "TOTAL =N= ${amountProvider.totalAmount}",
+                     "TOTAL =N= ${cCy.format(amountProvider.totalAmount)}",
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -108,29 +110,72 @@ class _CartPageState extends State<CartPage> {
                     (context, index) {
                       ItemModel model = ItemModel.
                       fromJson(snapshot.data.docs[index].data());
-                     // int len = snapshot.data.docs.length;
-                     // int q = quantityOfItem.numberOfItems;
-
-                      // if(index == 0 && len >= 1) {
-                      //   totalAmount = 0;
-                       // totalAmount = model.price.toDouble();
-                        // if(quantityOfItem.numberOfItems > 1) {
-                        //   totalAmount -= model.price;
-                        //   totalAmount = (model.price * quantityOfItem.numberOfItems).toDouble();
-                        // }
-                      //   totalAmount += q > 1 ?
-                      //       model.price * q : model.price;
-                      // } else {
-                      //   totalAmount += model.price;
-                      // }
 
                       if(index == 0) {
                         totalAmount = 0.00;
-                        totalAmount = model.price + totalAmount;
-                      } else {
-                        totalAmount = model.price + totalAmount;
+                        totalAmount += (model.discount != null) ?
+                        (model.price -
+                            (model.price * model.discount) / 100) * numItems
+                            : model.price * numItems;
+                        } else {
+                        totalAmount += (model.discount != null) ?
+                        (model.price -
+                            (model.price * model.discount) / 100) * numItems
+                            : model.price * numItems;
                       }
+                      // if(index == 0) {
+                      //   totalAmount = 0.00;
+                      //
+                      //   totalAmount = (model.discount != null) ?
+                      //        (model.price -
+                      //           (model.price * model.discount) / 100) * numItems
+                      //       : (model.price * numItems);
+                      // } else {
+                      //   totalAmount += (model.discount != null) ?
+                      //   (model.price -
+                      //       (model.price * model.discount) / 100) * numItems
+                      //       : (model.price * numItems);
+                      // }
 
+                      // if(index == 0) { // 1st item in cart, with/without discount
+                      //   totalAmount = 0.00;
+                      //   if(model.discount != null
+                      //       && model.discount > 0) {
+                      //     totalAmount = (
+                      //         (model.price - (model.price * model.discount / 100))
+                      //             + totalAmount) * numItems;
+                      //   } else {
+                      //     totalAmount = (model.price + totalAmount) * numItems;
+                      //   }
+                      // } else {
+                      //   if(model.discount != null
+                      //       && model.discount > 0) {
+                      //     totalAmount = (
+                      //         (model.price - (model.price * model.discount / 100))
+                      //             + totalAmount) * numItems;
+                      //   }
+                      //   totalAmount = (model.price + totalAmount) * numItems;
+                      // }
+
+                      // } else {
+                      //   if(model.discount != null
+                      //       && model.discount > 0) {
+                      //     // qty is 1
+                      //     totalAmount = discountAmt + totalAmount;
+                      //     // qty is > 1
+                      //     if(numItems > 1) {
+                      //       totalAmount = (totalAmount - discountAmt) + (discountAmt * numItems).toDouble();
+                      //     }
+                      //   } else {
+                      //     // qty is 1
+                      //     totalAmount += model.price.toDouble();
+                      //     // qty is > 1
+                      //     if(numItems > 1) {
+                      //       totalAmount += (totalAmount - model.price) + (model.price * numItems).toDouble();
+                      //     }
+                      //   } // items after index 0 that are NOT discounted
+                      //
+                      // } // else block is for all items after index 0
 
                       if(snapshot.data.docs.length - 1 == index) {
                         WidgetsBinding
@@ -148,7 +193,6 @@ class _CartPageState extends State<CartPage> {
                           model,
                           context,
                       );
-
                     },
                   childCount: snapshot.hasData ?
                       snapshot.data.docs.length : 0,

@@ -45,6 +45,7 @@ dependencies:
   url_launcher: ^6.0.3
   flutter_mailer: ^2.0.0
   telephony: ^0.1.2
+  number_inc_dec: ^0.6.6
   #flutter_sms: ^2.3.1
   #sms: ^0.2.0
 
@@ -57,6 +58,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.7.5
+  test: ^1.16.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

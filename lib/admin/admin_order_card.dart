@@ -162,6 +162,17 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
                           ),
                         ],
                       ),
+                      Row(
+                        children: [
+                          Text(
+                            'Qty: ${model.qty}',
+                            style: TextStyle(
+                              fontSize: 8.0,
+                              color: Colors.green,
+                            ),
+                          ),
+                        ],
+                      ),
                      isEButtonEnabled ?
                       Row(
                         children: [

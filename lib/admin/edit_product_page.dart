@@ -38,8 +38,9 @@ class _EditProductPageState extends State<EditProductPage> {
   final _itemNameEditingController = TextEditingController();
   final _itemDescEditingController = TextEditingController();
   final _itemPriceEditingController = TextEditingController();
+  final _discountController = TextEditingController();
   final _searchInfoEditingController = TextEditingController();
-  final _qtyEditingController = TextEditingController();
+  //final _qtyEditingController = TextEditingController();
 
   String itemId = DateTime.now().millisecondsSinceEpoch.toString();
   bool uploading = false;
@@ -53,8 +54,9 @@ class _EditProductPageState extends State<EditProductPage> {
     _itemNameEditingController.dispose();
     _itemDescEditingController.dispose();
     _itemPriceEditingController.dispose();
+    _discountController.dispose();
     _searchInfoEditingController.dispose();
-    _qtyEditingController.dispose();
+    //_qtyEditingController.dispose();
     super.dispose();
   }
 
@@ -73,7 +75,8 @@ class _EditProductPageState extends State<EditProductPage> {
           "shortInfo": _searchInfoEditingController.text.trim(),
           "longDescription": _itemDescEditingController.text.trim(),
           "price": int.parse(_itemPriceEditingController.text),
-          "quantity": int.parse(_qtyEditingController.text),
+          "discount": int.parse(_discountController.text),
+         // "quantity": int.parse(_qtyEditingController.text),
           "publishedDate": DateTime.now(),
           "status": "available",
           "thumbnailUrl": urlImg,
@@ -88,8 +91,9 @@ class _EditProductPageState extends State<EditProductPage> {
         _itemNameEditingController.clear();
         _itemDescEditingController.clear();
         _itemPriceEditingController.clear();
+        _discountController.clear();
         _searchInfoEditingController.clear();
-        _qtyEditingController.clear();
+       // _qtyEditingController.clear();
         });
         Navigator.pop(context);
     }).catchError((e) => print('Failed to update: $e'));
@@ -227,7 +231,7 @@ class _EditProductPageState extends State<EditProductPage> {
     _itemDescEditingController.clear();
     _itemPriceEditingController.clear();
     _searchInfoEditingController.clear();
-    _qtyEditingController.clear();
+    _discountController.clear();
     Navigator.pop(context);
   }
 
@@ -450,7 +454,25 @@ class _EditProductPageState extends State<EditProductPage> {
               ),
             ),
           ),
-         // Divider(color: Colors.deepPurple,),
+          Divider(color: Colors.deepPurple,),
+          ListTile(
+            leading: Icon(
+              Icons.wine_bar_outlined,
+              color: Colors.pink,),
+            title: Container(
+              width: 250.0,
+              child: TextField(
+                keyboardType: TextInputType.number,
+                style: TextStyle(color: Colors.deepPurple),
+                controller: _discountController,
+                decoration: InputDecoration(
+                  hintText: widget.itemModel.discount.toString(),
+                  hintStyle: TextStyle(color: Colors.deepPurpleAccent),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

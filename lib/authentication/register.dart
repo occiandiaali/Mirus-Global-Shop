@@ -86,7 +86,7 @@ class _RegisterState extends State<Register> {
                   CustomTextField(
                     controller: _passwordController,
                     data: Icons.security_outlined,
-                    hintText: 'Type a secure password (min 6 xters)',
+                    hintText: 'password (min 6 characters)',
                     isObscured: true,
                   ),
                   CustomTextField(
@@ -98,6 +98,7 @@ class _RegisterState extends State<Register> {
                 ],
               ),
             ),
+            SizedBox(height: 6.0,),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 primary: Colors.purple,
@@ -286,7 +287,10 @@ void _registerUser() async {
       Navigator.pop(context);
       Route route = MaterialPageRoute(builder: (c) => AuthScreen());
       Navigator.pushReplacement(context, route);
-      Fluttertoast.showToast(msg: "Your account has been created, you can login...");
+      Fluttertoast.showToast(
+          msg: "Your account has been created, you can login...",
+        gravity: ToastGravity.CENTER,
+      );
     });
   }
 } // _register user
@@ -298,7 +302,8 @@ Future saveUserInfoToFireStore(User fUser) async {
     "email": fUser.email,
     "url": userImageUrl,
     "isAdmin": false,
-    EshopApp.userCartList: ["garbageValue"],
+   // EshopApp.userCartList: ["garbageValue"],
+    EshopApp.userOrderList: ["dummyValue"],
   }).then((s) {
     print("Collection created...");
   }).catchError((error) {
@@ -310,7 +315,8 @@ Future saveUserInfoToFireStore(User fUser) async {
   await EshopApp.sharedPreferences.setBool("isAdmin", EshopApp.isAdmin);
   await EshopApp.sharedPreferences.setString(EshopApp.userName, _nameController.text);
   await EshopApp.sharedPreferences.setString(EshopApp.userAvatarUrl, userImageUrl);
-  await EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, ["garbageValue"]);
+  //await EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, ["garbageValue"]);
+  await EshopApp.sharedPreferences.setStringList(EshopApp.userOrderList, ["dummyValue"]);
 } // save user info to fire store
 
 

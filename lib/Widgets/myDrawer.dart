@@ -42,11 +42,13 @@ class MyDrawer extends StatelessWidget {
                       child: CircleAvatar(
                         backgroundColor: Colors.deepPurple,
                         radius: 16.0,
-                        backgroundImage: NetworkImage(
-                          EshopApp.sharedPreferences.getString(EshopApp.userAvatarUrl) ??
-                              'https://vc.bridgew.edu/context/hoba/article/1008/type/native/viewcontent',
-                      ),
-
+                      //   backgroundImage: NetworkImage(
+                      //     EshopApp.sharedPreferences.getString(EshopApp.userAvatarUrl) ??
+                      //         'https://vc.bridgew.edu/context/hoba/article/1008/type/native/viewcontent',
+                      // ),
+                        backgroundImage: EshopApp.sharedPreferences.getString(EshopApp.userAvatarUrl) != null ?
+                          NetworkImage(EshopApp.sharedPreferences.getString(EshopApp.userAvatarUrl))
+                            : AssetImage('images/silhouette.png'),
                       ),
                       onTap: () => print('Tapped avatar'),
                     ),
@@ -55,14 +57,14 @@ class MyDrawer extends StatelessWidget {
                 SizedBox(height: 10.0,),
                 Text(
                   EshopApp.sharedPreferences.getString(EshopApp.userName) ??
-                      'UserName',
+                      'Your Username',
                   style: TextStyle(
                       color: Colors.white,
                   fontSize: 18.0),
                 ),
                 Text(
                   EshopApp.sharedPreferences.getString(EshopApp.userEmail) ??
-                      'user@emailaddress.com',
+                      'you@emailaddress.com',
                   style: TextStyle(color: Colors.white),
                 ),
                 // Text(
@@ -117,18 +119,18 @@ class MyDrawer extends StatelessWidget {
                   color: Colors.white,
                   thickness: 6.0,),
 
-                ListTile(
-                  leading: Icon(Icons.shopping_cart, color: Colors.white,),
-                  title: Text('Cart', style: TextStyle(color: Colors.white),),
-                  onTap: () {
-                    Route route = MaterialPageRoute(builder: (c) => CartPage());
-                    Navigator.push(context, route);
-                  },
-                ),
-                Divider(
-                  height: 10.0,
-                  color: Colors.white,
-                  thickness: 6.0,),
+                // ListTile(
+                //   leading: Icon(Icons.shopping_cart, color: Colors.white,),
+                //   title: Text('Cart', style: TextStyle(color: Colors.white),),
+                //   onTap: () {
+                //     Route route = MaterialPageRoute(builder: (c) => CartPage());
+                //     Navigator.push(context, route);
+                //   },
+                // ),
+                // Divider(
+                //   height: 10.0,
+                //   color: Colors.white,
+                //   thickness: 6.0,),
 
                 ListTile(
                   leading: Icon(Icons.add_location_outlined, color: Colors.white,),

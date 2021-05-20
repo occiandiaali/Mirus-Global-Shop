@@ -39,6 +39,7 @@ class _UploadPageState extends State<UploadPage>
   final _itemDescEditingController = TextEditingController();
   final _itemPriceEditingController = TextEditingController();
   final _searchInfoEditingController = TextEditingController();
+  final _discountController = TextEditingController();
  // final _qtyEditingController = TextEditingController();
  // final _itemQtyController = TextEditingController();
 
@@ -53,6 +54,7 @@ class _UploadPageState extends State<UploadPage>
     _itemDescEditingController.dispose();
     _itemPriceEditingController.dispose();
     _searchInfoEditingController.dispose();
+    _discountController.dispose();
    // _qtyEditingController.dispose();
    // _itemQtyController.dispose();
     super.dispose();
@@ -137,76 +139,76 @@ class _UploadPageState extends State<UploadPage>
             ),
           ),
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'images/adminlogo.png',
-                  height: 100.0,
-                  width: 100.0,
-                ),
-                SizedBox(
-                  height: 21.0,
-                ),
-                Text(
-                 // 'Welcome, ${widget.adminUser}',
-                  'Welcome, $user',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'images/adminlogo.png',
+                    height: 100.0,
+                    width: 100.0,
                   ),
-                ),
-                SizedBox(
-                  height: 41.0,
-                ),
-                Icon(
-                  Icons.shop_two_outlined,
-                  color: Colors.purple,
-                  size: 200.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 20.0),
-                  child: ElevatedButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(9.0),
-                      ),
-                    ),
-                    child: Text(
-                      'Upload Items',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.white,
-                      ),
-                    ),
-                    onPressed: () => selectImage(context),
+                  SizedBox(
+                    height: 16.0,
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10.0),
-                  child: ElevatedButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(9.0),
-                      ),
+                  Text(
+                    // 'Welcome, ${widget.adminUser}',
+                    'Welcome, $user',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24.0,
                     ),
-                    child: Text(
-                      'Management',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.white,
-                      ),
-                    ),
-                    onPressed: () {
-                      Route route = MaterialPageRoute(builder: (c) => AdminManage());
-                      Navigator.push(context, route);
-                    },
                   ),
-                ),
-              ],
-            ),
+                  SizedBox(
+                    height: 25.0,
+                  ),
+                  Icon(
+                    Icons.shop_two_outlined,
+                    color: Colors.purple,
+                    size: 170.0,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 17.0),
+                    child: ElevatedButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9.0),
+                        ),
+                      ),
+                      child: Text(
+                        'Upload Items',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: () => selectImage(context),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10.0),
+                    child: ElevatedButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9.0),
+                        ),
+                      ),
+                      child: Text(
+                        'Management',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: () {
+                        Route route = MaterialPageRoute(builder: (c) => AdminManage());
+                        Navigator.push(context, route);
+                      },
+                    ),
+                  ),
+                ],
+              ),
           ),
         )
     );
@@ -361,26 +363,7 @@ class _UploadPageState extends State<UploadPage>
               ),
             ),
           ),
-          // Divider(color: Colors.deepPurple,),
-          //
-          // ListTile(
-          //   leading: Icon(
-          //     Icons.wysiwyg,
-          //     color: Colors.deepPurple,),
-          //   title: Container(
-          //     width: 250.0,
-          //     child: TextField(
-          //       keyboardType: TextInputType.number,
-          //       style: TextStyle(color: Colors.deepPurple),
-          //       controller: _qtyEditingController,
-          //       decoration: InputDecoration(
-          //         hintText: 'Quantity in stock',
-          //         hintStyle: TextStyle(color: Colors.deepPurpleAccent),
-          //         border: InputBorder.none,
-          //       ),
-          //     ),
-          //   ),
-          // ),
+
           Divider(color: Colors.deepPurple,),
 
           ListTile(
@@ -402,6 +385,25 @@ class _UploadPageState extends State<UploadPage>
             ),
           ),
           Divider(color: Colors.deepPurple,),
+          ListTile(
+            leading: Icon(
+              Icons.wine_bar_outlined,
+              color: Colors.deepPurple,),
+            title: Container(
+              width: 250.0,
+              child: TextField(
+                keyboardType: TextInputType.number,
+                style: TextStyle(color: Colors.deepPurple),
+                controller: _discountController,
+                decoration: InputDecoration(
+                  hintText: 'Discount %',
+                  hintStyle: TextStyle(color: Colors.deepPurpleAccent),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+          ),
+          Divider(color: Colors.deepPurple,),
         ],
       ),
     );
@@ -414,6 +416,7 @@ class _UploadPageState extends State<UploadPage>
     _itemNameEditingController.clear();
     _itemDescEditingController.clear();
     _itemPriceEditingController.clear();
+    _discountController.clear();
    // _qtyEditingController.clear();
   }
 
@@ -442,6 +445,7 @@ class _UploadPageState extends State<UploadPage>
       "longDescription": _itemDescEditingController.text.trim(),
       //"quantity": int.parse(_qtyEditingController.text),
       "price": int.parse(_itemPriceEditingController.text),
+      "discount": int.parse(_discountController.text),
       "publishedDate": DateTime.now(),
       "status": "available",
       "thumbnailUrl": imgUrl,
@@ -455,103 +459,13 @@ class _UploadPageState extends State<UploadPage>
         _itemNameEditingController.clear();
         _itemDescEditingController.clear();
         _itemPriceEditingController.clear();
+        _discountController.clear();
         _searchInfoEditingController.clear();
       //  _qtyEditingController.clear();
       });
     }).catchError((e) => print("Error: $e"));
 
   } // save item info
-
-  // displayAdminHome() {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       flexibleSpace: Container(
-  //         decoration: BoxDecoration(
-  //           gradient: LinearGradient(
-  //             colors: [Colors.black12, Colors.blueGrey],
-  //             begin: const FractionalOffset(0.0, 0.0),
-  //             end: const FractionalOffset(1.0, 0.0),
-  //             stops: [0.0, 1.0],
-  //             tileMode: TileMode.clamp,
-  //           ),
-  //         ),
-  //       ),
-  //       actions: [
-  //         IconButton(
-  //           icon: Icon(Icons.border_color, color: Colors.white,),
-  //           onPressed: () {
-  //             Route route = MaterialPageRoute(builder: (c) => AdminShiftOrders());
-  //             Navigator.pushReplacement(context, route);
-  //           },
-  //         ),
-  //         TextButton(
-  //           child: Text(
-  //               'Logout',
-  //           style: TextStyle(
-  //             color: Colors.white,
-  //             fontSize: 16.0,
-  //             fontWeight: FontWeight.bold
-  //           ),),
-  //           onPressed: () {
-  //             Route route = MaterialPageRoute(builder: (c) => AuthScreen());
-  //             Navigator.pushReplacement(context, route);
-  //           },
-  //         ),
-  //       ],
-  //     ),
-  //     body: getAdminHomeBody(),
-  //   );
-  // }
-
-  // getAdminHomeBody() {
-  //   return Container(
-  //     decoration: BoxDecoration(
-  //       gradient: LinearGradient(
-  //         colors: [Colors.black12, Colors.blueGrey],
-  //         begin: const FractionalOffset(0.0, 0.0),
-  //         end: const FractionalOffset(1.0, 0.0),
-  //         stops: [0.0, 1.0],
-  //         tileMode: TileMode.clamp,
-  //       ),
-  //     ),
-  //     child: Center(
-  //       child: Column(
-  //         mainAxisAlignment: MainAxisAlignment.center,
-  //         children: [
-  //           Text(
-  //               'Welcome, ',
-  //           style: TextStyle(
-  //             color: Colors.white,
-  //             fontSize: 28.0,
-  //           ),),
-  //           SizedBox(height: 51.0,),
-  //           Icon(
-  //             Icons.shop_two_outlined,
-  //             color: Colors.pink,
-  //             size: 200.0,),
-  //           Padding(
-  //             padding: EdgeInsets.only(top: 20.0),
-  //             child: ElevatedButton(
-  //               style: TextButton.styleFrom(
-  //                 backgroundColor: Colors.green,
-  //                 shape: RoundedRectangleBorder(
-  //                   borderRadius: BorderRadius.circular(9.0),
-  //                 ),
-  //               ),
-  //               child: Text(
-  //                   'Upload Items',
-  //               style: TextStyle(
-  //                 fontSize: 20.0,
-  //                 color: Colors.white,
-  //               ),),
-  //               onPressed: () => print('Upload button clicked'),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 
   takePhotoWithCamera() async {
     Navigator.pop(context);
@@ -575,8 +489,8 @@ class _UploadPageState extends State<UploadPage>
         .getImage(
       source: ImageSource.gallery,
       imageQuality: 85,
-      maxHeight: 470.0,
-      maxWidth: 670.0,
+      maxHeight: 370.0,
+      maxWidth: 570.0,
     );
     setState(() {
       imageFile = File(photoFile.path);

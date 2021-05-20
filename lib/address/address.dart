@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mirus_global/counters/address_changer.dart';
+import 'package:mirus_global/counters/item_quantity.dart';
 import 'package:mirus_global/orders/order_payment.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,7 +19,10 @@ class Address extends StatefulWidget {
 
   final double totalAmount;
 
-  const Address({Key key, this.totalAmount}) : super(key: key);
+  const Address({
+    Key key,
+    this.totalAmount,
+   }) : super(key: key);
 
   @override
   _AddressState createState() => _AddressState();
@@ -121,6 +125,7 @@ class AddressCard extends StatefulWidget {
   final AddressModel model;
   final String addressId;
   final double totalAmount;
+
   final int currentIndex;
   final int value;
 
@@ -129,6 +134,7 @@ class AddressCard extends StatefulWidget {
   this.model,
   this.addressId,
   this.totalAmount,
+
   this.currentIndex,
   this.value}) : super(key: key);
 

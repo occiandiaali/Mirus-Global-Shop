@@ -4,25 +4,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mirus_global/address/address.dart';
 import 'package:mirus_global/config/config.dart';
+import 'package:mirus_global/counters/item_quantity.dart';
 import 'package:mirus_global/store/storehome.dart';
 import 'package:mirus_global/Widgets/loadingWidget.dart';
 import 'package:mirus_global/Widgets/order_card.dart';
 import 'package:mirus_global/models/address.dart';
 
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 //import 'package:sms/sms.dart';
 import 'package:telephony/telephony.dart';
 
 
 
-String getOrderId="";
+String getOrderId = "";
+
 class OrderDetails extends StatelessWidget {
 
   final String orderID;
 
   OrderDetails({
     Key key,
-  this.orderID}) : super(key: key);
+  this.orderID
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +141,7 @@ class OrderDetails extends StatelessWidget {
                           padding: EdgeInsets.all(6.0),
                           //child: Text("Order ID: $getOrderId"),
                           child: SelectableText(
-                            "Order ID: $getOrderId",
+                            "ID: $getOrderId",
                             showCursor: true,
                             cursorColor: Colors.deepPurple,
                             cursorWidth: 5,
@@ -148,7 +152,7 @@ class OrderDetails extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.all(4.0),
                           child: Text(
-                            'Order date: ${DateFormat("dd MMMM, yyyy - hh:mm aa")
+                            'Date: ${DateFormat("dd MMMM, yyyy - hh:mm aa")
                                 .format(
                                 DateTime.fromMillisecondsSinceEpoch(int.parse(dataMap['orderTime']))
                             )}',
@@ -164,7 +168,7 @@ class OrderDetails extends StatelessWidget {
                               .collection("items")
                               .where(
                               "shortInfo",
-                              whereIn: dataMap[EshopApp.productID])
+                              whereIn: dataMap[EshopApp.itemID])
                               .get(),
 
                           builder: (c, dataSnapshot) {

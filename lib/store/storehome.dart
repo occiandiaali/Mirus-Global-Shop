@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mirus_global/counters/item_quantity.dart';
+import 'package:mirus_global/orders/my_orders.dart';
 
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 import 'package:mirus_global/store/cart.dart';
 import 'package:mirus_global/store/product_page.dart';
@@ -65,71 +67,81 @@ class _StoreHomeState extends State<StoreHome> {
           ),
           centerTitle: true,
           actions: [
-            Stack(
-              children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.shopping_cart_outlined,
-                    color: Colors.white,),
-                  onPressed: () {
-                    Route route = MaterialPageRoute(builder: (c) => CartPage());
-                    Navigator.push(context, route);
-                  },
-                ),
-                Positioned(
-                  child: Stack(
-                    children: [
-                      Icon(
-                        Icons.brightness_1,
-                        size: 20.0,
-                        color: Colors.deepPurple,
-                      ),
-
-                      Positioned(
-                        top: 3.0,
-                        bottom: 4.0,
-                        left: 7.0,
-                        child: Consumer<CartItemCounter>(
-                          builder: (context, counter, _) {
-                            // return Text(
-                            //   // counter.count != null ?
-                            //   // counter.count.toString() : circularProgress(),
-                            //     (counter.count != null) ?
-                            //     (EshopApp.sharedPreferences
-                            //     .getStringList(EshopApp.userCartList)
-                            //     .length - 1).toString() : "0",
-                            //   style: TextStyle(
-                            //     color: Colors.white,
-                            //     fontSize: 12.0,
-                            //     fontWeight: FontWeight.w500
-                            //   ),
-                            // );
-                            return counter.count != null ?
-                            Text(
-                                (EshopApp.sharedPreferences
-                                        .getStringList(EshopApp.userCartList).length - 1).toString(),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.w500
-                                      ),
-                                )
-                                : Text(
-                              '0',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w500
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            IconButton(
+              iconSize: 29,
+              icon: Icon(
+                Icons.article_outlined,
+                color: Colors.white),
+                onPressed: () {
+                  Route route = MaterialPageRoute(builder: (c) => MyOrders());
+                  Navigator.push(context, route);
+                },
             ),
+            // Stack(
+            //   children: [
+            //     IconButton(
+            //       icon: Icon(
+            //         Icons.shopping_cart_outlined,
+            //         color: Colors.white,),
+            //       onPressed: () {
+            //         Route route = MaterialPageRoute(builder: (c) => CartPage());
+            //         Navigator.push(context, route);
+            //       },
+            //     ),
+            //     Positioned(
+            //       child: Stack(
+            //         children: [
+            //           Icon(
+            //             Icons.brightness_1,
+            //             size: 20.0,
+            //             color: Colors.deepPurple,
+            //           ),
+            //
+            //           Positioned(
+            //             top: 3.0,
+            //             bottom: 4.0,
+            //             left: 7.0,
+            //             child: Consumer<CartItemCounter>(
+            //               builder: (context, counter, _) {
+            //                 // return Text(
+            //                 //   // counter.count != null ?
+            //                 //   // counter.count.toString() : circularProgress(),
+            //                 //     (counter.count != null) ?
+            //                 //     (EshopApp.sharedPreferences
+            //                 //     .getStringList(EshopApp.userCartList)
+            //                 //     .length - 1).toString() : "0",
+            //                 //   style: TextStyle(
+            //                 //     color: Colors.white,
+            //                 //     fontSize: 12.0,
+            //                 //     fontWeight: FontWeight.w500
+            //                 //   ),
+            //                 // );
+            //                 return counter.count != null ?
+            //                 Text(
+            //                     (EshopApp.sharedPreferences
+            //                             .getStringList(EshopApp.userCartList).length - 1).toString(),
+            //                           style: TextStyle(
+            //                             color: Colors.white,
+            //                             fontSize: 12.0,
+            //                             fontWeight: FontWeight.w500
+            //                           ),
+            //                     )
+            //                     : Text(
+            //                   '0',
+            //                   style: TextStyle(
+            //                       color: Colors.white,
+            //                       fontSize: 12.0,
+            //                       fontWeight: FontWeight.w500
+            //                   ),
+            //                 );
+            //               },
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ],
+            // ),
           ],
         ),
         drawer: MyDrawer(),
@@ -150,8 +162,9 @@ class _StoreHomeState extends State<StoreHome> {
                       staggeredTileBuilder: (c) => StaggeredTile.fit(1),
                       itemBuilder: (context, index, {Color background, removeCartFunction}) {
                         ItemModel model = ItemModel.fromJson(snapshot.data.docs[index].data());
-                        return removeCartFunction == null ?
-                        sourceInfo(model, context) : CartPage();
+                        // return removeCartFunction == null ?
+                        // sourceInfo(model, context) : CartPage();
+                        return sourceInfo(model, context);
                       },
                       itemCount: snapshot.data.docs.length,
                     );
@@ -167,7 +180,12 @@ class _StoreHomeState extends State<StoreHome> {
 } // class
 
 
-Widget sourceInfo(ItemModel model, BuildContext context,{Color background, removeCartFunction}) {
+Widget sourceInfo(
+    ItemModel model,
+    BuildContext context,
+    {Color background,
+      removeCartFunction}) {
+  final cCy = NumberFormat("#,##0.00");
   return InkWell(
       onTap: () {
         Route route = MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,));
@@ -191,29 +209,6 @@ Widget sourceInfo(ItemModel model, BuildContext context,{Color background, remov
                       height: 140.0,
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Row(
-                      children: [
-                        Text(
-                          '50% ',
-                          style: TextStyle(
-                              color: Colors.deepPurple,
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                        Text(
-                          'OFF',
-                          style: TextStyle(
-                              color: Colors.deepPurple,
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
               SizedBox(width: 14.0,),
@@ -221,7 +216,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,{Color background, remov
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 45.0),
+                    SizedBox(height: 40.0),
                     Container(
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
@@ -251,56 +246,73 @@ Widget sourceInfo(ItemModel model, BuildContext context,{Color background, remov
                                   model.shortInfo,
                                 ),
                               ),
+                              (model.discount != null
+                                  && model.discount > 0) ?
                               Padding(
                                   padding: EdgeInsets.only(top: 0.0),
                                   child: Row(
                                     children: [
-                                      Text(
-                                            '=N=${(model.price + model.price)}',
+                                      Text('=N= ${cCy.format(model.price)}',
                                         style: TextStyle(
                                           fontSize: 14.0,
                                           color: Colors.grey,
                                           decoration: TextDecoration.lineThrough,
                                         ),
                                         ),
-                                      SizedBox(width: 15.0,),
-                                      Text(
-                                          'Old',
-                                      style: TextStyle(
-                                          fontSize: 12.0,
-                                      color: Colors.grey),),
-
                                     ],
 
                                   ),
-                                ),
+                                )
+                                  : Container(
+                                margin: EdgeInsets.all(0.0),
+                              ),
 
+                              (model.discount != null
+                                  && model.discount > 0) ?
                               Padding(
+                                padding: EdgeInsets.only(top: 2.0),
+                                child: Row(
+                                  children: [
+                                     Text(
+                                      '=N= ${cCy.format(
+                                          model.price -
+                                              (model.price * (model.discount / 100))
+                                      )}',
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                    SizedBox(width: 5.0,),
+                                    Text(
+                                      '${model.discount}% OFF',
+                                      style: TextStyle(
+                                        fontSize: 16.0,
+                                        color: Colors.deepPurple,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                                  : Padding(
                                 padding: EdgeInsets.only(top: 0.0),
                                 child: Row(
                                   children: [
                                     Text(
-                                        '=N= ${model.price}',
-                                        style: TextStyle(
-                                          fontSize: 14.0,
-                                          color: Colors.green,
-                                        ),
-                                      ),
-                                    SizedBox(width: 8.0),
-                                    Text(
-                                        'New',
+                                      '=N= ${cCy.format(model.price)}',
                                       style: TextStyle(
-                                          fontSize: 12.0,
-                                      color: Colors.green),),
-
+                                        fontSize: 16.0,
+                                        color: Colors.green,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
                             //  SizedBox(height: 5.0,),
                               Padding(
-                                padding: EdgeInsets.only(top: 5.0),
+                                padding: EdgeInsets.only(top: 2.0),
                                 child: Text(
-                                  'category: ${model.category}',
+                                  'type: ${model.category}',
                                   style: TextStyle(color: Colors.grey),
                                 ),
                               ),
@@ -313,30 +325,45 @@ Widget sourceInfo(ItemModel model, BuildContext context,{Color background, remov
                     Flexible(
                       child: Container(),
                     ),
+                    // Align(
+                    //   alignment: Alignment.centerRight,
+                    // //  child: removeCartFunction == null ?
+                    //   child: IconButton(
+                    //     onPressed: () {
+                    //       // print("StoreHome ID: ${model.shortInfo}");
+                    //       // print("StoreHome =N=: ${model.price}");
+                    //       checkItemInCart(
+                    //       model.shortInfo,
+                    //           context);
+                    //     },
+                    //     icon: Icon(
+                    //         Icons.add_shopping_cart,
+                    //     color: Colors.purpleAccent),
+                    //   )
+                    //   // : IconButton(
+                    //   //       onPressed: () {
+                    //   //         removeCartFunction();
+                    //   //         Route route = MaterialPageRoute(builder: (c) => StoreHome());
+                    //   //         Navigator.push(context, route);
+                    //   //       },
+                    //   //       icon: Icon(Icons.delete_forever,
+                    //   //           color: Colors.purpleAccent),
+                    //   //     ),
+                    // ),
                     Align(
                       alignment: Alignment.centerRight,
-                    //  child: removeCartFunction == null ?
-                      child: IconButton(
-                        onPressed: () {
-                          // print("StoreHome ID: ${model.shortInfo}");
-                          // print("StoreHome =N=: ${model.price}");
-                          checkItemInCart(
-                          model.shortInfo,
-                              context);
-                        },
-                        icon: Icon(
-                            Icons.add_shopping_cart,
-                        color: Colors.purpleAccent),
-                      )
-                      // : IconButton(
-                      //       onPressed: () {
-                      //         removeCartFunction();
-                      //         Route route = MaterialPageRoute(builder: (c) => StoreHome());
-                      //         Navigator.push(context, route);
-                      //       },
-                      //       icon: Icon(Icons.delete_forever,
-                      //           color: Colors.purpleAccent),
-                      //     ),
+                      child: OutlinedButton(
+                        child: Text('Order'),
+                        onPressed: () => addItem(model.shortInfo, context),
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: Size(20.0, 30.0),
+                                  shape: StadiumBorder(),
+                                  side: BorderSide(
+                                    width: 4,
+                                    color: Colors.deepPurple
+                                  ),
+                        ),
+                      ),
                     ),
                     Divider(
                       height: 2.0,
@@ -383,9 +410,9 @@ Widget sourceInfo(ItemModel model, BuildContext context,{Color background, remov
 //   );
 // }
 
-addItemToCart(String shortInfoAsId, BuildContext context) {
+addItem(String shortInfoAsId, BuildContext context) {
   List tempCartList = EshopApp.sharedPreferences
-      .getStringList(EshopApp.userCartList);
+      .getStringList(EshopApp.userOrderList);
   tempCartList.add(shortInfoAsId);
 
   // if(tempCartList.length <= 2) {
@@ -409,23 +436,23 @@ addItemToCart(String shortInfoAsId, BuildContext context) {
   EshopApp.firestore.collection(EshopApp.collectionUser)
       .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
   .set({
-    EshopApp.userCartList: tempCartList,
+    EshopApp.userOrderList: tempCartList,
   }).then((v) {
     Fluttertoast.showToast(msg: 'Item added to cart!');
 
-    EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, tempCartList);
+    EshopApp.sharedPreferences.setStringList(EshopApp.userOrderList, tempCartList);
 
-    Provider.of<CartItemCounter>(context, listen: false).displayResult(EshopApp.userCartList.length);
+  //  Provider.of<CartItemCounter>(context, listen: false).displayResult(EshopApp.userCartList.length);
   }).catchError((e) => print("Error updating document: $e"));
 } // add item to cart
 
 
 
-void checkItemInCart(String productID, BuildContext context) {
- // print('Check item in cart');
-  EshopApp.sharedPreferences
-      .getStringList(EshopApp.userCartList)
-      .contains(productID) ?
-      Fluttertoast.showToast(msg: 'Item already in cart') :
-      addItemToCart(productID, context);
-}
+// void checkItemInCart(String productID, BuildContext context) {
+//  // print('Check item in cart');
+//   EshopApp.sharedPreferences
+//       .getStringList(EshopApp.userCartList)
+//       .contains(productID) ?
+//       Fluttertoast.showToast(msg: 'Item already in cart') :
+//       addItemToCart(productID, context);
+// }

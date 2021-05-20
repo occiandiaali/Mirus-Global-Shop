@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mirus_global/counters/item_quantity.dart';
 import 'package:mirus_global/orders/my_orders.dart';
 import 'package:mirus_global/store/storehome.dart';
 import 'package:provider/provider.dart';
@@ -21,10 +22,13 @@ class OrderPayment extends StatefulWidget {
   final String addressId;
   final double totalAmount;
 
+
   OrderPayment({
     Key key,
     this.addressId,
-    this.totalAmount}) : super(key: key);
+    this.totalAmount,
+
+  }) : super(key: key);
 
   @override
   _OrderPaymentState createState() => _OrderPaymentState();
@@ -137,7 +141,7 @@ class _OrderPaymentState extends State<OrderPayment> {
                     ),
                     SizedBox(height: 12.0,),
                     Text(
-                      'Payment must be confirmed BEFORE delivery.',
+                      'Please, payment must be confirmed BEFORE delivery.',
                       style: TextStyle(color: Colors.yellow, fontSize: 16.0),
                     ),
                     Text(
@@ -210,24 +214,45 @@ class _OrderPaymentState extends State<OrderPayment> {
         .set(data);
   }
 
-  emptyCartNow() {
+  // emptyCartNow() {
+  //   EshopApp.sharedPreferences
+  //       .setStringList(EshopApp.userCartList, ["garbageValue"]);
+  //   List tempList = EshopApp.sharedPreferences.getStringList(EshopApp.userCartList);
+  //
+  //   FirebaseFirestore.instance.collection("users")
+  //       .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
+  //       .update({
+  //     EshopApp.userCartList: tempList,
+  //   }).then((value) {
+  //     EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, tempList);
+  //     Provider.of<CartItemCounter>(context, listen: false)
+  //         .displayResult(EshopApp.userCartList.length);
+  //   });
+  //   Fluttertoast.showToast(
+  //       msg: 'Thanks, check ORDERS tab for details...',
+  //   gravity: ToastGravity.CENTER,
+  //   toastLength: Toast.LENGTH_LONG);
+  //
+  //   Route route = MaterialPageRoute(builder: (c) => StoreHome());
+  //   Navigator.pushReplacement(context, route);
+  // }
+
+  clearOrder() {
     EshopApp.sharedPreferences
-        .setStringList(EshopApp.userCartList, ["garbageValue"]);
-    List tempList = EshopApp.sharedPreferences.getStringList(EshopApp.userCartList);
+        .setStringList(EshopApp.userOrderList, ["dummyValue"]);
+    List tempItem = EshopApp.sharedPreferences.getStringList(EshopApp.userOrderList);
 
     FirebaseFirestore.instance.collection("users")
         .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
         .update({
-      EshopApp.userCartList: tempList,
+      EshopApp.userOrderList: tempItem,
     }).then((value) {
-      EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, tempList);
-      Provider.of<CartItemCounter>(context, listen: false)
-          .displayResult(EshopApp.userCartList.length);
+      EshopApp.sharedPreferences.setStringList(EshopApp.userOrderList, tempItem);
     });
     Fluttertoast.showToast(
-        msg: 'Order placed. Check your ORDERS tab for details',
-    gravity: ToastGravity.CENTER,
-    toastLength: Toast.LENGTH_LONG);
+        msg: 'Thanks, check ORDERS tab for details...',
+        gravity: ToastGravity.CENTER,
+        toastLength: Toast.LENGTH_LONG);
 
     Route route = MaterialPageRoute(builder: (c) => StoreHome());
     Navigator.pushReplacement(context, route);
@@ -237,8 +262,9 @@ class _OrderPaymentState extends State<OrderPayment> {
     writeOrderDetailsUser({
       EshopApp.addressID: widget.addressId,
       EshopApp.totalAmount: widget.totalAmount,
+     // EshopApp.itemQuantity: numItems,
       "orderBy": EshopApp.sharedPreferences.getString(EshopApp.userUID),
-      EshopApp.productID: EshopApp.sharedPreferences.getStringList(EshopApp.userCartList),
+      EshopApp.itemID: EshopApp.sharedPreferences.getStringList(EshopApp.userOrderList),
       EshopApp.paymentDetails: "Bank Transfer",
       EshopApp.orderTime: DateTime.now().millisecondsSinceEpoch.toString(),
       EshopApp.isSuccess: true,
@@ -247,12 +273,16 @@ class _OrderPaymentState extends State<OrderPayment> {
     writeOrderDetailsAdmin({
       EshopApp.addressID: widget.addressId,
       EshopApp.totalAmount: widget.totalAmount,
+      // EshopApp.itemQuantity: numItems,
       "orderBy": EshopApp.sharedPreferences.getString(EshopApp.userUID),
-      EshopApp.productID: EshopApp.sharedPreferences.getStringList(EshopApp.userCartList),
+      EshopApp.itemID: EshopApp.sharedPreferences.getStringList(EshopApp.userOrderList),
       EshopApp.paymentDetails: "Bank Transfer",
-      EshopApp.orderTime: DateTime.now().millisecondsSinceEpoch.toString(),
+      EshopApp.orderTime: DateTime
+          .now()
+          .millisecondsSinceEpoch
+          .toString(),
       EshopApp.isSuccess: true,
-    }).whenComplete(() => emptyCartNow());
+       }).whenComplete(() => clearOrder());
   }
 
 

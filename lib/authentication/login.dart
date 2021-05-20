@@ -41,14 +41,14 @@ class _LoginState extends State<Login> {
               alignment: Alignment.bottomCenter,
               child: Image.asset(
                   'images/storefront.png',
-              height: 240.0,
-              width: 240.0,),
+              height: 300.0,
+              width: 300.0,),
             ),
             Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                'Sign in to your account',
-                style: TextStyle(color: Colors.white, fontSize: 24.0),
+                'Sign in to the shop',
+                style: TextStyle(color: Colors.white, fontSize: 22.0),
               ),
             ),
             Form(
@@ -70,6 +70,7 @@ class _LoginState extends State<Login> {
                 ],
               ),
             ),
+            SizedBox(height: 6.0,),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 primary: Colors.purple,
@@ -86,7 +87,7 @@ class _LoginState extends State<Login> {
                 if(_emailController.text.isNotEmpty &&
                     _passwordController.text.isNotEmpty) {
                   (
-                      _emailController.text == 'adminone@gmail.com' ||
+                      _emailController.text == 'fdiali76@gmail.com' ||
                           _emailController.text == 'treasureevent48@gmail.com'
                   ) ?
                       _loginAdmin() : _loginUser();
@@ -98,11 +99,9 @@ class _LoginState extends State<Login> {
                             message: 'Email AND Password are required',));
                 }
               },
-              child: Text('Sign In'),
+              child: Text('Sign in'),
             ),
-            SizedBox(
-              height: 30.0,
-            ),
+            SizedBox(height: 45.0,),
 
           ],
         ),
@@ -152,7 +151,7 @@ class _LoginState extends State<Login> {
           builder: (c) {
             // return ErrorAlertDialog(message: error.toString());
             return ErrorAlertDialog(
-                message: 'Could not verify you as admin. Or internet is down.');
+                message: 'Could not verify you.');
           }
       );
     });

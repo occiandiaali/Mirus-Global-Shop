@@ -14,6 +14,7 @@ class EshopApp {
   static String collectionUser = "users";
   static String collectionOrders = "orders";
   static String userCartList = 'userCart';
+  static String userOrderList = 'userOrder';
   static String subCollectionAddress = 'userAddress';
 
   static final String userName = 'name';
@@ -27,6 +28,7 @@ class EshopApp {
   static final String totalAmount = 'totalAmount';
   static final String itemQuantity = 'itemQuantity';
   static final String productID = 'productIDs';
+  static final String itemID = 'itemIDs';
   static final String paymentDetails ='paymentDetails';
   static final String orderTime ='orderTime';
   static final String isSuccess ='isSuccess';

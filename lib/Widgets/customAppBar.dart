@@ -1,6 +1,7 @@
 import 'package:mirus_global/Widgets/loadingWidget.dart';
 import 'package:mirus_global/admin/admin_order_card.dart';
 import 'package:mirus_global/config/config.dart';
+import 'package:mirus_global/orders/my_orders.dart';
 import 'package:mirus_global/store/cart.dart';
 import 'package:mirus_global/counters/cartitemcounter.dart';
 import 'package:flutter/material.dart';
@@ -42,38 +43,48 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget
       ),
       bottom: bottom,
       actions: [
-        Stack(
-          children: [
-            IconButton(
-              icon: Icon(Icons.shopping_cart_outlined, color: Colors.white,),
-              // onPressed: () {
-              //   Route route = MaterialPageRoute(builder: (c) => CartPage());
-              //   Navigator.push(context, route);
-              // },
-            ),
-            Positioned(
-              child: Stack(
-                children: [
-                  Icon(
-                    Icons.brightness_1,
-                    size: 20.0,
-                    color: Colors.deepPurple,
-                  ),
-                  Positioned(
-                    top: 3.0,
-                    bottom: 3.0,
-                    left: 6.5,
-                   // child: Icon(Icons.star_half),
-                    child: Text(
-                      (EshopApp.sharedPreferences
-                          .getStringList(EshopApp.userCartList)
-                          .length - 1).toString(),
-                      style: TextStyle(color: Colors.white, fontSize: 12.0),),
-                  ),
-                ],
-              ),
-            ),
-          ],
+        // Stack(
+        //   children: [
+        //     IconButton(
+        //       icon: Icon(Icons.shopping_cart_outlined, color: Colors.white,),
+        //       // onPressed: () {
+        //       //   Route route = MaterialPageRoute(builder: (c) => CartPage());
+        //       //   Navigator.push(context, route);
+        //       // },
+        //     ),
+        //     Positioned(
+        //       child: Stack(
+        //         children: [
+        //           Icon(
+        //             Icons.brightness_1,
+        //             size: 20.0,
+        //             color: Colors.deepPurple,
+        //           ),
+        //           Positioned(
+        //             top: 3.0,
+        //             bottom: 3.0,
+        //             left: 6.5,
+        //            // child: Icon(Icons.star_half),
+        //             child: Text(
+        //               (EshopApp.sharedPreferences
+        //                   .getStringList(EshopApp.userCartList)
+        //                   .length - 1).toString(),
+        //               style: TextStyle(color: Colors.white, fontSize: 12.0),),
+        //           ),
+        //         ],
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        IconButton(
+          iconSize: 29,
+          icon: Icon(
+              Icons.article_outlined,
+              color: Colors.white),
+          onPressed: () {
+            Route route = MaterialPageRoute(builder: (c) => MyOrders());
+            Navigator.push(context, route);
+          },
         ),
       ],
     );

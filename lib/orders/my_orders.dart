@@ -76,7 +76,7 @@ class _MyOrdersState extends State<MyOrders> {
 
           builder: (c, snapshot) {
           //  return !snapshot.hasData ?
-            return snapshot.data.size < 1 ?
+            return (!snapshot.hasData || snapshot.data.size < 1) ?
             Column(
               children: [
                 Container(
@@ -94,8 +94,8 @@ class _MyOrdersState extends State<MyOrders> {
                   ),
                 ),
               ],
-            ) :
-            ListView.builder(
+            )
+                : ListView.builder(
               itemCount: snapshot.data.docs.length,
               itemBuilder: (c, index) {
                 return FutureBuilder<QuerySnapshot>(
@@ -103,7 +103,7 @@ class _MyOrdersState extends State<MyOrders> {
                       .collection("items")
                       .where(
                       "shortInfo",
-                      whereIn: snapshot.data.docs[index].data()[EshopApp.productID])
+                      whereIn: snapshot.data.docs[index].data()[EshopApp.itemID])
                       .get(),
 
                   builder: (c, snap) {
@@ -112,6 +112,7 @@ class _MyOrdersState extends State<MyOrders> {
                       itemCount: snap.data.docs.length,
                       data: snap.data.docs,
                       orderID: snapshot.data.docs[index].id,
+                     // itemQty: snapshot.data.docs[index].data()[EshopApp.itemQuantity],
                       isEnabled: true,
                     )
                         : Center(child: circularProgress(),);
