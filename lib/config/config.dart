@@ -27,6 +27,8 @@ class EshopApp {
   static final String addressID = 'addressID';
   static final String totalAmount = 'totalAmount';
   static final String itemQuantity = 'itemQuantity';
+  static final String itemSize = 'itemSize';
+  static final String itemColour = 'itemColour';
   static final String productID = 'productIDs';
   static final String itemID = 'itemIDs';
   static final String paymentDetails ='paymentDetails';

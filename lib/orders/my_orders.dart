@@ -54,19 +54,10 @@ class _MyOrdersState extends State<MyOrders> {
           ),
           centerTitle: true,
           title: Text(
-            'My Orders',
+            'Order Overview',
             style: TextStyle(
               color: Colors.white
             ),),
-          // actions: [
-          //   IconButton(
-          //     icon: Icon(
-          //         Icons.arrow_drop_down_circle_rounded,
-          //     color: Colors.white,),
-          //    // onPressed: () => SystemNavigator.pop(),
-          //     onPressed: () => null,
-          //   ),
-          // ],
         ),
         body: StreamBuilder<QuerySnapshot>(
           stream: EshopApp.firestore
@@ -112,7 +103,6 @@ class _MyOrdersState extends State<MyOrders> {
                       itemCount: snap.data.docs.length,
                       data: snap.data.docs,
                       orderID: snapshot.data.docs[index].id,
-                     // itemQty: snapshot.data.docs[index].data()[EshopApp.itemQuantity],
                       isEnabled: true,
                     )
                         : Center(child: circularProgress(),);

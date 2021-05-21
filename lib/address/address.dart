@@ -18,10 +18,16 @@ import 'package:mirus_global/Widgets/wideButton.dart';
 class Address extends StatefulWidget {
 
   final double totalAmount;
+  final int itemQty;
+  final String itemSize;
+  final Color itemColour;
 
   const Address({
     Key key,
     this.totalAmount,
+    this.itemQty,
+    this.itemSize,
+    this.itemColour
    }) : super(key: key);
 
   @override
@@ -75,6 +81,7 @@ class _AddressState extends State<Address> {
                             value: index,
                             addressId: snapshot.data.docs[index].id,
                             totalAmount: widget.totalAmount,
+                            itemQty: widget.itemQty,
                             model: AddressModel.fromJson(snapshot.data.docs[index].data()),
                           );
                         },
@@ -125,7 +132,9 @@ class AddressCard extends StatefulWidget {
   final AddressModel model;
   final String addressId;
   final double totalAmount;
-
+  final int itemQty;
+  final String itemSize;
+  final Color itemColour;
   final int currentIndex;
   final int value;
 
@@ -134,7 +143,9 @@ class AddressCard extends StatefulWidget {
   this.model,
   this.addressId,
   this.totalAmount,
-
+  this.itemQty,
+  this.itemSize,
+  this.itemColour,
   this.currentIndex,
   this.value}) : super(key: key);
 
@@ -226,6 +237,9 @@ class _AddressCardState extends State<AddressCard> {
                       builder: (c) => OrderPayment(
                         addressId: widget.addressId,
                         totalAmount: widget.totalAmount,
+                        itemQty: widget.itemQty,
+                        itemSize: widget.itemSize,
+                        itemColour: widget.itemColour,
                       ),
                     );
                     Navigator.push(context, route);

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ItemModel {
@@ -11,10 +12,10 @@ class ItemModel {
   int price;
   int discount;
   int qty;
-  //int itemQty;
+  String dimensions;
+  Color colour;
 
-  ItemModel(
-      {this.category,
+  ItemModel({this.category,
         this.title,
         this.shortInfo,
         this.publishedDate,
@@ -24,6 +25,8 @@ class ItemModel {
         this.price,
         this.discount,
         this.qty,
+        this.dimensions,
+       this.colour,
       });
 
   ItemModel.fromJson(Map<String, dynamic> json) {
@@ -37,7 +40,8 @@ class ItemModel {
     price = json['price'];
     discount = json['discount'];
     qty = json['quantity'];
-   // itemQty = json['itemQty'];
+    dimensions = json['dimensions'];
+    colour = json['colour'];
   }
 
   Map<String, dynamic> toJson() {
@@ -48,7 +52,8 @@ class ItemModel {
     data['price'] = this.price;
     data['discount'] = this.discount;
     data['quantity'] = this.qty;
-   // data['itemQty'] = this.itemQty;
+    data['dimensions'] = this.dimensions;
+    data['colour'] = this.colour;
     data['thumbnailUrl'] = this.thumbnailUrl;
     data['longDescription'] = this.longDescription;
     data['status'] = this.status;

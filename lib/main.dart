@@ -14,6 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'counters/cartitemcounter.dart';
+import 'counters/item_colour.dart';
+import 'counters/item_size.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +35,8 @@ class MG extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CartItemCounter()),
         ChangeNotifierProvider(create: (context) => TotalAmount()),
         ChangeNotifierProvider(create: (context) => ItemQuantity()),
+        // ChangeNotifierProvider(create: (context) => ItemColour()),
+        // ChangeNotifierProvider(create: (context) => ItemSize()),
         ChangeNotifierProvider(create: (context) => AddressChanger()),
       ],
         child: MaterialApp(

@@ -45,7 +45,7 @@ dependencies:
   url_launcher: ^6.0.3
   flutter_mailer: ^2.0.0
   telephony: ^0.1.2
-  number_inc_dec: ^0.6.6
+  flutter_material_color_picker: ^1.0.5
   #flutter_sms: ^2.3.1
   #sms: ^0.2.0
 

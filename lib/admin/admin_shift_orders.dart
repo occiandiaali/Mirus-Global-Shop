@@ -36,7 +36,7 @@ class _MyOrdersState extends State<AdminShiftOrders> {
           ),
           centerTitle: true,
           title: Text(
-            'Placed Orders',
+            'Pending Order',
             style: TextStyle(
                 color: Colors.white
             ),),
@@ -84,7 +84,7 @@ class _MyOrdersState extends State<AdminShiftOrders> {
                       .collection("items")
                       .where(
                       "shortInfo",
-                      whereIn: snapshot.data.docs[index].data()[EshopApp.productID])
+                      whereIn: snapshot.data.docs[index].data()[EshopApp.itemID])
                       .get(),
 
                   builder: (c, snap) {

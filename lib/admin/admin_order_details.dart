@@ -35,6 +35,7 @@ class AdminOrderDetails extends StatelessWidget {
     getOrderId = orderID;
     getOrderBy = orderBy;
     getAddressId = addressID;
+    final cCy = NumberFormat("#,##0.00");
 
     return SafeArea(
       child: Scaffold(
@@ -56,7 +57,7 @@ class AdminOrderDetails extends StatelessWidget {
           ),
           centerTitle: true,
           title: Text(
-            'Customer Orders',
+            'Pending Order details',
             style: TextStyle(
                 color: Colors.white
             ),),
@@ -91,11 +92,20 @@ class AdminOrderDetails extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          'Total: =N= ${dataMap[EshopApp.totalAmount]}',
+                          'Total: =N= ${cCy.format(dataMap[EshopApp.totalAmount])}',
                           style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
                           ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                            'Quantity ( ${dataMap[EshopApp.itemQuantity]} )'
                         ),
                       ),
                     ),
@@ -112,7 +122,7 @@ class AdminOrderDetails extends StatelessWidget {
                       padding: EdgeInsets.all(4.0),
                       //child: Text("Order ID: $getOrderId"),
                       child: SelectableText(
-                        "Order ID: $getOrderId",
+                        "ID: $getOrderId",
                         showCursor: true,
                         cursorColor: Colors.deepPurple,
                         cursorWidth: 5,
@@ -139,7 +149,7 @@ class AdminOrderDetails extends StatelessWidget {
                           .collection("items")
                           .where(
                           "shortInfo",
-                          whereIn: dataMap[EshopApp.productID])
+                          whereIn: dataMap[EshopApp.itemID])
                           .get(),
 
                       builder: (c, dataSnapshot) {
@@ -344,6 +354,7 @@ class AdminShippingDetails extends StatelessWidget {
               onTap: () => confirmOrderShipped(context, getOrderId),
               child: Container(
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6.0),
                   gradient: LinearGradient(
                     colors: [
                       Colors.deepPurple,
@@ -355,14 +366,14 @@ class AdminShippingDetails extends StatelessWidget {
                     tileMode: TileMode.clamp,
                   ),
                 ),
-                width: MediaQuery.of(context).size.width - 40.0,
+                width: MediaQuery.of(context).size.width - 120.0,
                 height: 50.0,
                 child: Center(
                   child: Text(
-                    "Clear if order has been shipped",
+                    "Confirm order processed",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 15.0,
+                      fontSize: 19.0,
                     ),
                   ),
                 ),

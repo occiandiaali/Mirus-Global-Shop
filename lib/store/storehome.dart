@@ -308,11 +308,20 @@ Widget sourceInfo(
                                   ],
                                 ),
                               ),
-                            //  SizedBox(height: 5.0,),
                               Padding(
                                 padding: EdgeInsets.only(top: 2.0),
                                 child: Text(
-                                  'type: ${model.category}',
+                                  '* * * * *',
+                                  style: TextStyle(
+                                      fontSize: 21.0,
+                                      color: Colors.yellow),
+                                ),
+                              ),
+                              SizedBox(height: 5.0,),
+                              Padding(
+                                padding: EdgeInsets.only(top: 2.0),
+                                child: Text(
+                                  'category: ${model.category}',
                                   style: TextStyle(color: Colors.grey),
                                 ),
                               ),
@@ -350,21 +359,21 @@ Widget sourceInfo(
                     //   //           color: Colors.purpleAccent),
                     //   //     ),
                     // ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: OutlinedButton(
-                        child: Text('Order'),
-                        onPressed: () => addItem(model.shortInfo, context),
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: Size(20.0, 30.0),
-                                  shape: StadiumBorder(),
-                                  side: BorderSide(
-                                    width: 4,
-                                    color: Colors.deepPurple
-                                  ),
-                        ),
-                      ),
-                    ),
+                    // Align(
+                    //   alignment: Alignment.centerRight,
+                    //   child: OutlinedButton(
+                    //     child: Text('Order'),
+                    //     onPressed: () => addItem(model.shortInfo, context),
+                    //     style: OutlinedButton.styleFrom(
+                    //       minimumSize: Size(20.0, 30.0),
+                    //               shape: StadiumBorder(),
+                    //               side: BorderSide(
+                    //                 width: 4,
+                    //                 color: Colors.deepPurple
+                    //               ),
+                    //     ),
+                    //   ),
+                    // ),
                     Divider(
                       height: 2.0,
                       color: Colors.purpleAccent,

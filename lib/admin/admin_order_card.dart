@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:mirus_global/Widgets/order_card.dart';
+import 'package:intl/intl.dart';
 import 'package:mirus_global/admin/admin_order_details.dart';
 import 'package:mirus_global/models/item.dart';
 
@@ -59,9 +59,9 @@ class AdminOrderCard extends StatelessWidget {
             tileMode: TileMode.clamp,
           ),
         ),
-        padding: EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(15.0),
         margin: EdgeInsets.all(10.0),
-        height: itemCount * 190.0,
+        height: itemCount * 230.0,
         child: ListView.builder(
           itemCount: itemCount,
           physics: NeverScrollableScrollPhysics(),
@@ -88,7 +88,7 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
       String orderBy,
       String addressID}) {
   width = MediaQuery.of(context).size.width;
-  // final qtyItem = Provider.of<ItemQuantity>(context);
+  final cCy = NumberFormat("#,##0.00");
 
   return Container(
     color: Colors.grey[100],
@@ -101,7 +101,7 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
           width: 180.0,
         ),
         SizedBox(
-          width: 10.0,
+          width: 5.0,
         ),
         Expanded(
           child: Column(
@@ -154,7 +154,7 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
                       Row(
                         children: [
                           Text(
-                            'Unit: =N= ${model.price}',
+                            'Unit: =N= ${cCy.format(model.price)}',
                             style: TextStyle(
                               fontSize: 15.0,
                               color: Colors.green,
@@ -165,11 +165,7 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
                       Row(
                         children: [
                           Text(
-                            'Qty: ${model.qty}',
-                            style: TextStyle(
-                              fontSize: 8.0,
-                              color: Colors.green,
-                            ),
+                            'Awaiting processing',
                           ),
                         ],
                       ),

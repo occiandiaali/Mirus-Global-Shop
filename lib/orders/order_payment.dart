@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mirus_global/counters/item_colour.dart';
 import 'package:mirus_global/counters/item_quantity.dart';
+import 'package:mirus_global/counters/item_size.dart';
 import 'package:mirus_global/orders/my_orders.dart';
 import 'package:mirus_global/store/storehome.dart';
 import 'package:provider/provider.dart';
@@ -21,13 +23,18 @@ class OrderPayment extends StatefulWidget {
 
   final String addressId;
   final double totalAmount;
+  final int itemQty;
+  final String itemSize;
+  final Color itemColour;
 
 
   OrderPayment({
     Key key,
     this.addressId,
     this.totalAmount,
-
+    this.itemQty,
+    this.itemSize,
+    this.itemColour,
   }) : super(key: key);
 
   @override
@@ -35,17 +42,6 @@ class OrderPayment extends StatefulWidget {
 }
 
 class _OrderPaymentState extends State<OrderPayment> {
- // final Telephony telephony = Telephony.instance;
-
-  // void _sendSMS(String msg, List<String> recipients) async {
-  //   await sendSMS(message: msg, recipients: recipients)
-  //       .catchError((onError) {
-  //         print('Error: $onError');
-  //     Fluttertoast.showToast(
-  //         msg: 'Could not send SMS',
-  //     toastLength: Toast.LENGTH_LONG);
-  //   });
-  // }
 
   void _launchURL() async {
     await canLaunch(_mailUrl) ?
@@ -115,7 +111,7 @@ class _OrderPaymentState extends State<OrderPayment> {
                     ),
                     SizedBox(height: 10.0,),
                     Text(
-                      'Kindly pay to below account',
+                      'Please pay to below account',
                       style: TextStyle(
                         color: Colors.yellow,
                         fontSize: 17,
@@ -141,7 +137,7 @@ class _OrderPaymentState extends State<OrderPayment> {
                     ),
                     SizedBox(height: 12.0,),
                     Text(
-                      'Please, payment must be confirmed BEFORE delivery.',
+                      'Payment must be confirmed BEFORE delivery.',
                       style: TextStyle(color: Colors.yellow, fontSize: 16.0),
                     ),
                     Text(
@@ -154,7 +150,7 @@ class _OrderPaymentState extends State<OrderPayment> {
                       style: TextStyle(color: Colors.yellow, fontSize: 16.0),
                     ),
                     Text(
-                      'Click CANCEL to cancel order placement',
+                      'Click CANCEL to go back',
                       style: TextStyle(color: Colors.yellow, fontSize: 16.0),
                     ),
                   ],
@@ -207,8 +203,7 @@ class _OrderPaymentState extends State<OrderPayment> {
   }
 
   Future writeOrderDetailsAdmin(Map<String, dynamic> data) async {
-    await EshopApp.firestore
-        .collection(EshopApp.collectionOrders)
+    await EshopApp.firestore.collection(EshopApp.collectionOrders)
         .doc(EshopApp.sharedPreferences
             .getString(EshopApp.userUID) + data['orderTime'])
         .set(data);
@@ -262,7 +257,9 @@ class _OrderPaymentState extends State<OrderPayment> {
     writeOrderDetailsUser({
       EshopApp.addressID: widget.addressId,
       EshopApp.totalAmount: widget.totalAmount,
-     // EshopApp.itemQuantity: numItems,
+      EshopApp.itemQuantity: widget.itemQty,
+      // EshopApp.itemSize: s,
+      // EshopApp.itemColour: c,
       "orderBy": EshopApp.sharedPreferences.getString(EshopApp.userUID),
       EshopApp.itemID: EshopApp.sharedPreferences.getStringList(EshopApp.userOrderList),
       EshopApp.paymentDetails: "Bank Transfer",
@@ -273,7 +270,9 @@ class _OrderPaymentState extends State<OrderPayment> {
     writeOrderDetailsAdmin({
       EshopApp.addressID: widget.addressId,
       EshopApp.totalAmount: widget.totalAmount,
-      // EshopApp.itemQuantity: numItems,
+      EshopApp.itemQuantity: widget.itemQty,
+      // EshopApp.itemSize: widget.itemSize,
+      // EshopApp.itemColour: widget.itemColour,
       "orderBy": EshopApp.sharedPreferences.getString(EshopApp.userUID),
       EshopApp.itemID: EshopApp.sharedPreferences.getStringList(EshopApp.userOrderList),
       EshopApp.paymentDetails: "Bank Transfer",

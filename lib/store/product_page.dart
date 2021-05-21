@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mirus_global/counters/item_colour.dart';
+import 'package:mirus_global/counters/item_quantity.dart';
+import 'package:mirus_global/counters/item_size.dart';
+import 'package:numberpicker/numberpicker.dart';
+import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:intl/intl.dart';
 
 import 'package:mirus_global/Widgets/customAppBar.dart';
@@ -14,7 +19,6 @@ import 'package:provider/provider.dart';
 
 import './storehome.dart';
 import './cart.dart';
-import 'package:numberpicker/numberpicker.dart';
 
 class ProductPage extends StatefulWidget {
   final ItemModel itemModel;
@@ -30,6 +34,56 @@ class _ProductPageState extends State<ProductPage> {
   //int cost = 0;
   //int itemQty;
   double totalAmount;
+  double itemAmount;
+  double priceWithDiscount;
+  double price;
+  String selectedItemSize = 'Small';
+  ColorSwatch _tempMainColor;
+  Color _tempShadeColor;
+  ColorSwatch _mainColor = Colors.blue;
+  Color _shadeColor = Colors.blue[800];
+
+  void _openDialog(String title, Widget content) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.all(6.0),
+          title: Text(title),
+          content: content,
+          actions: [
+            TextButton(
+              child: Text('CANCEL'),
+              onPressed: Navigator.of(context).pop,
+            ),
+            TextButton(
+              child: Text('SELECT'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() => _mainColor = _tempMainColor);
+                setState(() => _shadeColor = _tempShadeColor);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  } // open dialogue
+
+  void _openColorPicker() async {
+    _openDialog(
+      "Color picker",
+      MaterialColorPicker(
+        selectedColor: _shadeColor,
+        onColorChange: (color) => setState(() {
+          _tempShadeColor = color;
+         // Provider.of<ItemColour>(context, listen: false).colourOfItem(_shadeColor);
+        }),
+        onMainColorChange: (color) => setState(() => _tempMainColor = color),
+        // onBack: () => print("Back button pressed"),
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -43,10 +97,6 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     final cCy = NumberFormat("#,##0.00");
-    // Size screenSize = MediaQuery.of(context).size;
-    //  cost = widget.itemModel.price * qtyOfItem;
-    // itemQty = qtyOfItem;
-    // itemQty = widget.itemModel.itemQty;
 
     totalAmount = widget.itemModel.price.toDouble();
 
@@ -122,76 +172,115 @@ class _ProductPageState extends State<ProductPage> {
                           SizedBox(
                             height: 2.0,
                           ),
-                          Text(
-                            'Category: ${widget.itemModel.category}',
-                            style: TextStyle(
-                              fontSize: 15.0,
-                              color: Colors.grey,
-                            ),
+                          Row(
+                            children: [
+                              DropdownButton(
+                                hint: Text('Select size'),
+                                value: selectedItemSize,
+                                style: TextStyle(
+                                    fontSize: 19.0, color: Colors.deepPurple),
+                                items: [
+                                  DropdownMenuItem(
+                                      child: Text(
+                                        'Small',
+                                        style:
+                                            TextStyle(color: Colors.deepPurple),
+                                      ),
+                                      value: 'Small'),
+                                  DropdownMenuItem(
+                                      child: Text(
+                                        'Medium',
+                                        style:
+                                            TextStyle(color: Colors.deepPurple),
+                                      ),
+                                      value: 'Medium'),
+                                  DropdownMenuItem(
+                                      child: Text(
+                                        'Large',
+                                        style:
+                                            TextStyle(color: Colors.deepPurple),
+                                      ),
+                                      value: 'Large'),
+                                  DropdownMenuItem(
+                                      child: Text(
+                                        'Extra-large',
+                                        style:
+                                            TextStyle(color: Colors.deepPurple),
+                                      ),
+                                      value: 'Extra-large'),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedItemSize = value;
+                                    // Provider.of<ItemSize>(
+                                    //     context, listen: false)
+                                    //     .sizeOfItem(selectedItemSize);
+                                  });
+                                },
+                              ),
+                              SizedBox(
+                                width: 55.0,
+                              ),
+                              Text(
+                                'Item colour',
+                                style: TextStyle(
+                                    fontSize: 19.0,
+                                    color: Colors.deepPurple),
+                              ),
+                              SizedBox(
+                                width: 15.0,
+                              ),
+                              CircleColor(
+                                color: _shadeColor,
+                                circleSize: 25,
+                                iconSelected: Icons.brightness_1_rounded,
+                                elevation: 4.0,
+                                onColorChoose: _openColorPicker,
+                              ),
+                            ],
                           ),
                           SizedBox(
                             height: 15.0,
                           ),
-                          (widget.itemModel.discount != null &&
-                                  widget.itemModel.discount > 0)
-                              ? Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "=N= ${cCy.format((widget.itemModel.price - (widget.itemModel.price * (widget.itemModel.discount / 100))) * qtyOfItem)}",
-                                      style: TextStyle(
-                                        fontSize: 25.0,
-                                      ),
-                                    ),
-                                    // SizedBox(width: 8.0,),
-                                  ],
-                                )
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "=N= ${cCy.format(widget.itemModel.price * qtyOfItem)}",
-                                      style: TextStyle(
-                                        fontSize: 25.0,
-                                      ),
-                                    ),
-                                    // SizedBox(width: 8.0,),
-                                  ],
+                            (widget.itemModel.discount != null &&
+                              widget.itemModel.discount > 0) ?
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "=N= ${cCy.format(calcTotalAmount())}",
+                                /*
+                                (widget.itemModel.price -
+                                    (widget.itemModel.price * (widget.itemModel.discount / 100)) *
+                                        qtyOfItem)
+                                * */
+                                style: TextStyle(
+                                  fontSize: 25.0,
                                 ),
-                          // Row(
-                          //   children: [
-                          //     qtyPicker(),
-                          //   ],
-                          // ),
+                              ),
+                              // SizedBox(width: 8.0,),
+                            ],
+                          )
+                                : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "=N= ${cCy.format(calcTotalAmount())}",
+                                  //(widget.itemModel.price * qtyOfItem).toDouble()
+                                  style: TextStyle(
+                                    fontSize: 25.0,
+                                  ),
+                                ),
+                                // SizedBox(width: 8.0,),
+                              ],
+                            )
                         ],
                       ),
                     ),
                   ),
+
                   Row(
                     children: [
-                      // CustomStepper(
-                      //   lowerLimit: 1,
-                      //   upperLimit: 10,
-                      //   stepValue: 1,
-                      //   iconSize: 31,
-                      //   value: qtyOfItem,
-                      // ),
-                      NumberPicker(
-                          minValue: 1,
-                          maxValue: 10,
-                          axis: Axis.horizontal,
-                          itemWidth: 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                            border: Border.all(
-                                color: Colors.deepPurple,
-                              width: 3
-                            ),
-                          ),
-                          value: qtyOfItem,
-                          onChanged: (value) =>
-                              setState(() => qtyOfItem = value)),
-                      SizedBox(width: 35.0),
                       OutlinedButton(
                         child: Text(
                           'Place Order',
@@ -202,12 +291,17 @@ class _ProductPageState extends State<ProductPage> {
                           ),
                         ),
                         onPressed: () {
-                          addItem(widget.itemModel.shortInfo, context);
+                          // int quantityOfItem = Provider.of<ItemQuantity>
+                          //   (context, listen: false).numberOfItems;
                           Route route = MaterialPageRoute(
                               builder: (c) => Address(
-                                  totalAmount:
-                                      (widget.itemModel.price).toDouble()));
+                                totalAmount: calcTotalAmount(),
+                                itemQty: qtyOfItem,
+                                itemSize: selectedItemSize,
+                                itemColour: _shadeColor,
+                              ));
                           Navigator.push(context, route);
+                          addItem(widget.itemModel.shortInfo, context);
                         },
                         style: OutlinedButton.styleFrom(
                           minimumSize: Size(150.0, 50.0),
@@ -215,33 +309,27 @@ class _ProductPageState extends State<ProductPage> {
                           side: BorderSide(width: 6, color: Colors.deepPurple),
                         ),
                       ),
-                      // Align(
-                      //   alignment: Alignment.centerRight,
-                      //   child: OutlinedButton(
-                      //     child: Text(
-                      //       'Place Order',
-                      //       style: TextStyle(
-                      //         fontSize: 21.0,
-                      //         fontWeight: FontWeight.bold,
-                      //         color: Colors.deepPurple,
-                      //       ),
-                      //     ),
-                      //     onPressed: () {
-                      //       addItem(widget.itemModel.shortInfo, context);
-                      //       Route route = MaterialPageRoute(builder: (c) =>
-                      //           Address(totalAmount: (widget.itemModel.price).toDouble()));
-                      //       Navigator.push(context, route);
-                      //     },
-                      //     style: OutlinedButton.styleFrom(
-                      //       minimumSize: Size(150.0, 50.0),
-                      //       shape: StadiumBorder(),
-                      //       side: BorderSide(
-                      //           width: 6,
-                      //           color: Colors.deepPurple
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      SizedBox(width: 35.0),
+                      NumberPicker(
+                          minValue: 1,
+                          maxValue: 10,
+                          axis: Axis.horizontal,
+                          itemWidth: 40,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15.0)),
+                            border:
+                                Border.all(color: Colors.deepPurple, width: 3),
+                          ),
+                          value: qtyOfItem,
+                          onChanged: (value) =>
+                              setState(() {
+                                qtyOfItem = value;
+                                widget.itemModel.qty = qtyOfItem;
+                                Provider.of<ItemQuantity>(
+                                    context,
+                                    listen: false).qtyOfItem(widget.itemModel.qty);
+                              })),
                     ],
                   ),
                   SizedBox(
@@ -272,7 +360,19 @@ class _ProductPageState extends State<ProductPage> {
   //   );
   // }
 
+  double calcTotalAmount() {
+    double total = 0.00;
+    total = (widget.itemModel.discount != null &&
+        widget.itemModel.discount > 0) ?
+    (widget.itemModel.price -
+        (widget.itemModel.price * (widget.itemModel.discount / 100))) * qtyOfItem
+        : (widget.itemModel.price).toDouble() * qtyOfItem;
+    return total;
+  }
+
 } // class
+
+
 
 addItem(String shortInfoAsId, BuildContext context) {
   List tempCartList =

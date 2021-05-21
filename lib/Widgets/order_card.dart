@@ -12,10 +12,11 @@ import 'package:intl/intl.dart';
 import '../store/storehome.dart';
 
 int counter = 0;
+int qtyItem = 0;
 
 class OrderCard extends StatelessWidget {
-  final int itemCount;
-  final int itemQty;
+   final int itemCount;
+   final int qty;
   final List<DocumentSnapshot> data;
   final String orderID;
   final bool isEnabled;
@@ -25,7 +26,7 @@ class OrderCard extends StatelessWidget {
   OrderCard(
       {Key key,
       this.itemCount,
-      this.itemQty,
+      this.qty,
       this.data,
       this.orderID,
       this.isEnabled,
@@ -37,20 +38,13 @@ class OrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return InkWell(
-      // onTap: () {
-      //   Route route;
-      //   if (counter == 0) {
-      //     counter = counter + 1;
-      //     route =
-      //         MaterialPageRoute(builder: (c) => OrderDetails(orderID: orderID));
-      //     Navigator.push(context, route);
-      //   }
-      //   // Navigator.push(context, route);
-      // },
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.deepPurple, Colors.blueGrey, Colors.orangeAccent],
+            colors: [
+              Colors.deepPurple,
+              Colors.blueGrey,
+              Colors.orangeAccent],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             stops: [0.4, 0.6, 1],
@@ -70,23 +64,13 @@ class OrderCard extends StatelessWidget {
                 model,
                 context,
                 oID: orderID,
-                qty: itemQty,
-                itemCount: itemCount,
+               // qty: model.qty,
                 isEButtonEnabled: isEnabled);
             // ********************************8
           },
         ),
       ),
     );
-  }
-  int calcPriceSum(int p, int q) {
-    var costList = [];
-    var sum = 0;
-    for (var i = 0; i < itemCount; i++) {
-      costList.add(p * q);
-    }
-    costList.forEach((e) => sum += e);
-    return sum;
   }
 
 } // class
@@ -96,16 +80,13 @@ Widget sourceOrderInfo(
     BuildContext context,
     {Color background,
       String oID,
-      int total,
-      int qty,
-      int itemCount,
+      //int total,
+     // int qty,
+     // int itemCount,
       bool isEButtonEnabled = true}) {
 
   width = MediaQuery.of(context).size.width;
   final cCy = NumberFormat("#,##0.00");
- // int priceSum = total;
-  //qty = Provider.of<ItemQuantity>(context).numberOfItems;
-
   return Container(
           color: Colors.grey[100],
           height: 190.0,
@@ -119,7 +100,7 @@ Widget sourceOrderInfo(
                   width: 150.0,
                 ),
                 SizedBox(
-                  width: 8.0,
+                  width: 6.0,
                 ),
                 Expanded(
                   child: Column(
@@ -145,23 +126,6 @@ Widget sourceOrderInfo(
                         SizedBox(
                           height: 5.0,
                         ),
-                        Container(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  model.shortInfo,
-                                  style: TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: 12.0,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 9.0),
                         Row(
                           children: [
                             Column(
@@ -169,9 +133,20 @@ Widget sourceOrderInfo(
                               children: [
                                 Row(
                                   children: [
+                                    (model.discount != null
+                                        && model.discount > 0) ?
                                     Text(
-                                      //'Unit: =N= ${model.price}',
-                                      'Cost: =N= ${cCy.format(model.price)}',
+                                      'Unit: =N= ${cCy.format(
+                                          model.price -
+                                              (model.price * (model.discount / 100))
+                                      )}',
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.green,
+                                      ),
+                                    )
+                                        : Text(
+                                      'Unit: =N= ${cCy.format(model.price)}',
                                       style: TextStyle(
                                         fontSize: 15.0,
                                         color: Colors.green,
@@ -179,19 +154,20 @@ Widget sourceOrderInfo(
                                     ),
                                   ],
                                 ),
-                                // Row(
-                                //   children: [
-                                //     Padding(
-                                //       padding: EdgeInsets.all(0.0),
-                                //       child: Align(
-                                //         alignment: Alignment.center,
-                                //         child: Text(
-                                //             'Qty: $qty'
-                                //         ),
-                                //       ),
-                                //     ),
-                                //   ],
-                                // ),
+                                SizedBox(height: 2.0),
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.all(0.0),
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                            'Awaiting confirmation'
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                                 SizedBox(height: 9.0),
                                 isEButtonEnabled ?
                                 Row(

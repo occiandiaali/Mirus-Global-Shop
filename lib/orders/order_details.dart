@@ -23,15 +23,13 @@ class OrderDetails extends StatelessWidget {
 
   final String orderID;
 
-  OrderDetails({
-    Key key,
-  this.orderID
-  }) : super(key: key);
+  OrderDetails({Key key, this.orderID}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
 
     getOrderId = orderID;
+    final cCy = NumberFormat("#,##0.00");
 
     return SafeArea(
       child: Scaffold(
@@ -90,9 +88,22 @@ class OrderDetails extends StatelessWidget {
                           child: Align(
                             alignment: Alignment.center,
                             child: Text(
-                              'Pay: =N= ${dataMap[EshopApp.totalAmount]}',
+                              'Pay: =N= ${cCy.format(dataMap[EshopApp.totalAmount])}',
                               style: TextStyle(
                                 fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(4.0),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Quantity ( ${dataMap[EshopApp.itemQuantity]} )',
+                              style: TextStyle(
+                                fontSize: 16.0,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -375,7 +386,7 @@ class ShippingDetails extends StatelessWidget {
                 height: 50.0,
                 child: Center(
                   child: Text(
-                    'All Correct',
+                    'Confirm Correct',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18.0,

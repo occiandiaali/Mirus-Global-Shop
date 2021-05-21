@@ -2,10 +2,8 @@ import 'package:flutter/foundation.dart';
 
 class ItemQuantity with ChangeNotifier {
   int _numberOfItems = 1;
- // int _qtyInStock = 0;
 
   int get numberOfItems => _numberOfItems;
- // int get qtyInStock => _qtyInStock;
 
   qtyOfItem(int n) async {
     _numberOfItems = n;
@@ -13,12 +11,4 @@ class ItemQuantity with ChangeNotifier {
     notifyListeners();
     });
   }
-
-  // qtyOfItemInStock(int s) async {
-  //   _qtyInStock = s;
-  //   await Future.delayed(const Duration(milliseconds: 100), () {
-  //     notifyListeners();
-  //   });
-  // }
-
 }
