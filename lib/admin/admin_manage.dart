@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:mirus_global/admin/edit_product_page.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../Widgets/loadingWidget.dart';
@@ -110,6 +111,7 @@ class _AdminManageState extends State<AdminManage> {
 Widget sourceInfo(ItemModel model, BuildContext context, String id,
     {Color background, removeCartFunction}) {
  // int timesOrdered = 0; // placeholder value
+  final cCy = NumberFormat("#,##0.00");
   return InkWell(
     onTap: () {
       Route route = MaterialPageRoute(builder: (c) => EditProductPage(itemModel: model, docID: id,));
@@ -183,12 +185,39 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
                           //     ],
                           //   ),
                           // ),
+                          (model.discount != null
+                              && model.discount > 0) ?
                           Padding(
+                            padding: EdgeInsets.only(top: 2.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  '=N= ${cCy.format(
+                                      model.price -
+                                          (model.price * (model.discount / 100))
+                                  )}',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                                SizedBox(width: 5.0,),
+                                Text(
+                                  '${model.discount}% off',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.deepPurple,
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                          : Padding(
                             padding: EdgeInsets.only(top: 5.0),
                             child: Row(
                               children: [
                                 Text(
-                                  'Price: =N= ${model.price}',
+                                  'Price: =N= ${cCy.format(model.price)}',
                                   style: TextStyle(
                                     fontSize: 14.0,
                                     color: Colors.green,

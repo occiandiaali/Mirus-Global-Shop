@@ -68,7 +68,7 @@ class _MyOrdersState extends State<AdminShiftOrders> {
                     width: 350.0,),
                 ),
                 Text(
-                    'No orders placed yet...',
+                    'No pending orders...',
                   style: TextStyle(
                     fontSize: 25.0,
                     color: Colors.grey,
