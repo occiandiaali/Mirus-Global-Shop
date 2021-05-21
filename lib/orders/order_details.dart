@@ -18,10 +18,14 @@ import 'package:telephony/telephony.dart';
 
 
 String getOrderId = "";
+double shippingCost = 0.00;
+
+final cCy = NumberFormat("#,##0.00");
 
 class OrderDetails extends StatelessWidget {
 
   final String orderID;
+
 
   OrderDetails({Key key, this.orderID}) : super(key: key);
 
@@ -29,7 +33,7 @@ class OrderDetails extends StatelessWidget {
   Widget build(BuildContext context) {
 
     getOrderId = orderID;
-    final cCy = NumberFormat("#,##0.00");
+
 
     return SafeArea(
       child: Scaffold(
@@ -88,10 +92,13 @@ class OrderDetails extends StatelessWidget {
                           child: Align(
                             alignment: Alignment.center,
                             child: Text(
-                              'Pay: =N= ${cCy.format(dataMap[EshopApp.totalAmount])}',
+                              'Total: =N= ${cCy.format(
+                                  dataMap[EshopApp.totalAmount]
+                                      + shippingCost)}',
                               style: TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
+                                color: Colors.green
                               ),
                             ),
                           ),
@@ -101,27 +108,30 @@ class OrderDetails extends StatelessWidget {
                           child: Align(
                             alignment: Alignment.center,
                             child: Text(
-                              'Quantity ( ${dataMap[EshopApp.itemQuantity]} )',
+                              '( =N= ${cCy.format(dataMap[EshopApp.totalAmount])} )',
                               style: TextStyle(
-                                fontSize: 16.0,
+                                fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
+                                  color: Colors.deepPurple
                               ),
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.all(4.0),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              '(delivery fee not included)',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: EdgeInsets.all(4.0),
+                        //   child: Align(
+                        //     alignment: Alignment.center,
+                        //     child: Text(
+                        //       'Quantity ( ${dataMap[EshopApp.itemQuantity]} )',
+                        //       style: TextStyle(
+                        //         fontSize: 15.0,
+                        //         fontWeight: FontWeight.bold,
+                        //           color: Colors.deepPurple
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+
                           Padding(
                           padding: EdgeInsets.all(4.0),
                           child: Align(
@@ -218,7 +228,7 @@ class OrderDetails extends StatelessWidget {
       ),
     );
   }
-}
+} // order details class
 
 
 
@@ -285,7 +295,7 @@ class StatusBanner extends StatelessWidget {
       ),
     );
   }
-}
+} // status banner class
 
 
 class ShippingDetails extends StatelessWidget {
@@ -300,6 +310,9 @@ class ShippingDetails extends StatelessWidget {
 
     double screenWidth = MediaQuery.of(context).size.width;
 
+    shippingCost = model.state == 'Lagos' ||
+    model.state == 'lagos' ? 3500 : 12000;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -312,6 +325,17 @@ class ShippingDetails extends StatelessWidget {
             "DELIVERY DETAILS",
             style: TextStyle(
               color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(4.0),
+          child: Text(
+            'Shipping: =N= ${cCy.format(shippingCost)}',
+            style: TextStyle(
+              color: Colors.red,
+              fontSize: 21,
               fontWeight: FontWeight.bold,
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mirus_global/admin/admin_order_details.dart';
 import 'package:mirus_global/config/config.dart';
 import 'package:mirus_global/counters/item_quantity.dart';
@@ -185,6 +186,13 @@ Widget sourceOrderInfo(
                                                        // priceSum: priceSum,
                                                     ));
                                             Navigator.push(context, route);
+                                            // Fluttertoast.showToast(
+                                            //     msg: 'PLEASE, double-check the TOTAL amount to be paid '
+                                            //         'plus SHIPPING before you pay',
+                                            //   gravity: ToastGravity.TOP,
+                                            //   toastLength: Toast.LENGTH_LONG
+                                            // );
+                                        _doubleCheckTotal(context);
                                       },
                                       child: Icon(
                                         Icons.check_circle,
@@ -227,3 +235,26 @@ Widget sourceOrderInfo(
           ),
         );
 } // source order info
+
+// ***************
+
+void _doubleCheckTotal(BuildContext ctx) {
+  showModalBottomSheet(
+      elevation: 10,
+      backgroundColor: Colors.amber,
+      context: ctx,
+      builder: (ctx) => Container(
+        padding: EdgeInsets.all(8.0),
+        width: 300,
+        height: 300,
+        color: Colors.white54,
+        alignment: Alignment.center,
+        child: Text(
+          'PLEASE, double-check the TOTAL amount to be paid '
+              'plus SHIPPING before you pay. '
+              'If the TOTAL appears to be incorrect, return '
+              'to the previous screen and tap DETAILS again... '
+              'Otherwise, confirm all the details and proceed.',
+          style: TextStyle(color: Colors.deepPurple, fontSize: 23.0),),
+      ));
+}

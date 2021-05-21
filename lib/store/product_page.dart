@@ -31,8 +31,7 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   int qtyOfItem = 1;
-  //int cost = 0;
-  //int itemQty;
+
   double totalAmount;
   double itemAmount;
   double priceWithDiscount;
@@ -42,6 +41,18 @@ class _ProductPageState extends State<ProductPage> {
   Color _tempShadeColor;
   ColorSwatch _mainColor = Colors.blue;
   Color _shadeColor = Colors.blue[800];
+
+  List specialCategories = [
+    'cloth',
+    'shoe',
+    'shirt',
+    'dress',
+    'jeans',
+    'skirt',
+    'belt',
+    'gym',
+    'spa'
+  ];
 
   void _openDialog(String title, Widget content) {
     showDialog(
@@ -172,7 +183,9 @@ class _ProductPageState extends State<ProductPage> {
                           SizedBox(
                             height: 2.0,
                           ),
-                          Row(
+                          specialCategories
+                              .contains(widget.itemModel.category) ?
+                             Row(
                             children: [
                               DropdownButton(
                                 hint: Text('Select size'),
@@ -238,7 +251,7 @@ class _ProductPageState extends State<ProductPage> {
                                 onColorChoose: _openColorPicker,
                               ),
                             ],
-                          ),
+                          ) : Container(),
                           SizedBox(
                             height: 15.0,
                           ),
