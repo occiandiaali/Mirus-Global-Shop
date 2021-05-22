@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:mirus_global/admin/admin_order_details.dart';
+import 'package:mirus_global/counters/item_quantity.dart';
+import 'package:mirus_global/counters/item_size.dart';
 import 'package:mirus_global/models/item.dart';
-
+import 'package:provider/provider.dart';
 
 import '../store/storehome.dart';
 
-
 int counter = 0;
-class AdminOrderCard extends StatelessWidget {
+String sizeOfItem = 'small';
+int qtyOfItem = 0;
 
+class AdminOrderCard extends StatelessWidget {
   final int itemCount;
   final List<DocumentSnapshot> data;
   final String orderID;
@@ -19,20 +22,20 @@ class AdminOrderCard extends StatelessWidget {
   final bool isEnabled;
   final bool isAdmin;
 
-  AdminOrderCard({
-    Key key,
-    this.itemCount,
-    this.data,
-    this.orderID,
-    this.addressID,
-    this.orderBy,
-    this.isEnabled,
-    this.isAdmin
-}) : super(key: key);
+  AdminOrderCard(
+      {Key key,
+      this.itemCount,
+      this.data,
+      this.orderID,
+      this.addressID,
+      this.orderBy,
+      this.isEnabled,
+      this.isAdmin})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  InkWell(
+    return InkWell(
       // onTap: () {
       //   Route route;
       //   if(counter == 0) {
@@ -49,10 +52,7 @@ class AdminOrderCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Colors.deepPurple,
-              Colors.blueGrey,
-              Colors.orangeAccent],
+            colors: [Colors.deepPurple, Colors.blueGrey, Colors.orangeAccent],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             stops: [0.4, 0.6, 1],
@@ -67,14 +67,14 @@ class AdminOrderCard extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (c, index) {
             ItemModel model = ItemModel.fromJson(data[index].data());
-            return sourceOrderInfo(model,
-                context,
+            return sourceOrderInfo(model, context,
                 oID: orderID,
                 orderBy: orderBy,
                 addressID: addressID,
                 isEButtonEnabled: isEnabled,
                 isUserAdmin: isAdmin);
-          },),
+          },
+        ),
       ),
     );
   }
@@ -82,13 +82,31 @@ class AdminOrderCard extends StatelessWidget {
 
 Widget sourceOrderInfo(ItemModel model, BuildContext context,
     {Color background,
-      String oID,
-      bool isEButtonEnabled = true,
-      bool isUserAdmin = false,
-      String orderBy,
-      String addressID}) {
+    String oID,
+    bool isEButtonEnabled = true,
+    bool isUserAdmin = false,
+    String orderBy,
+    String addressID}) {
+
   width = MediaQuery.of(context).size.width;
+
   final cCy = NumberFormat("#,##0.00");
+
+  sizeOfItem = Provider.of<ItemSize>(context).getSizeOfItem;
+
+  qtyOfItem = Provider.of<ItemQuantity>(context).numberOfItems;
+
+  List specialCategories = [
+    'cloth',
+    'shoe',
+    'shirt',
+    'dress',
+    'jeans',
+    'skirt',
+    'belt',
+    'gym',
+    'spa'
+  ];
 
   return Container(
     color: Colors.grey[100],
@@ -153,13 +171,23 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
                     children: [
                       Row(
                         children: [
-                          Text(
-                            'Unit: =N= ${cCy.format(model.price)}',
-                            style: TextStyle(
-                              fontSize: 15.0,
-                              color: Colors.green,
-                            ),
-                          ),
+                          (model.discount != null && model.discount > 0)
+                              ? Text(
+                                  'Unit: ₦ ${cCy.format(model.price - (model.price * (model.discount / 100)))}',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    fontFamily: 'Roboto',
+                                    color: Colors.green,
+                                  ),
+                                )
+                              : Text(
+                                  'Unit: ₦ ${cCy.format(model.price)}',
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontFamily: 'Roboto',
+                                    color: Colors.green,
+                                  ),
+                                ),
                         ],
                       ),
                       Row(
@@ -169,49 +197,49 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
                           ),
                         ],
                       ),
-                     isEButtonEnabled ?
-                      Row(
-                        children: [
-                          Text('Order Details ',),
-                          GestureDetector(
-                            onTap: () {
-                              Route route;
-                              //   if (counter == 0) {
-                              //   counter = counter + 1;
-                              route = MaterialPageRoute(
-                                  builder: (c) =>
-                                      AdminOrderDetails(
-                                          orderID: oID,
-                                        orderBy: orderBy,
-                                         addressID: addressID
-                                      ));
-                              Navigator.push(context, route);
-                            },
-                            child: Icon(
-                              Icons.check_circle,
-                              size: 23.0,
-                              color: Colors.deepPurple,
-                            ),
-                          ),
-                          // ElevatedButton(
-                          //   child: Text('Details'),
-                          //   onPressed: () {
-                          //     Route route;
-                          //     //   if (counter == 0) {
-                          //     //   counter = counter + 1;
-                          //     route =
-                          //         MaterialPageRoute(builder: (c) =>
-                          //             AdminOrderDetails(
-                          //                 orderID: oID,
-                          //             orderBy: orderBy,
-                          //             addressID: addressID,));
-                          //     Navigator.push(context, route);
-                          //     //   }
-                          //   },
-                          // ),
-                        ],
-                      )
-                       : Text(''),
+                      isEButtonEnabled
+                          ? Row(
+                              children: [
+                                Text(
+                                  'Order Details ',
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Route route;
+                                    //   if (counter == 0) {
+                                    //   counter = counter + 1;
+                                    route = MaterialPageRoute(
+                                        builder: (c) => AdminOrderDetails(
+                                            orderID: oID,
+                                            orderBy: orderBy,
+                                            addressID: addressID));
+                                    Navigator.push(context, route);
+                                  },
+                                  child: Icon(
+                                    Icons.check_circle,
+                                    size: 23.0,
+                                    color: Colors.deepPurple,
+                                  ),
+                                ),
+                                // ElevatedButton(
+                                //   child: Text('Details'),
+                                //   onPressed: () {
+                                //     Route route;
+                                //     //   if (counter == 0) {
+                                //     //   counter = counter + 1;
+                                //     route =
+                                //         MaterialPageRoute(builder: (c) =>
+                                //             AdminOrderDetails(
+                                //                 orderID: oID,
+                                //             orderBy: orderBy,
+                                //             addressID: addressID,));
+                                //     Navigator.push(context, route);
+                                //     //   }
+                                //   },
+                                // ),
+                              ],
+                            )
+                          : Text(''),
                     ],
                   ),
                 ],

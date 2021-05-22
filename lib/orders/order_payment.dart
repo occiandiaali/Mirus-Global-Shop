@@ -18,7 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 
 const _mailUrl = 'mailto:mirusglobalimportation@gmail.com?subject=Concerning my order placement';
-
+var sizeOfItem = 'small';
 class OrderPayment extends StatefulWidget {
 
   final String addressId;
@@ -52,6 +52,7 @@ class _OrderPaymentState extends State<OrderPayment> {
 
   @override
   Widget build(BuildContext context) {
+    sizeOfItem = Provider.of<ItemSize>(context).getSizeOfItem;
     return Material(
       child: Container(
         decoration: BoxDecoration(
@@ -258,7 +259,7 @@ class _OrderPaymentState extends State<OrderPayment> {
       EshopApp.addressID: widget.addressId,
       EshopApp.totalAmount: widget.totalAmount,
       EshopApp.itemQuantity: widget.itemQty,
-      // EshopApp.itemSize: s,
+      EshopApp.itemSize: sizeOfItem,
       // EshopApp.itemColour: c,
       "orderBy": EshopApp.sharedPreferences.getString(EshopApp.userUID),
       EshopApp.itemID: EshopApp.sharedPreferences.getStringList(EshopApp.userOrderList),
@@ -271,7 +272,7 @@ class _OrderPaymentState extends State<OrderPayment> {
       EshopApp.addressID: widget.addressId,
       EshopApp.totalAmount: widget.totalAmount,
       EshopApp.itemQuantity: widget.itemQty,
-      // EshopApp.itemSize: widget.itemSize,
+      EshopApp.itemSize: sizeOfItem,
       // EshopApp.itemColour: widget.itemColour,
       "orderBy": EshopApp.sharedPreferences.getString(EshopApp.userUID),
       EshopApp.itemID: EshopApp.sharedPreferences.getStringList(EshopApp.userOrderList),

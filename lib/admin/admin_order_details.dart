@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mirus_global/address/address.dart';
@@ -8,12 +10,14 @@ import 'package:mirus_global/Widgets/loadingWidget.dart';
 import 'package:mirus_global/models/address.dart';
 
 import 'package:intl/intl.dart';
+import 'package:mirus_global/orders/order_details.dart';
 import 'package:telephony/telephony.dart';
 
 
 String getOrderId = "";
 String getOrderBy = "";
 String getAddressId = "";
+double shippingCost = 0.00;
 
 class AdminOrderDetails extends StatelessWidget {
 
@@ -35,6 +39,8 @@ class AdminOrderDetails extends StatelessWidget {
     getOrderId = orderID;
     getOrderBy = orderBy;
     getAddressId = addressID;
+    // Locale locale = Localizations.localeOf(context);
+    // var format = NumberFormat.simpleCurrency(locale: Platform.localeName);
     final cCy = NumberFormat("#,##0.00");
 
     return SafeArea(
@@ -92,10 +98,14 @@ class AdminOrderDetails extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          'Total: =N= ${cCy.format(dataMap[EshopApp.totalAmount])}',
+                          'Total: ₦ ${cCy.format(dataMap[EshopApp.totalAmount]
+                              + shippingCost
+                          )}',
                           style: TextStyle(
-                            fontSize: 20.0,
+                            fontSize: 23.0,
+                            fontFamily: 'Roboto',
                             fontWeight: FontWeight.bold,
+                            color: Colors.green
                           ),
                         ),
                       ),
@@ -105,7 +115,13 @@ class AdminOrderDetails extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                            'Quantity ( ${dataMap[EshopApp.itemQuantity]} )'
+                          '( ₦ ${cCy.format(dataMap[EshopApp.totalAmount])} )',
+                          style: TextStyle(
+                              fontSize: 18.0,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.deepPurple
+                          ),
                         ),
                       ),
                     ),
@@ -114,10 +130,17 @@ class AdminOrderDetails extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          '(Remember to add delivery fees)'
+                            'Quantity ( ${dataMap[EshopApp.itemQuantity]} ) - '
+                                'Size ( ${dataMap[EshopApp.itemSize]} )',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.0,
+                            color: Colors.pinkAccent
+                          ),
                         ),
                       ),
                     ),
+
                     Padding(
                       padding: EdgeInsets.all(4.0),
                       //child: Text("Order ID: $getOrderId"),
@@ -282,6 +305,8 @@ class AdminShippingDetails extends StatelessWidget {
   Widget build(BuildContext context) {
 
     double screenWidth = MediaQuery.of(context).size.width;
+    shippingCost = model.state == 'Lagos' ||
+        model.state == 'lagos' ? 3500 : 12000;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -295,6 +320,18 @@ class AdminShippingDetails extends StatelessWidget {
             "DELIVERY DETAILS",
             style: TextStyle(
               color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(4.0),
+          child: Text(
+            'Shipping: ₦ ${cCy.format(shippingCost)}',
+            style: TextStyle(
+              color: Colors.red,
+              fontSize: 21,
+              fontFamily: 'Roboto',
               fontWeight: FontWeight.bold,
             ),
           ),

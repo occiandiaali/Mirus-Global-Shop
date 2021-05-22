@@ -92,11 +92,12 @@ class OrderDetails extends StatelessWidget {
                           child: Align(
                             alignment: Alignment.center,
                             child: Text(
-                              'Total: =N= ${cCy.format(
+                              'Total: ₦ ${cCy.format(
                                   dataMap[EshopApp.totalAmount]
                                       + shippingCost)}',
                               style: TextStyle(
-                                fontSize: 20.0,
+                                fontSize: 23.0,
+                                fontFamily: 'Roboto',
                                 fontWeight: FontWeight.bold,
                                 color: Colors.green
                               ),
@@ -108,30 +109,31 @@ class OrderDetails extends StatelessWidget {
                           child: Align(
                             alignment: Alignment.center,
                             child: Text(
-                              '( =N= ${cCy.format(dataMap[EshopApp.totalAmount])} )',
+                              '( ₦ ${cCy.format(dataMap[EshopApp.totalAmount])} )',
                               style: TextStyle(
-                                fontSize: 20.0,
+                                fontSize: 18.0,
+                                fontFamily: 'Roboto',
                                 fontWeight: FontWeight.bold,
                                   color: Colors.deepPurple
                               ),
                             ),
                           ),
                         ),
-                        // Padding(
-                        //   padding: EdgeInsets.all(4.0),
-                        //   child: Align(
-                        //     alignment: Alignment.center,
-                        //     child: Text(
-                        //       'Quantity ( ${dataMap[EshopApp.itemQuantity]} )',
-                        //       style: TextStyle(
-                        //         fontSize: 15.0,
-                        //         fontWeight: FontWeight.bold,
-                        //           color: Colors.deepPurple
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-
+                        Padding(
+                          padding: EdgeInsets.all(4.0),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Quantity ( ${dataMap[EshopApp.itemQuantity]} ) - '
+                                  'Size ( ${dataMap[EshopApp.itemSize]} )',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15.0,
+                                  color: Colors.pinkAccent
+                              ),
+                            ),
+                          ),
+                        ),
                           Padding(
                           padding: EdgeInsets.all(4.0),
                           child: Align(
@@ -332,10 +334,11 @@ class ShippingDetails extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(4.0),
           child: Text(
-            'Shipping: =N= ${cCy.format(shippingCost)}',
+            '( shipping: ₦ ${cCy.format(shippingCost)} )',
             style: TextStyle(
               color: Colors.red,
               fontSize: 21,
+              fontFamily: 'Roboto',
               fontWeight: FontWeight.bold,
             ),
           ),

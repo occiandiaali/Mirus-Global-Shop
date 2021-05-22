@@ -249,12 +249,13 @@ Widget sourceInfo(
                               (model.discount != null
                                   && model.discount > 0) ?
                               Padding(
-                                  padding: EdgeInsets.only(top: 0.0),
+                                  padding: EdgeInsets.only(top: 2.0),
                                   child: Row(
                                     children: [
-                                      Text('=N= ${cCy.format(model.price)}',
+                                      Text('₦ ${cCy.format(model.price)}',
                                         style: TextStyle(
                                           fontSize: 14.0,
+                                          fontFamily: 'Roboto',
                                           color: Colors.grey,
                                           decoration: TextDecoration.lineThrough,
                                         ),
@@ -274,12 +275,13 @@ Widget sourceInfo(
                                 child: Row(
                                   children: [
                                      Text(
-                                      '=N= ${cCy.format(
+                                      '₦ ${cCy.format(
                                           model.price -
                                               (model.price * (model.discount / 100))
                                       )}',
                                       style: TextStyle(
-                                        fontSize: 14.0,
+                                        fontSize: 16.0,
+                                        fontFamily: 'Roboto',
                                         color: Colors.green,
                                       ),
                                     ),
@@ -299,9 +301,10 @@ Widget sourceInfo(
                                 child: Row(
                                   children: [
                                     Text(
-                                      '=N= ${cCy.format(model.price)}',
+                                      '₦ ${cCy.format(model.price)}',
                                       style: TextStyle(
                                         fontSize: 16.0,
+                                        fontFamily: 'Roboto',
                                         color: Colors.green,
                                       ),
                                     ),

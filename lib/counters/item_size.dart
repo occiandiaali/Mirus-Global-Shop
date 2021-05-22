@@ -2,11 +2,11 @@
 import 'package:flutter/foundation.dart';
 
 class ItemSize with ChangeNotifier {
-  String _sizeOfItems = 'Small';
-  String get sizeOfItems => _sizeOfItems;
+  String _sizeOfItem = 'Small';
+  String get getSizeOfItem => _sizeOfItem;
 
   sizeOfItem(String s) async {
-    _sizeOfItems = s;
+    _sizeOfItem = s;
     await Future.delayed(const Duration(milliseconds: 100), () {
       notifyListeners();
     });

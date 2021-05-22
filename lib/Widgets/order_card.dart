@@ -137,19 +137,21 @@ Widget sourceOrderInfo(
                                     (model.discount != null
                                         && model.discount > 0) ?
                                     Text(
-                                      'Unit: =N= ${cCy.format(
+                                      'Unit: ₦ ${cCy.format(
                                           model.price -
                                               (model.price * (model.discount / 100))
                                       )}',
                                       style: TextStyle(
                                         fontSize: 14.0,
+                                        fontFamily: 'Roboto',
                                         color: Colors.green,
                                       ),
                                     )
                                         : Text(
-                                      'Unit: =N= ${cCy.format(model.price)}',
+                                      'Unit: ₦ ${cCy.format(model.price)}',
                                       style: TextStyle(
                                         fontSize: 15.0,
+                                        fontFamily: 'Roboto',
                                         color: Colors.green,
                                       ),
                                     ),
@@ -186,12 +188,6 @@ Widget sourceOrderInfo(
                                                        // priceSum: priceSum,
                                                     ));
                                             Navigator.push(context, route);
-                                            // Fluttertoast.showToast(
-                                            //     msg: 'PLEASE, double-check the TOTAL amount to be paid '
-                                            //         'plus SHIPPING before you pay',
-                                            //   gravity: ToastGravity.TOP,
-                                            //   toastLength: Toast.LENGTH_LONG
-                                            // );
                                         _doubleCheckTotal(context);
                                       },
                                       child: Icon(
@@ -200,18 +196,7 @@ Widget sourceOrderInfo(
                                         color: Colors.deepPurple,
                                       ),
                                     ),
-                                    // ElevatedButton(
-                                    //   child: Text('Details'),
-                                    //   onPressed: () {
-                                    //     Route route;
-                                    //     //   if (counter == 0) {
-                                    //     //   counter = counter + 1;
-                                    //     route =
-                                    //         MaterialPageRoute(builder: (c) => OrderDetails(orderID: oID));
-                                    //     Navigator.push(context, route);
-                                    //     //   }
-                                    //   },
-                                    // ),
+
                                   ],
                                 )
                                     : Text('Shop with us again!!!'),

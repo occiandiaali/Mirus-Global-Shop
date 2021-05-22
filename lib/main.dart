@@ -35,8 +35,8 @@ class MG extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CartItemCounter()),
         ChangeNotifierProvider(create: (context) => TotalAmount()),
         ChangeNotifierProvider(create: (context) => ItemQuantity()),
-        // ChangeNotifierProvider(create: (context) => ItemColour()),
-        // ChangeNotifierProvider(create: (context) => ItemSize()),
+         ChangeNotifierProvider(create: (context) => ItemColour()),
+         ChangeNotifierProvider(create: (context) => ItemSize()),
         ChangeNotifierProvider(create: (context) => AddressChanger()),
       ],
         child: MaterialApp(

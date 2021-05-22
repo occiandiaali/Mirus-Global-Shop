@@ -110,6 +110,7 @@ class _UploadPageState extends State<UploadPage>
                 Navigator.push(context, route);
               },
             ),
+            SizedBox(width: 45.0,),
             IconButton(
               icon: Icon(
                 Icons.logout,

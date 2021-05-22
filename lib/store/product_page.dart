@@ -36,7 +36,8 @@ class _ProductPageState extends State<ProductPage> {
   double itemAmount;
   double priceWithDiscount;
   double price;
-  String selectedItemSize = 'Small';
+  String selectedItemSize = 'small';
+  String itemSize;
   ColorSwatch _tempMainColor;
   Color _tempShadeColor;
   ColorSwatch _mainColor = Colors.blue;
@@ -85,7 +86,7 @@ class _ProductPageState extends State<ProductPage> {
     _openDialog(
       "Color picker",
       MaterialColorPicker(
-        selectedColor: _shadeColor,
+        selectedColor: _mainColor,
         onColorChange: (color) => setState(() {
           _tempShadeColor = color;
          // Provider.of<ItemColour>(context, listen: false).colourOfItem(_shadeColor);
@@ -188,52 +189,50 @@ class _ProductPageState extends State<ProductPage> {
                              Row(
                             children: [
                               DropdownButton(
-                                hint: Text('Select size'),
                                 value: selectedItemSize,
                                 style: TextStyle(
                                     fontSize: 19.0, color: Colors.deepPurple),
                                 items: [
                                   DropdownMenuItem(
                                       child: Text(
-                                        'Small',
+                                        'small',
                                         style:
                                             TextStyle(color: Colors.deepPurple),
                                       ),
-                                      value: 'Small'),
+                                      value: 'small'),
                                   DropdownMenuItem(
                                       child: Text(
-                                        'Medium',
+                                        'medium',
                                         style:
                                             TextStyle(color: Colors.deepPurple),
                                       ),
-                                      value: 'Medium'),
+                                      value: 'medium'),
                                   DropdownMenuItem(
                                       child: Text(
-                                        'Large',
+                                        'large',
                                         style:
                                             TextStyle(color: Colors.deepPurple),
                                       ),
-                                      value: 'Large'),
+                                      value: 'large'),
                                   DropdownMenuItem(
                                       child: Text(
-                                        'Extra-large',
+                                        'extra-large',
                                         style:
                                             TextStyle(color: Colors.deepPurple),
                                       ),
-                                      value: 'Extra-large'),
+                                      value: 'extra-large'),
                                 ],
-                                onChanged: (value) {
+                                onChanged: (value) =>
                                   setState(() {
                                     selectedItemSize = value;
-                                    // Provider.of<ItemSize>(
-                                    //     context, listen: false)
-                                    //     .sizeOfItem(selectedItemSize);
-                                  });
-                                },
+                                    //widget.itemModel.dimensions = selectedItemSize;
+                                    Provider.of<ItemSize>(
+                                        context,
+                                        listen: false)
+                                        .sizeOfItem(selectedItemSize);
+                                  }),
                               ),
-                              SizedBox(
-                                width: 55.0,
-                              ),
+                              SizedBox(width: 55.0,),
                               Text(
                                 'Item colour',
                                 style: TextStyle(
@@ -278,10 +277,11 @@ class _ProductPageState extends State<ProductPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "=N= ${cCy.format(calcTotalAmount())}",
+                                  "₦ ${cCy.format(calcTotalAmount())}",
                                   //(widget.itemModel.price * qtyOfItem).toDouble()
                                   style: TextStyle(
                                     fontSize: 25.0,
+                                    fontFamily: 'Roboto'
                                   ),
                                 ),
                                 // SizedBox(width: 8.0,),
@@ -304,8 +304,6 @@ class _ProductPageState extends State<ProductPage> {
                           ),
                         ),
                         onPressed: () {
-                          // int quantityOfItem = Provider.of<ItemQuantity>
-                          //   (context, listen: false).numberOfItems;
                           Route route = MaterialPageRoute(
                               builder: (c) => Address(
                                 totalAmount: calcTotalAmount(),
@@ -356,22 +354,6 @@ class _ProductPageState extends State<ProductPage> {
       ),
     );
   }
-
-  // Widget qtyPicker() {
-  //   return Row(
-  //     children: [
-  //       Text('Quantity: '),
-  //       NumberPicker(
-  //           minValue: 1,
-  //           maxValue: 50,
-  //           axis: Axis.horizontal,
-  //           itemWidth: 40,
-  //           textStyle: numPickerStyle,
-  //           value: qtyOfItem,
-  //           onChanged: (value) => setState(() => qtyOfItem = value)),
-  //     ],
-  //   );
-  // }
 
   double calcTotalAmount() {
     double total = 0.00;
