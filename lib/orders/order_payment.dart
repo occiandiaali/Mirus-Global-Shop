@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mirus_global/counters/item_colour.dart';
 import 'package:mirus_global/counters/item_quantity.dart';
 import 'package:mirus_global/counters/item_size.dart';
+import 'package:mirus_global/counters/item_special.dart';
 import 'package:mirus_global/orders/my_orders.dart';
 import 'package:mirus_global/store/storehome.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 
 const _mailUrl = 'mailto:mirusglobalimportation@gmail.com?subject=Concerning my order placement';
-var sizeOfItem = 'small';
+var sizeOfItem = " ";
+var colourOfItem = " ";
+bool isItemSpecial;
+
 class OrderPayment extends StatefulWidget {
 
   final String addressId;
@@ -53,6 +57,8 @@ class _OrderPaymentState extends State<OrderPayment> {
   @override
   Widget build(BuildContext context) {
     sizeOfItem = Provider.of<ItemSize>(context).getSizeOfItem;
+    colourOfItem = Provider.of<ItemColour>(context).colorOfItems;
+    isItemSpecial = Provider.of<ItemSpecial>(context).getIsItemSpecial;
     return Material(
       child: Container(
         decoration: BoxDecoration(
@@ -163,7 +169,10 @@ class _OrderPaymentState extends State<OrderPayment> {
                   // telephony.sendSms(
                   //     to: "09088018515",
                   //     message: "Customer accepted order T & C");
-                  addOrderDetails();
+                  (isItemSpecial == true) ?
+                  addSpecialOrderDetails()
+                      : addOrderDetails();
+                 // addOrderDetails();
                 },
                 child: Text(
                   'I Accept',
@@ -210,28 +219,6 @@ class _OrderPaymentState extends State<OrderPayment> {
         .set(data);
   }
 
-  // emptyCartNow() {
-  //   EshopApp.sharedPreferences
-  //       .setStringList(EshopApp.userCartList, ["garbageValue"]);
-  //   List tempList = EshopApp.sharedPreferences.getStringList(EshopApp.userCartList);
-  //
-  //   FirebaseFirestore.instance.collection("users")
-  //       .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
-  //       .update({
-  //     EshopApp.userCartList: tempList,
-  //   }).then((value) {
-  //     EshopApp.sharedPreferences.setStringList(EshopApp.userCartList, tempList);
-  //     Provider.of<CartItemCounter>(context, listen: false)
-  //         .displayResult(EshopApp.userCartList.length);
-  //   });
-  //   Fluttertoast.showToast(
-  //       msg: 'Thanks, check ORDERS tab for details...',
-  //   gravity: ToastGravity.CENTER,
-  //   toastLength: Toast.LENGTH_LONG);
-  //
-  //   Route route = MaterialPageRoute(builder: (c) => StoreHome());
-  //   Navigator.pushReplacement(context, route);
-  // }
 
   clearOrder() {
     EshopApp.sharedPreferences
@@ -259,7 +246,40 @@ class _OrderPaymentState extends State<OrderPayment> {
       EshopApp.addressID: widget.addressId,
       EshopApp.totalAmount: widget.totalAmount,
       EshopApp.itemQuantity: widget.itemQty,
+     // EshopApp.itemSize: sizeOfItem,
+     // EshopApp.itemColour: colourOfItem,
+      "orderBy": EshopApp.sharedPreferences.getString(EshopApp.userUID),
+      EshopApp.itemID: EshopApp.sharedPreferences.getStringList(EshopApp.userOrderList),
+      EshopApp.paymentDetails: "Bank Transfer",
+      EshopApp.orderTime: DateTime.now().millisecondsSinceEpoch.toString(),
+      EshopApp.isSuccess: true,
+    });
+
+    writeOrderDetailsAdmin({
+      EshopApp.addressID: widget.addressId,
+      EshopApp.totalAmount: widget.totalAmount,
+      EshopApp.itemQuantity: widget.itemQty,
+     // EshopApp.itemSize: sizeOfItem,
+    //  EshopApp.itemColour: colourOfItem,
+      "orderBy": EshopApp.sharedPreferences.getString(EshopApp.userUID),
+      EshopApp.itemID: EshopApp.sharedPreferences.getStringList(EshopApp.userOrderList),
+      EshopApp.paymentDetails: "Bank Transfer",
+      EshopApp.orderTime: DateTime
+          .now()
+          .millisecondsSinceEpoch
+          .toString(),
+      EshopApp.isSuccess: true,
+       }).whenComplete(() => clearOrder());
+
+  } // add order details
+
+  addSpecialOrderDetails() {
+    writeOrderDetailsUser({
+      EshopApp.addressID: widget.addressId,
+      EshopApp.totalAmount: widget.totalAmount,
+      EshopApp.itemQuantity: widget.itemQty,
       EshopApp.itemSize: sizeOfItem,
+      EshopApp.itemColour: colourOfItem,
       // EshopApp.itemColour: c,
       "orderBy": EshopApp.sharedPreferences.getString(EshopApp.userUID),
       EshopApp.itemID: EshopApp.sharedPreferences.getStringList(EshopApp.userOrderList),
@@ -273,7 +293,7 @@ class _OrderPaymentState extends State<OrderPayment> {
       EshopApp.totalAmount: widget.totalAmount,
       EshopApp.itemQuantity: widget.itemQty,
       EshopApp.itemSize: sizeOfItem,
-      // EshopApp.itemColour: widget.itemColour,
+      EshopApp.itemColour: colourOfItem,
       "orderBy": EshopApp.sharedPreferences.getString(EshopApp.userUID),
       EshopApp.itemID: EshopApp.sharedPreferences.getStringList(EshopApp.userOrderList),
       EshopApp.paymentDetails: "Bank Transfer",
@@ -282,8 +302,9 @@ class _OrderPaymentState extends State<OrderPayment> {
           .millisecondsSinceEpoch
           .toString(),
       EshopApp.isSuccess: true,
-       }).whenComplete(() => clearOrder());
-  }
+    }).whenComplete(() => clearOrder());
+
+  } // add special order details
 
 
 } // class

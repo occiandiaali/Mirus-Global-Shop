@@ -67,14 +67,18 @@ class AdminOrderDetails extends StatelessWidget {
             style: TextStyle(
                 color: Colors.white
             ),),
-          // actions: [
-          //   IconButton(
-          //     icon: Icon(
-          //       Icons.arrow_drop_down_circle_rounded,
-          //       color: Colors.white,),
-          //      onPressed: () => SystemNavigator.pop(),
-          //   ),
-          // ],
+          actions: [
+            GestureDetector(
+              onTap: () => forceClearDetails(context, getOrderId),
+              child: Container(
+                child: Icon(
+                  Icons.delete_forever,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            SizedBox(width: 20.0,),
+          ],
         ),
         body: SingleChildScrollView(
           child: FutureBuilder<DocumentSnapshot>(
@@ -98,29 +102,12 @@ class AdminOrderDetails extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          'Total: ₦ ${cCy.format(dataMap[EshopApp.totalAmount]
-                              + shippingCost
-                          )}',
+                          'Total: ₦ ${cCy.format(dataMap[EshopApp.totalAmount])}',
                           style: TextStyle(
                             fontSize: 23.0,
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.bold,
                             color: Colors.green
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          '( ₦ ${cCy.format(dataMap[EshopApp.totalAmount])} )',
-                          style: TextStyle(
-                              fontSize: 18.0,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.deepPurple
                           ),
                         ),
                       ),
@@ -212,7 +199,21 @@ class AdminOrderDetails extends StatelessWidget {
       ),
     );
   }
-}
+
+  forceClearDetails(BuildContext context, String mOrderId) {
+    EshopApp.firestore
+        .collection(EshopApp.collectionUser)
+        .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
+        .collection(EshopApp.collectionOrders)
+        .doc(mOrderId).delete().then((value)  {
+      getOrderId = "";
+
+      Route route = MaterialPageRoute(builder: (c) => AdminShiftOrders());
+      Navigator.pushReplacement(context, route);
+    });
+  }
+
+} // admin order details class
 
 // void _showAdm(BuildContext ctx) {
 //   showModalBottomSheet(
@@ -305,8 +306,8 @@ class AdminShippingDetails extends StatelessWidget {
   Widget build(BuildContext context) {
 
     double screenWidth = MediaQuery.of(context).size.width;
-    shippingCost = model.state == 'Lagos' ||
-        model.state == 'lagos' ? 3500 : 12000;
+    // shippingCost = model.state == 'Lagos' ||
+    //     model.state == 'lagos' ? 3500 : 12000;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -324,18 +325,18 @@ class AdminShippingDetails extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.all(4.0),
-          child: Text(
-            'Shipping: ₦ ${cCy.format(shippingCost)}',
-            style: TextStyle(
-              color: Colors.red,
-              fontSize: 21,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+        // Padding(
+        //   padding: EdgeInsets.all(4.0),
+        //   child: Text(
+        //     'Shipping: ₦ ${cCy.format(shippingCost)}',
+        //     style: TextStyle(
+        //       color: Colors.red,
+        //       fontSize: 21,
+        //       fontFamily: 'Roboto',
+        //       fontWeight: FontWeight.bold,
+        //     ),
+        //   ),
+        // ),
         SizedBox(height: 5.0,),
         Container(
           padding: EdgeInsets.symmetric(

@@ -2,7 +2,7 @@
 import 'package:flutter/foundation.dart';
 
 class ItemSize with ChangeNotifier {
-  String _sizeOfItem = 'Small';
+  String _sizeOfItem = " ";
   String get getSizeOfItem => _sizeOfItem;
 
   sizeOfItem(String s) async {

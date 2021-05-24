@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mirus_global/address/address.dart';
 import 'package:mirus_global/config/config.dart';
 import 'package:mirus_global/counters/item_quantity.dart';
+import 'package:mirus_global/counters/item_special.dart';
 import 'package:mirus_global/store/storehome.dart';
 import 'package:mirus_global/Widgets/loadingWidget.dart';
 import 'package:mirus_global/Widgets/order_card.dart';
@@ -59,14 +60,18 @@ class OrderDetails extends StatelessWidget {
             style: TextStyle(
                 color: Colors.white
             ),),
-          // actions: [
-          //   IconButton(
-          //     icon: Icon(
-          //       Icons.arrow_drop_down_circle_rounded,
-          //       color: Colors.white,),
-          //      onPressed: () => SystemNavigator.pop(),
-          //   ),
-          // ],
+          actions: [
+            GestureDetector(
+              onTap: () => forceClearDetails(context, getOrderId),
+              child: Container(
+                child: Icon(
+                  Icons.delete_forever,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            SizedBox(width: 20.0,),
+          ],
         ),
         body: SingleChildScrollView(
           child: FutureBuilder<DocumentSnapshot>(
@@ -93,8 +98,7 @@ class OrderDetails extends StatelessWidget {
                             alignment: Alignment.center,
                             child: Text(
                               'Total: ₦ ${cCy.format(
-                                  dataMap[EshopApp.totalAmount]
-                                      + shippingCost)}',
+                                  dataMap[EshopApp.totalAmount])}',
                               style: TextStyle(
                                 fontSize: 23.0,
                                 fontFamily: 'Roboto',
@@ -105,35 +109,30 @@ class OrderDetails extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.all(4.0),
+                          padding: EdgeInsets.all(3.0),
                           child: Align(
                             alignment: Alignment.center,
                             child: Text(
-                              '( ₦ ${cCy.format(dataMap[EshopApp.totalAmount])} )',
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.bold,
-                                  color: Colors.deepPurple
-                              ),
+                                '( delivery fee NOT included )',
+                              style: TextStyle(color: Colors.red),
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.all(4.0),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Quantity ( ${dataMap[EshopApp.itemQuantity]} ) - '
-                                  'Size ( ${dataMap[EshopApp.itemSize]} )',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15.0,
-                                  color: Colors.pinkAccent
-                              ),
-                            ),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: EdgeInsets.all(4.0),
+                        //   child: Align(
+                        //     alignment: Alignment.center,
+                        //     child: Text(
+                        //       'Quantity ( ${dataMap[EshopApp.itemQuantity]} ) - '
+                        //           'Size ( ${dataMap[EshopApp.itemSize]} )',
+                        //       style: TextStyle(
+                        //           fontWeight: FontWeight.bold,
+                        //           fontSize: 15.0,
+                        //           color: Colors.deepPurple
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                           Padding(
                           padding: EdgeInsets.all(4.0),
                           child: Align(
@@ -185,7 +184,7 @@ class OrderDetails extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Divider(height: 2.0,),
+                        Divider(height: 8.0,),
                         FutureBuilder<QuerySnapshot>(
                          future: EshopApp.firestore
                               .collection("items")
@@ -216,6 +215,7 @@ class OrderDetails extends StatelessWidget {
                           builder: (c, snap) {
                             return snap.hasData ?
                                 ShippingDetails(
+                                  orderId: orderID,
                                   model: AddressModel.fromJson(snap.data.data())
                                 ) : Center(child: circularProgress(),);
                           },
@@ -230,6 +230,20 @@ class OrderDetails extends StatelessWidget {
       ),
     );
   }
+
+  forceClearDetails(BuildContext context, String mOrderId) {
+    EshopApp.firestore
+        .collection(EshopApp.collectionUser)
+        .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
+        .collection(EshopApp.collectionOrders)
+        .doc(mOrderId).delete().then((value)  {
+      getOrderId = "";
+
+      Route route = MaterialPageRoute(builder: (c) => StoreHome());
+      Navigator.pushReplacement(context, route);
+    });
+  }
+
 } // order details class
 
 
@@ -267,16 +281,6 @@ class StatusBanner extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // GestureDetector(
-          //   onTap: () => print("icon tapped"),
-          //   child: Container(
-          //     child: Icon(
-          //       Icons.arrow_drop_down_circle_outlined,
-          //       color: Colors.white,
-          //     ),
-          //   ),
-          // ),
-          SizedBox(width: 20.0,),
           Text(
             'Order Placed: $msg',
             style: TextStyle(color: Colors.white),
@@ -303,17 +307,17 @@ class StatusBanner extends StatelessWidget {
 class ShippingDetails extends StatelessWidget {
 
   final AddressModel model;
+  final String orderId;
  // final Telephony telephony = Telephony.instance;
 
-  ShippingDetails({Key key, this.model}) : super(key: key);
+  ShippingDetails({Key key, this.model, this.orderId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
 
     double screenWidth = MediaQuery.of(context).size.width;
-
-    shippingCost = model.state == 'Lagos' ||
-    model.state == 'lagos' ? 3500 : 12000;
+    // shippingCost = model.state == 'Lagos' ||
+    // model.state == 'lagos' ? 3500 : 12000;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -327,20 +331,86 @@ class ShippingDetails extends StatelessWidget {
             "DELIVERY DETAILS",
             style: TextStyle(
               color: Colors.black,
+              fontSize: 18.0,
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.all(4.0),
-          child: Text(
-            '( shipping: ₦ ${cCy.format(shippingCost)} )',
-            style: TextStyle(
-              color: Colors.red,
-              fontSize: 21,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.bold,
-            ),
+        // Padding(
+        //   padding: EdgeInsets.all(4.0),
+        //   child: Text(
+        //     '( shipping: ₦ ${cCy.format(shippingCost)} )',
+        //     style: TextStyle(
+        //       color: Colors.red,
+        //       fontSize: 21,
+        //       fontFamily: 'Roboto',
+        //       fontWeight: FontWeight.bold,
+        //     ),
+        //   ),
+        // ),
+        Container(
+          child: FutureBuilder<DocumentSnapshot>(
+            future: EshopApp.firestore
+                .collection(EshopApp.collectionUser)
+                .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
+                .collection(EshopApp.collectionOrders)
+                .doc(orderId).get(),
+            builder: (c, shot) {
+              Map dataMap;
+              if(shot.hasData) {
+                dataMap = shot.data.data();
+              }
+              return shot.hasData ?
+                  Container(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(4.0),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Quantity: ${dataMap[EshopApp.itemQuantity]}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15.0,
+                                  color: Colors.deepPurple
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(4.0),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                                  'Size: ${dataMap[EshopApp.itemSize]}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15.0,
+                                  color: Colors.deepPurple
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(4.0),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                                  'Colour: ${dataMap[EshopApp.itemColour]}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15.0,
+                                  color: Colors.deepPurple
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                  : Center(child: circularProgress(),);
+            },
           ),
         ),
         Container(
@@ -354,42 +424,73 @@ class ShippingDetails extends StatelessWidget {
               TableRow(
                 children: [
                   KeyText(msg: 'Name',),
-                  Text(model.name),
+                  Text(
+                      model.name,
+                      style: TextStyle(
+                        fontSize: 16.0
+                      ),
+                  ),
                 ],
               ),
               TableRow(
                 children: [
                   KeyText(msg: 'Phone',),
-                  Text(model.phoneNumber),
+                  Text(
+                      model.phoneNumber,
+                    style: TextStyle(
+                        fontSize: 16.0
+                    ),
+                  ),
                 ],
               ),
               TableRow(
                 children: [
                   KeyText(msg: 'Street',),
-                  Text(model.street),
+                  Text(
+                      model.street,
+                    style: TextStyle(
+                        fontSize: 16.0
+                    ),
+                  ),
                 ],
               ),
               TableRow(
                 children: [
                   KeyText(msg: 'City',),
-                  Text(model.city),
+                  Text(
+                      model.city,
+                    style: TextStyle(
+                        fontSize: 16.0
+                    ),
+                  ),
                 ],
               ),
               TableRow(
                 children: [
                   KeyText(msg: 'State',),
-                  Text(model.state),
+                  Text(
+                      model.state,
+                    style: TextStyle(
+                        fontSize: 16.0
+                    ),
+                  ),
                 ],
               ),
               TableRow(
                 children: [
                   KeyText(msg: 'Country',),
-                  Text(model.country),
+                  Text(
+                      model.country,
+                    style: TextStyle(
+                        fontSize: 16.0
+                    ),
+                  ),
                 ],
               ),
             ],
           ),
         ),
+        Divider(height: 8.0,),
         Padding(
           padding: EdgeInsets.all(10.0),
           child: Center(
@@ -424,6 +525,7 @@ class ShippingDetails extends StatelessWidget {
             ),
           ),
         ),
+        Divider(height: 8.0,),
       ],
     );
   }
@@ -450,28 +552,13 @@ class ShippingDetails extends StatelessWidget {
         .collection(EshopApp.collectionUser)
         .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
         .collection(EshopApp.collectionOrders)
-        .doc(mOrderId).delete().then((value)  {
-        getOrderId = "";
-        // telephony.sendSms(
-        //     to: "09088018515",
-        //     message: "Order payment completed...");
-        Route route = MaterialPageRoute(builder: (c) => StoreHome());
-        Navigator.pushReplacement(context, route);
+        .doc(mOrderId).delete().then((value) {
+      getOrderId = "";
+
+      Route route = MaterialPageRoute(builder: (c) => StoreHome());
+      Navigator.pushReplacement(context, route);
     });
-
-    // getOrderId = "";
-    // Route route = MaterialPageRoute(builder: (c) => StoreHome());
-    // Navigator.pushReplacement(context, route);
-    //smsWork(); for sms plugin in pubsec
-
-    // telephony.sendSms(
-    //     to: "09088018515",
-    //     message: "Order payment completed...");
-
-    // Fluttertoast.showToast(
-    //     msg: 'You just confirmed that you\'ve made payment');
   }
-
 
 
 } // class

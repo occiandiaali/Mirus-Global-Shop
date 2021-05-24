@@ -29,7 +29,6 @@ class StoreHome extends StatefulWidget {
 
 class _StoreHomeState extends State<StoreHome> {
 
-
   @override
   void initState() {
     super.initState();
@@ -265,7 +264,8 @@ Widget sourceInfo(
                                   ),
                                 )
                                   : Container(
-                                margin: EdgeInsets.all(0.0),
+                                padding: EdgeInsets.all(5.0),
+                               // margin: EdgeInsets.all(0.0),
                               ),
 
                               (model.discount != null

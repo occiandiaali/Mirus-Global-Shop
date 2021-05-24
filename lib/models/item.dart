@@ -12,8 +12,9 @@ class ItemModel {
   int price;
   int discount;
   int qty;
+  bool isSpecial;
   String dimensions;
-  Color colour;
+  String colour;
 
   ItemModel({this.category,
         this.title,
@@ -25,6 +26,7 @@ class ItemModel {
         this.price,
         this.discount,
         this.qty,
+        this.isSpecial,
         this.dimensions,
        this.colour,
       });
@@ -40,6 +42,7 @@ class ItemModel {
     price = json['price'];
     discount = json['discount'];
     qty = json['quantity'];
+    isSpecial = json['special'];
     dimensions = json['dimensions'];
     colour = json['colour'];
   }
@@ -52,6 +55,7 @@ class ItemModel {
     data['price'] = this.price;
     data['discount'] = this.discount;
     data['quantity'] = this.qty;
+    data['special'] = this.isSpecial;
     data['dimensions'] = this.dimensions;
     data['colour'] = this.colour;
     data['thumbnailUrl'] = this.thumbnailUrl;

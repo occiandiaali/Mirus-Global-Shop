@@ -188,11 +188,11 @@ Widget sourceOrderInfo(
                                                        // priceSum: priceSum,
                                                     ));
                                             Navigator.push(context, route);
-                                        _doubleCheckTotal(context);
+                                       // _doubleCheckTotal(context);
                                       },
                                       child: Icon(
                                         Icons.check_circle,
-                                        size: 23.0,
+                                        size: 29.0,
                                         color: Colors.deepPurple,
                                       ),
                                     ),
@@ -200,6 +200,15 @@ Widget sourceOrderInfo(
                                   ],
                                 )
                                     : Text('Shop with us again!!!'),
+                                Row(
+                                  children: [
+                                    Text('Cancel'),
+                                    SizedBox(width: 4.0,),
+                                    Icon(
+                                        Icons.cancel_rounded
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ],
@@ -223,23 +232,22 @@ Widget sourceOrderInfo(
 
 // ***************
 
-void _doubleCheckTotal(BuildContext ctx) {
-  showModalBottomSheet(
-      elevation: 10,
-      backgroundColor: Colors.amber,
-      context: ctx,
-      builder: (ctx) => Container(
-        padding: EdgeInsets.all(8.0),
-        width: 300,
-        height: 300,
-        color: Colors.white54,
-        alignment: Alignment.center,
-        child: Text(
-          'PLEASE, double-check the TOTAL amount to be paid '
-              'plus SHIPPING before you pay. '
-              'If the TOTAL appears to be incorrect, return '
-              'to the previous screen and tap DETAILS again... '
-              'Otherwise, confirm all the details and proceed.',
-          style: TextStyle(color: Colors.deepPurple, fontSize: 23.0),),
-      ));
-}
+// void _doubleCheckTotal(BuildContext ctx) {
+//   showModalBottomSheet(
+//       elevation: 10,
+//       backgroundColor: Colors.amber,
+//       context: ctx,
+//       builder: (ctx) => Container(
+//         padding: EdgeInsets.all(8.0),
+//         width: 300,
+//         height: 200,
+//         color: Colors.white54,
+//         alignment: Alignment.center,
+//         child: Text(
+//           'PLEASE, double-check the TOTAL amount to be paid. '
+//               'If the TOTAL appears to be incorrect, return '
+//               'to the previous screen and tap DETAILS again... '
+//               'Otherwise, confirm all the details and proceed.',
+//           style: TextStyle(color: Colors.deepPurple, fontSize: 23.0),),
+//       ));
+// }

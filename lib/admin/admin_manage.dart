@@ -192,12 +192,13 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
                             child: Row(
                               children: [
                                 Text(
-                                  '=N= ${cCy.format(
+                                  '₦ ${cCy.format(
                                       model.price -
                                           (model.price * (model.discount / 100))
                                   )}',
                                   style: TextStyle(
-                                    fontSize: 14.0,
+                                    fontSize: 16.0,
+                                    fontFamily: 'Roboto',
                                     color: Colors.green,
                                   ),
                                 ),
@@ -205,7 +206,7 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
                                 Text(
                                   '${model.discount}% off',
                                   style: TextStyle(
-                                    fontSize: 16.0,
+                                    fontSize: 18.0,
                                     color: Colors.deepPurple,
                                   ),
                                 )
@@ -217,9 +218,10 @@ Widget sourceInfo(ItemModel model, BuildContext context, String id,
                             child: Row(
                               children: [
                                 Text(
-                                  'Price: =N= ${cCy.format(model.price)}',
+                                  '₦ ${cCy.format(model.price)}',
                                   style: TextStyle(
-                                    fontSize: 14.0,
+                                    fontSize: 16.0,
+                                    fontFamily: 'Roboto',
                                     color: Colors.green,
                                   ),),
                               ],

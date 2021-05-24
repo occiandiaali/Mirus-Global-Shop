@@ -7,6 +7,7 @@ import 'package:mirus_global/authentication/auth_screen.dart';
 import 'package:mirus_global/config/config.dart';
 import 'package:mirus_global/counters/address_changer.dart';
 import 'package:mirus_global/counters/item_quantity.dart';
+import 'package:mirus_global/counters/item_special.dart';
 import 'package:mirus_global/counters/total_amt.dart';
 import 'package:mirus_global/store/storehome.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +38,7 @@ class MG extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ItemQuantity()),
          ChangeNotifierProvider(create: (context) => ItemColour()),
          ChangeNotifierProvider(create: (context) => ItemSize()),
+        ChangeNotifierProvider(create: (context) => ItemSpecial()),
         ChangeNotifierProvider(create: (context) => AddressChanger()),
       ],
         child: MaterialApp(

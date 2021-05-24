@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mirus_global/counters/item_colour.dart';
 import 'package:mirus_global/counters/item_quantity.dart';
 import 'package:mirus_global/counters/item_size.dart';
+import 'package:mirus_global/counters/item_special.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:intl/intl.dart';
@@ -36,12 +37,14 @@ class _ProductPageState extends State<ProductPage> {
   double itemAmount;
   double priceWithDiscount;
   double price;
-  String selectedItemSize = 'small';
+  String selectedItemSize;
+  String selectedItemColour;
   String itemSize;
-  ColorSwatch _tempMainColor;
-  Color _tempShadeColor;
-  ColorSwatch _mainColor = Colors.blue;
-  Color _shadeColor = Colors.blue[800];
+  bool isSpecial = false;
+  // ColorSwatch _tempMainColor;
+  // Color _tempShadeColor;
+  // ColorSwatch _mainColor = Colors.blue;
+  // Color _shadeColor = Colors.blue[800];
 
   List specialCategories = [
     'cloth',
@@ -54,48 +57,70 @@ class _ProductPageState extends State<ProductPage> {
     'gym',
     'spa'
   ];
+  List availableItemSizes = []; // to store admin input sizes
+  List availableItemColours = []; // to store admin input colours
 
-  void _openDialog(String title, Widget content) {
-    showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          contentPadding: const EdgeInsets.all(6.0),
-          title: Text(title),
-          content: content,
-          actions: [
-            TextButton(
-              child: Text('CANCEL'),
-              onPressed: Navigator.of(context).pop,
-            ),
-            TextButton(
-              child: Text('SELECT'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                setState(() => _mainColor = _tempMainColor);
-                setState(() => _shadeColor = _tempShadeColor);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  } // open dialogue
+  // void _openDialog(String title, Widget content) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (_) {
+  //       return AlertDialog(
+  //         contentPadding: const EdgeInsets.all(6.0),
+  //         title: Text(title),
+  //         content: content,
+  //         actions: [
+  //           TextButton(
+  //             child: Text('CANCEL'),
+  //             onPressed: Navigator.of(context).pop,
+  //           ),
+  //           TextButton(
+  //             child: Text('SELECT'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //               setState(() => _mainColor = _tempMainColor);
+  //               setState(() => _shadeColor = _tempShadeColor);
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // } // open dialogue
+  //
+  // void _openColorPicker() async {
+  //   _openDialog(
+  //     "Color picker",
+  //     MaterialColorPicker(
+  //       selectedColor: _mainColor,
+  //       onColorChange: (color) => setState(() {
+  //         _tempShadeColor = color;
+  //        // Provider.of<ItemColour>(context, listen: false).colourOfItem(_shadeColor);
+  //       }),
+  //       onMainColorChange: (color) => setState(() => _tempMainColor = color),
+  //       // onBack: () => print("Back button pressed"),
+  //     ),
+  //   );
+  // }
 
-  void _openColorPicker() async {
-    _openDialog(
-      "Color picker",
-      MaterialColorPicker(
-        selectedColor: _mainColor,
-        onColorChange: (color) => setState(() {
-          _tempShadeColor = color;
-         // Provider.of<ItemColour>(context, listen: false).colourOfItem(_shadeColor);
-        }),
-        onMainColorChange: (color) => setState(() => _tempMainColor = color),
-        // onBack: () => print("Back button pressed"),
-      ),
-    );
-  }
+  // Widget createColourCircle() {
+  //   Map<String, Color> colorMap = {
+  //     "red": Colors.red,
+  //     "green": Colors.green,
+  //     "blue": Colors.blue
+  //   };
+  //   availableItemColour.map((c) =>
+  //       CircleColor(
+  //         // color: Colors.blue,
+  //         color: colorMap[c],
+  //         circleSize: 30,
+  //         iconSelected: Icons.brightness_1_rounded,
+  //         elevation: 4.0,
+  //         onColorChoose: () => debugPrint('Colour chosen'),
+  //       ),
+  //   );
+  // }
+
+
 
   @override
   void initState() {
@@ -103,14 +128,48 @@ class _ProductPageState extends State<ProductPage> {
 
     totalAmount = 0.0;
 
-    // Provider.of<TotalAmount>(context, listen: false).display(0);
   }
+
 
   @override
   Widget build(BuildContext context) {
     final cCy = NumberFormat("#,##0.00");
 
     totalAmount = widget.itemModel.price.toDouble();
+    if(specialCategories.contains(widget.itemModel.category)) {
+      isSpecial = true;
+      availableItemSizes = widget.itemModel.dimensions.split(",");
+      availableItemColours = widget.itemModel.colour.split(",");
+      widget.itemModel.isSpecial = isSpecial;
+      Provider.of<ItemSpecial>(
+        context,
+        listen: false).isItemSpecial(widget.itemModel.isSpecial);
+    }
+
+    // Map<String, Map<int, Color>> strColorMap = {
+    //   "red": {
+    //     1: Colors.red[800],
+    //     2: Colors.red[600],
+    //     3: Colors.red[400],
+    //   },
+    //   "green": {
+    //     1: Colors.green[800],
+    //     2: Colors.green[600],
+    //     3: Colors.green[400],
+    //   },
+    //   "blue": {
+    //     1: Colors.blue[800],
+    //     2: Colors.blue[600],
+    //     3: Colors.blue[400],
+    //   },
+    // };
+
+    // Color colourCircle(List colours) {
+    //   switch(colours) {
+    //
+    //   }
+    // }
+
 
     return SafeArea(
       child: Scaffold(
@@ -150,7 +209,10 @@ class _ProductPageState extends State<ProductPage> {
                         children: [
                           Text(
                             widget.itemModel.title,
-                            style: TextStyle(fontSize: 25.0),
+                            style: TextStyle(
+                                color: Colors.deepPurple,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25.0),
                           ),
                           Divider(
                             color: Colors.purple,
@@ -161,7 +223,9 @@ class _ProductPageState extends State<ProductPage> {
                           ),
                           Text(
                             widget.itemModel.shortInfo,
-                            style: TextStyle(fontSize: 15.0),
+                            style: TextStyle(
+                                color: Colors.blueGrey,
+                                fontSize: 15.0),
                           ),
                           Divider(
                             color: Colors.purple,
@@ -175,6 +239,7 @@ class _ProductPageState extends State<ProductPage> {
                             widget.itemModel.longDescription,
                             style: TextStyle(
                               fontSize: 19.0,
+                              color: Colors.deepPurple
                             ),
                           ),
                           Divider(
@@ -184,73 +249,75 @@ class _ProductPageState extends State<ProductPage> {
                           SizedBox(
                             height: 2.0,
                           ),
-                          specialCategories
-                              .contains(widget.itemModel.category) ?
+                          /*
+                          lines 203 - 259 determines if size and colour widgets
+                          will display or not
+                          * */
+                          (specialCategories.contains(
+                              widget.itemModel.category)) ?
                              Row(
                             children: [
+                                  Text(
+                                    'Size:',
+                                    style: TextStyle(
+                                        fontSize: 17.0,
+                                        color: Colors.deepPurple),
+                                  ),
+                                  SizedBox(
+                                    width: 3.0,
+                                  ),
                               DropdownButton(
-                                value: selectedItemSize,
-                                style: TextStyle(
-                                    fontSize: 19.0, color: Colors.deepPurple),
-                                items: [
-                                  DropdownMenuItem(
-                                      child: Text(
-                                        'small',
-                                        style:
-                                            TextStyle(color: Colors.deepPurple),
-                                      ),
-                                      value: 'small'),
-                                  DropdownMenuItem(
-                                      child: Text(
-                                        'medium',
-                                        style:
-                                            TextStyle(color: Colors.deepPurple),
-                                      ),
-                                      value: 'medium'),
-                                  DropdownMenuItem(
-                                      child: Text(
-                                        'large',
-                                        style:
-                                            TextStyle(color: Colors.deepPurple),
-                                      ),
-                                      value: 'large'),
-                                  DropdownMenuItem(
-                                      child: Text(
-                                        'extra-large',
-                                        style:
-                                            TextStyle(color: Colors.deepPurple),
-                                      ),
-                                      value: 'extra-large'),
-                                ],
-                                onChanged: (value) =>
+                                items: availableItemSizes.map((dynamic value) {
+                                  return DropdownMenuItem(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
                                   setState(() {
                                     selectedItemSize = value;
-                                    //widget.itemModel.dimensions = selectedItemSize;
+                                    debugPrint('Size: $selectedItemSize');
                                     Provider.of<ItemSize>(
-                                        context,
-                                        listen: false)
-                                        .sizeOfItem(selectedItemSize);
-                                  }),
-                              ),
-                              SizedBox(width: 55.0,),
-                              Text(
-                                'Item colour',
-                                style: TextStyle(
-                                    fontSize: 19.0,
-                                    color: Colors.deepPurple),
+                                      context,
+                                      listen: false,
+                                    ).sizeOfItem(selectedItemSize);
+                                  });
+                                },
+                                value: selectedItemSize,
                               ),
                               SizedBox(
-                                width: 15.0,
+                                width: 11.0,
                               ),
-                              CircleColor(
-                                color: _shadeColor,
-                                circleSize: 25,
-                                iconSelected: Icons.brightness_1_rounded,
-                                elevation: 4.0,
-                                onColorChoose: _openColorPicker,
+                              Text(
+                                  'Colour:',
+                                style: TextStyle(
+                                  fontSize: 17.0,
+                                  color: Colors.deepPurple,
+                                ),
+                              ),
+                              SizedBox(width: 9.0,),
+                              DropdownButton(
+                                items: availableItemColours.map((dynamic c) {
+                                  return DropdownMenuItem(
+                                    value: c,
+                                    child: Text(c),
+                                  );
+                                }).toList(),
+                                onChanged: (c) {
+                                  setState(() {
+                                    selectedItemColour = c;
+                                    debugPrint('Colour: $selectedItemColour');
+                                    Provider.of<ItemColour>(
+                                      context,
+                                      listen: false,
+                                    ).colourOfItem(selectedItemColour);
+                                  });
+                                },
+                                value: selectedItemColour,
                               ),
                             ],
-                          ) : Container(),
+                          )
+                          : Container(),
                           SizedBox(
                             height: 15.0,
                           ),
@@ -260,14 +327,17 @@ class _ProductPageState extends State<ProductPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                "=N= ${cCy.format(calcTotalAmount())}",
+                                "₦ ${cCy.format(calcTotalAmount())}",
                                 /*
                                 (widget.itemModel.price -
                                     (widget.itemModel.price * (widget.itemModel.discount / 100)) *
                                         qtyOfItem)
                                 * */
                                 style: TextStyle(
+                                  fontFamily: 'Roboto',
                                   fontSize: 25.0,
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold
                                 ),
                               ),
                               // SizedBox(width: 8.0,),
@@ -281,7 +351,9 @@ class _ProductPageState extends State<ProductPage> {
                                   //(widget.itemModel.price * qtyOfItem).toDouble()
                                   style: TextStyle(
                                     fontSize: 25.0,
-                                    fontFamily: 'Roboto'
+                                    fontFamily: 'Roboto',
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold
                                   ),
                                 ),
                                 // SizedBox(width: 8.0,),
@@ -309,7 +381,7 @@ class _ProductPageState extends State<ProductPage> {
                                 totalAmount: calcTotalAmount(),
                                 itemQty: qtyOfItem,
                                 itemSize: selectedItemSize,
-                                itemColour: _shadeColor,
+                                //itemColour: _shadeColor,
                               ));
                           Navigator.push(context, route);
                           addItem(widget.itemModel.shortInfo, context);
@@ -359,7 +431,7 @@ class _ProductPageState extends State<ProductPage> {
     double total = 0.00;
     total = (widget.itemModel.discount != null &&
         widget.itemModel.discount > 0) ?
-    (widget.itemModel.price -
+   (widget.itemModel.price -
         (widget.itemModel.price * (widget.itemModel.discount / 100))) * qtyOfItem
         : (widget.itemModel.price).toDouble() * qtyOfItem;
     return total;
