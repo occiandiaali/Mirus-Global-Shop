@@ -185,15 +185,13 @@ class AdminOrderDetails extends StatelessWidget {
 
   forceClearDetails(BuildContext context, String mOrderId) {
     EshopApp.firestore
-        .collection(EshopApp.collectionUser)
-        .doc(EshopApp.sharedPreferences.getString(EshopApp.userUID))
         .collection(EshopApp.collectionOrders)
-        .doc(mOrderId).delete().then((value)  {
-      getOrderId = "";
+        .doc(mOrderId)
+        .delete();
 
-      Route route = MaterialPageRoute(builder: (c) => AdminShiftOrders());
-      Navigator.pushReplacement(context, route);
-    });
+    getOrderId = "";
+    Route route = MaterialPageRoute(builder: (c) => AdminShiftOrders());
+    Navigator.pushReplacement(context, route);
   }
 
 } // admin order details class
