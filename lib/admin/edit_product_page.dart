@@ -420,7 +420,6 @@ class _EditProductPageState extends State<EditProductPage> {
             title: Container(
               width: 250.0,
               child: TextField(
-                enabled: true,
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _itemSizeInfoController,
                 decoration: InputDecoration(
@@ -445,7 +444,6 @@ class _EditProductPageState extends State<EditProductPage> {
             title: Container(
               width: 250.0,
               child: TextField(
-                enabled: true,
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _itemColourController,
                 decoration: InputDecoration(

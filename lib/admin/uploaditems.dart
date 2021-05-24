@@ -373,8 +373,6 @@ class _UploadPageState extends State<UploadPage>
               title: Container(
                 width: 250.0,
                 child: TextField(
-                  enabled: true,
-                  keyboardType: TextInputType.number,
                   style: TextStyle(color: Colors.deepPurple),
                   controller: _itemSizeInfoController,
                   decoration: InputDecoration(
@@ -393,7 +391,6 @@ class _UploadPageState extends State<UploadPage>
             title: Container(
               width: 250.0,
               child: TextField(
-                enabled: true,
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _itemColourController,
                 decoration: InputDecoration(
