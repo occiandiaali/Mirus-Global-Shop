@@ -179,16 +179,11 @@ Widget sourceOrderInfo(
                                     GestureDetector(
                                       onTap: () {
                                         Route route;
-                                            //   if (counter == 0) {
-                                            //   counter = counter + 1;
                                             route = MaterialPageRoute(
                                                 builder: (c) =>
                                                     OrderDetails(
-                                                        orderID: oID,
-                                                       // priceSum: priceSum,
-                                                    ));
+                                                        orderID: oID,));
                                             Navigator.push(context, route);
-                                       // _doubleCheckTotal(context);
                                       },
                                       child: Icon(
                                         Icons.check_circle,
@@ -200,15 +195,6 @@ Widget sourceOrderInfo(
                                   ],
                                 )
                                     : Text('Shop with us again!!!'),
-                                Row(
-                                  children: [
-                                    Text('Cancel'),
-                                    SizedBox(width: 4.0,),
-                                    Icon(
-                                        Icons.cancel_rounded
-                                    ),
-                                  ],
-                                ),
                               ],
                             ),
                           ],

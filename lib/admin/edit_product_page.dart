@@ -42,18 +42,6 @@ class _EditProductPageState extends State<EditProductPage> {
   final _itemColourController = TextEditingController();
   final _discountController = TextEditingController();
   final _searchInfoEditingController = TextEditingController();
-  //final _qtyEditingController = TextEditingController();
-
-  List specialCategories = [
-    'cloth',
-    'bag',
-    'shoe',
-    'shirt',
-    'dress',
-    'skirt',
-    'belt',
-    'spa'
-  ];
 
   String itemId = DateTime.now().millisecondsSinceEpoch.toString();
   bool uploading = false;
@@ -71,7 +59,7 @@ class _EditProductPageState extends State<EditProductPage> {
     _itemColourController.dispose();
     _discountController.dispose();
     _searchInfoEditingController.dispose();
-    //_qtyEditingController.dispose();
+
     super.dispose();
   }
 
@@ -93,7 +81,6 @@ class _EditProductPageState extends State<EditProductPage> {
           "colour": _itemColourController.text.trim(),
           "price": int.parse(_itemPriceEditingController.text),
           "discount": int.parse(_discountController.text),
-         // "quantity": int.parse(_qtyEditingController.text),
           "publishedDate": DateTime.now(),
           "status": "available",
           "thumbnailUrl": urlImg,
@@ -112,18 +99,10 @@ class _EditProductPageState extends State<EditProductPage> {
         _itemSizeInfoController.clear();
         _discountController.clear();
         _searchInfoEditingController.clear();
-       // _qtyEditingController.clear();
         });
         Navigator.pop(context);
     }).catchError((e) => print('Failed to update: $e'));
   } // update item info
-
-
-  // deleteItemInfo() {
-  //   itemsDoc
-  //       .doc(widget.docID).delete();
-  //   Navigator.pop(context);
-  // }
 
   deleteItemInfo() {
     showDialog(
@@ -168,8 +147,6 @@ class _EditProductPageState extends State<EditProductPage> {
         });
   }
 
-
-
   // image update section
   takePhotoWithCamera() async {
     Navigator.pop(context);
@@ -196,7 +173,6 @@ class _EditProductPageState extends State<EditProductPage> {
       fileImage = File(photoFile.path);
     });
   }
-
 
   selectImage(mContext) {
     return showDialog(
@@ -437,7 +413,6 @@ class _EditProductPageState extends State<EditProductPage> {
               ),
           ),
           Divider(color: Colors.deepPurple,),
-          (specialCategories.contains(widget.itemModel.category)) ?
           ListTile(
             leading: Icon(
               Icons.format_size_rounded,
@@ -461,50 +436,8 @@ class _EditProductPageState extends State<EditProductPage> {
               ),
 
             ),
-          )
-              : ListTile(
-            leading: Icon(
-              Icons.format_size_rounded,
-              color: Colors.grey,),
-            title: Container(
-              width: 250.0,
-              child: TextField(
-                 enabled: false,
-               // controller: _itemSizeInfoController,
-                decoration: InputDecoration(
-                  fillColor: Colors.grey,
-                  hintText: 'size not applicable...',
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: InputBorder.none,
-                  // suffixIcon: IconButton(
-                  //   alignment: Alignment.centerLeft,
-                  //   icon: Icon(Icons.copy_outlined),
-                  //   onPressed: () => _copyToClipboard('${widget.itemModel.dimensions}'),
-                  // ),
-                ),
-              ),
-
-            ),
           ),
-          // ListTile(
-          //   leading: Icon(
-          //     Icons.wysiwyg,
-          //     color: Colors.pink,),
-          //   title: Container(
-          //     width: 250.0,
-          //     child: TextField(
-          //       style: TextStyle(color: Colors.deepPurple),
-          //       controller: _qtyEditingController,
-          //       decoration: InputDecoration(
-          //         hintText: widget.itemModel.qty.toString(),
-          //         hintStyle: TextStyle(color: Colors.deepPurpleAccent),
-          //         border: InputBorder.none,
-          //       ),
-          //     ),
-          //   ),
-          // ),
            Divider(color: Colors.deepPurple,),
-          (specialCategories.contains(widget.itemModel.category)) ?
           ListTile(
             leading: Icon(
               Icons.format_paint_rounded,
@@ -524,24 +457,6 @@ class _EditProductPageState extends State<EditProductPage> {
                     icon: Icon(Icons.copy_outlined),
                     onPressed: () => _copyToClipboard('${widget.itemModel.colour}'),
                   ),
-                ),
-              ),
-            ),
-          )
-              : ListTile(
-            leading: Icon(
-              Icons.format_paint_rounded,
-              color: Colors.grey,),
-            title: Container(
-              width: 250.0,
-              child: TextField(
-                enabled: false,
-                style: TextStyle(color: Colors.deepPurple),
-                // controller: _itemColourController,
-                decoration: InputDecoration(
-                  hintText: 'colour not applicable...',
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: InputBorder.none,
                 ),
               ),
             ),

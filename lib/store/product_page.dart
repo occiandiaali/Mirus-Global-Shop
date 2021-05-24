@@ -6,20 +6,17 @@ import 'package:mirus_global/counters/item_quantity.dart';
 import 'package:mirus_global/counters/item_size.dart';
 import 'package:mirus_global/counters/item_special.dart';
 import 'package:numberpicker/numberpicker.dart';
-import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
+
 import 'package:intl/intl.dart';
 
 import 'package:mirus_global/Widgets/customAppBar.dart';
-import 'package:mirus_global/Widgets/customStepper.dart';
+
 import 'package:mirus_global/address/address.dart';
 import 'package:mirus_global/config/config.dart';
-import 'package:mirus_global/counters/total_amt.dart';
 
 import 'package:mirus_global/models/item.dart';
 import 'package:provider/provider.dart';
 
-import './storehome.dart';
-import './cart.dart';
 
 class ProductPage extends StatefulWidget {
   final ItemModel itemModel;
@@ -40,87 +37,9 @@ class _ProductPageState extends State<ProductPage> {
   String selectedItemSize;
   String selectedItemColour;
   String itemSize;
-  bool isSpecial = false;
-  // ColorSwatch _tempMainColor;
-  // Color _tempShadeColor;
-  // ColorSwatch _mainColor = Colors.blue;
-  // Color _shadeColor = Colors.blue[800];
 
-  List specialCategories = [
-    'cloth',
-    'shoe',
-    'shirt',
-    'dress',
-    'jeans',
-    'skirt',
-    'belt',
-    'gym',
-    'spa'
-  ];
   List availableItemSizes = []; // to store admin input sizes
   List availableItemColours = []; // to store admin input colours
-
-  // void _openDialog(String title, Widget content) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (_) {
-  //       return AlertDialog(
-  //         contentPadding: const EdgeInsets.all(6.0),
-  //         title: Text(title),
-  //         content: content,
-  //         actions: [
-  //           TextButton(
-  //             child: Text('CANCEL'),
-  //             onPressed: Navigator.of(context).pop,
-  //           ),
-  //           TextButton(
-  //             child: Text('SELECT'),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //               setState(() => _mainColor = _tempMainColor);
-  //               setState(() => _shadeColor = _tempShadeColor);
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // } // open dialogue
-  //
-  // void _openColorPicker() async {
-  //   _openDialog(
-  //     "Color picker",
-  //     MaterialColorPicker(
-  //       selectedColor: _mainColor,
-  //       onColorChange: (color) => setState(() {
-  //         _tempShadeColor = color;
-  //        // Provider.of<ItemColour>(context, listen: false).colourOfItem(_shadeColor);
-  //       }),
-  //       onMainColorChange: (color) => setState(() => _tempMainColor = color),
-  //       // onBack: () => print("Back button pressed"),
-  //     ),
-  //   );
-  // }
-
-  // Widget createColourCircle() {
-  //   Map<String, Color> colorMap = {
-  //     "red": Colors.red,
-  //     "green": Colors.green,
-  //     "blue": Colors.blue
-  //   };
-  //   availableItemColour.map((c) =>
-  //       CircleColor(
-  //         // color: Colors.blue,
-  //         color: colorMap[c],
-  //         circleSize: 30,
-  //         iconSelected: Icons.brightness_1_rounded,
-  //         elevation: 4.0,
-  //         onColorChoose: () => debugPrint('Colour chosen'),
-  //       ),
-  //   );
-  // }
-
-
 
   @override
   void initState() {
@@ -130,46 +49,14 @@ class _ProductPageState extends State<ProductPage> {
 
   }
 
-
   @override
   Widget build(BuildContext context) {
     final cCy = NumberFormat("#,##0.00");
 
     totalAmount = widget.itemModel.price.toDouble();
-    if(specialCategories.contains(widget.itemModel.category)) {
-      isSpecial = true;
-      availableItemSizes = widget.itemModel.dimensions.split(",");
-      availableItemColours = widget.itemModel.colour.split(",");
-      widget.itemModel.isSpecial = isSpecial;
-      Provider.of<ItemSpecial>(
-        context,
-        listen: false).isItemSpecial(widget.itemModel.isSpecial);
-    }
 
-    // Map<String, Map<int, Color>> strColorMap = {
-    //   "red": {
-    //     1: Colors.red[800],
-    //     2: Colors.red[600],
-    //     3: Colors.red[400],
-    //   },
-    //   "green": {
-    //     1: Colors.green[800],
-    //     2: Colors.green[600],
-    //     3: Colors.green[400],
-    //   },
-    //   "blue": {
-    //     1: Colors.blue[800],
-    //     2: Colors.blue[600],
-    //     3: Colors.blue[400],
-    //   },
-    // };
-
-    // Color colourCircle(List colours) {
-    //   switch(colours) {
-    //
-    //   }
-    // }
-
+    availableItemSizes = widget.itemModel.dimensions.split(",");
+    availableItemColours = widget.itemModel.colour.split(",");
 
     return SafeArea(
       child: Scaffold(
@@ -205,7 +92,6 @@ class _ProductPageState extends State<ProductPage> {
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        // crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             widget.itemModel.title,
@@ -249,12 +135,6 @@ class _ProductPageState extends State<ProductPage> {
                           SizedBox(
                             height: 2.0,
                           ),
-                          /*
-                          lines 203 - 259 determines if size and colour widgets
-                          will display or not
-                          * */
-                          (specialCategories.contains(
-                              widget.itemModel.category)) ?
                              Row(
                             children: [
                                   Text(
@@ -316,8 +196,7 @@ class _ProductPageState extends State<ProductPage> {
                                 value: selectedItemColour,
                               ),
                             ],
-                          )
-                          : Container(),
+                          ),
                           SizedBox(
                             height: 15.0,
                           ),
@@ -328,11 +207,6 @@ class _ProductPageState extends State<ProductPage> {
                             children: [
                               Text(
                                 "₦ ${cCy.format(calcTotalAmount())}",
-                                /*
-                                (widget.itemModel.price -
-                                    (widget.itemModel.price * (widget.itemModel.discount / 100)) *
-                                        qtyOfItem)
-                                * */
                                 style: TextStyle(
                                   fontFamily: 'Roboto',
                                   fontSize: 25.0,
@@ -348,7 +222,6 @@ class _ProductPageState extends State<ProductPage> {
                               children: [
                                 Text(
                                   "₦ ${cCy.format(calcTotalAmount())}",
-                                  //(widget.itemModel.price * qtyOfItem).toDouble()
                                   style: TextStyle(
                                     fontSize: 25.0,
                                     fontFamily: 'Roboto',
@@ -381,7 +254,6 @@ class _ProductPageState extends State<ProductPage> {
                                 totalAmount: calcTotalAmount(),
                                 itemQty: qtyOfItem,
                                 itemSize: selectedItemSize,
-                                //itemColour: _shadeColor,
                               ));
                           Navigator.push(context, route);
                           addItem(widget.itemModel.shortInfo, context);
@@ -395,7 +267,7 @@ class _ProductPageState extends State<ProductPage> {
                       SizedBox(width: 35.0),
                       NumberPicker(
                           minValue: 1,
-                          maxValue: 10,
+                          maxValue: 50,
                           axis: Axis.horizontal,
                           itemWidth: 40,
                           decoration: BoxDecoration(
@@ -439,8 +311,6 @@ class _ProductPageState extends State<ProductPage> {
 
 } // class
 
-
-
 addItem(String shortInfoAsId, BuildContext context) {
   List tempCartList =
       EshopApp.sharedPreferences.getStringList(EshopApp.userOrderList);
@@ -456,7 +326,6 @@ addItem(String shortInfoAsId, BuildContext context) {
     EshopApp.sharedPreferences
         .setStringList(EshopApp.userOrderList, tempCartList);
 
-    // Provider.of<CartItemCounter>(context, listen: false).displayResult(EshopApp.userCartList.length);
   }).catchError((e) => print("Error updating document: $e"));
 } // add item to cart
 

@@ -38,7 +38,6 @@ class MG extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ItemQuantity()),
          ChangeNotifierProvider(create: (context) => ItemColour()),
          ChangeNotifierProvider(create: (context) => ItemSize()),
-        ChangeNotifierProvider(create: (context) => ItemSpecial()),
         ChangeNotifierProvider(create: (context) => AddressChanger()),
       ],
         child: MaterialApp(

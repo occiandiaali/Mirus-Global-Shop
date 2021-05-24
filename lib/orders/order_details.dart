@@ -13,13 +13,11 @@ import 'package:mirus_global/models/address.dart';
 
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-//import 'package:sms/sms.dart';
+
 import 'package:telephony/telephony.dart';
 
 
-
 String getOrderId = "";
-double shippingCost = 0.00;
 
 final cCy = NumberFormat("#,##0.00");
 
@@ -118,21 +116,6 @@ class OrderDetails extends StatelessWidget {
                             ),
                           ),
                         ),
-                        // Padding(
-                        //   padding: EdgeInsets.all(4.0),
-                        //   child: Align(
-                        //     alignment: Alignment.center,
-                        //     child: Text(
-                        //       'Quantity ( ${dataMap[EshopApp.itemQuantity]} ) - '
-                        //           'Size ( ${dataMap[EshopApp.itemSize]} )',
-                        //       style: TextStyle(
-                        //           fontWeight: FontWeight.bold,
-                        //           fontSize: 15.0,
-                        //           color: Colors.deepPurple
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
                           Padding(
                           padding: EdgeInsets.all(4.0),
                           child: Align(
@@ -308,7 +291,6 @@ class ShippingDetails extends StatelessWidget {
 
   final AddressModel model;
   final String orderId;
- // final Telephony telephony = Telephony.instance;
 
   ShippingDetails({Key key, this.model, this.orderId}) : super(key: key);
 
@@ -316,8 +298,6 @@ class ShippingDetails extends StatelessWidget {
   Widget build(BuildContext context) {
 
     double screenWidth = MediaQuery.of(context).size.width;
-    // shippingCost = model.state == 'Lagos' ||
-    // model.state == 'lagos' ? 3500 : 12000;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -336,18 +316,6 @@ class ShippingDetails extends StatelessWidget {
             ),
           ),
         ),
-        // Padding(
-        //   padding: EdgeInsets.all(4.0),
-        //   child: Text(
-        //     '( shipping: ₦ ${cCy.format(shippingCost)} )',
-        //     style: TextStyle(
-        //       color: Colors.red,
-        //       fontSize: 21,
-        //       fontFamily: 'Roboto',
-        //       fontWeight: FontWeight.bold,
-        //     ),
-        //   ),
-        // ),
         Container(
           child: FutureBuilder<DocumentSnapshot>(
             future: EshopApp.firestore
@@ -529,23 +497,6 @@ class ShippingDetails extends StatelessWidget {
       ],
     );
   }
-
-  // void smsWork() {
-  //   For sms plugin in pubsec yaml
-  //   var sender = SmsSender();
-  //   String recipient = "09088018515";
-  //   var msg = SmsMessage(recipient, 'I just confirmed my order payment');
-  //   msg.onStateChanged.listen((event) {
-  //     if(event == SmsMessageState.Sent) {
-  //       Fluttertoast.showToast(msg: 'SMS confirmation sent to merchant',
-  //               toastLength: Toast.LENGTH_LONG);
-  //     } else if(event == SmsMessageState.Delivered) {
-  //       Fluttertoast.showToast(msg: 'Merchant has received SMS confirmation',
-  //           toastLength: Toast.LENGTH_LONG);
-  //     }
-  //   });
-  //   sender.sendSms(msg);
-  // }
 
   confirmOrderReceived(BuildContext context, String mOrderId) {
     EshopApp.firestore

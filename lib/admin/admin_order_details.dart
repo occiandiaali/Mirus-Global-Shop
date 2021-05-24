@@ -17,7 +17,6 @@ import 'package:telephony/telephony.dart';
 String getOrderId = "";
 String getOrderBy = "";
 String getAddressId = "";
-double shippingCost = 0.00;
 
 class AdminOrderDetails extends StatelessWidget {
 
@@ -39,8 +38,7 @@ class AdminOrderDetails extends StatelessWidget {
     getOrderId = orderID;
     getOrderBy = orderBy;
     getAddressId = addressID;
-    // Locale locale = Localizations.localeOf(context);
-    // var format = NumberFormat.simpleCurrency(locale: Platform.localeName);
+
     final cCy = NumberFormat("#,##0.00");
 
     return SafeArea(
@@ -114,22 +112,6 @@ class AdminOrderDetails extends StatelessWidget {
                     ),
                     Padding(
                       padding: EdgeInsets.all(4.0),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                            'Quantity ( ${dataMap[EshopApp.itemQuantity]} ) - '
-                                'Size ( ${dataMap[EshopApp.itemSize]} )',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15.0,
-                            color: Colors.pinkAccent
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    Padding(
-                      padding: EdgeInsets.all(4.0),
                       //child: Text("Order ID: $getOrderId"),
                       child: SelectableText(
                         "ID: $getOrderId",
@@ -185,6 +167,7 @@ class AdminOrderDetails extends StatelessWidget {
                       builder: (c, snap) {
                         return snap.hasData ?
                         AdminShippingDetails(
+                            orderId: orderID,
                             model: AddressModel.fromJson(snap.data.data())
                         ) : Center(child: circularProgress(),);
                       },
@@ -264,16 +247,6 @@ class AdminStatusBanner extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // GestureDetector(
-          //   onTap: () => print("icon tapped"),
-          //   child: Container(
-          //     child: Icon(
-          //       Icons.arrow_drop_down_circle_outlined,
-          //       color: Colors.white,
-          //     ),
-          //   ),
-          // ),
-          //SizedBox(width: 20.0,),
           Text(
             'Order Received: $msg',
             style: TextStyle(color: Colors.white),
@@ -298,16 +271,15 @@ class AdminStatusBanner extends StatelessWidget {
 
 class AdminShippingDetails extends StatelessWidget {
   final AddressModel model;
+  final String orderId;
   final Telephony telephony = Telephony.instance;
 
-  AdminShippingDetails({Key key, this.model}) : super(key: key);
+  AdminShippingDetails({Key key, this.model, this.orderId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
 
     double screenWidth = MediaQuery.of(context).size.width;
-    // shippingCost = model.state == 'Lagos' ||
-    //     model.state == 'lagos' ? 3500 : 12000;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -325,18 +297,69 @@ class AdminShippingDetails extends StatelessWidget {
             ),
           ),
         ),
-        // Padding(
-        //   padding: EdgeInsets.all(4.0),
-        //   child: Text(
-        //     'Shipping: ₦ ${cCy.format(shippingCost)}',
-        //     style: TextStyle(
-        //       color: Colors.red,
-        //       fontSize: 21,
-        //       fontFamily: 'Roboto',
-        //       fontWeight: FontWeight.bold,
-        //     ),
-        //   ),
-        // ),
+        Container(
+          child: FutureBuilder<DocumentSnapshot>(
+            future: EshopApp.firestore
+                .collection(EshopApp.collectionOrders)
+                .doc(orderId).get(),
+            builder: (c, snapShot) {
+              Map dataMap;
+              if(snapShot.hasData) {
+                dataMap = snapShot.data.data();
+              }
+              return snapShot.hasData ?
+              Container(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Quantity: ${dataMap[EshopApp.itemQuantity]}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.0,
+                              color: Colors.deepPurple
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Size: ${dataMap[EshopApp.itemSize]}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.0,
+                              color: Colors.deepPurple
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Colour: ${dataMap[EshopApp.itemColour]}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.0,
+                              color: Colors.deepPurple
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+                  : Center(child: circularProgress(),);
+            },
+          ),
+        ),
         SizedBox(height: 5.0,),
         Container(
           padding: EdgeInsets.symmetric(

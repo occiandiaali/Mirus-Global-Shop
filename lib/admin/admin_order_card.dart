@@ -206,8 +206,6 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
                                 GestureDetector(
                                   onTap: () {
                                     Route route;
-                                    //   if (counter == 0) {
-                                    //   counter = counter + 1;
                                     route = MaterialPageRoute(
                                         builder: (c) => AdminOrderDetails(
                                             orderID: oID,
@@ -217,7 +215,7 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
                                   },
                                   child: Icon(
                                     Icons.check_circle,
-                                    size: 23.0,
+                                    size: 29.0,
                                     color: Colors.deepPurple,
                                   ),
                                 ),

@@ -43,22 +43,10 @@ class _UploadPageState extends State<UploadPage>
   final _itemSizeInfoController = TextEditingController();
   final _itemColourController = TextEditingController();
   final _discountController = TextEditingController();
- // final _qtyEditingController = TextEditingController();
- // final _itemQtyController = TextEditingController();
 
   String itemId = DateTime.now().millisecondsSinceEpoch.toString();
   bool uploading = false;
   int itemVariance = 0; // track individual items for search purpose
-  List specialCategories = [
-    'cloth',
-    'bag',
-    'shoe',
-    'shirt',
-    'dress',
-    'skirt',
-    'belt',
-    'spa'
-  ];
 
   @override
   void dispose() {
@@ -70,8 +58,6 @@ class _UploadPageState extends State<UploadPage>
     _itemSizeInfoController.dispose();
     _itemColourController.dispose();
     _discountController.dispose();
-   // _qtyEditingController.dispose();
-   // _itemQtyController.dispose();
     super.dispose();
   }
 
@@ -380,7 +366,6 @@ class _UploadPageState extends State<UploadPage>
             ),
           ),
           Divider(color: Colors.deepPurple,),
-          (specialCategories.contains(_itemCategoryEditingController.text)) ?
           ListTile(
               leading: Icon(
                 Icons.format_size_rounded,
@@ -393,34 +378,14 @@ class _UploadPageState extends State<UploadPage>
                   style: TextStyle(color: Colors.deepPurple),
                   controller: _itemSizeInfoController,
                   decoration: InputDecoration(
-                    hintText: 'small, medium, large...',
+                    hintText: 'small, medium, 12, 8...',
                     hintStyle: TextStyle(color: Colors.deepPurpleAccent),
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-            )
-              : ListTile(
-              leading: Icon(
-                Icons.format_size_rounded,
-                color: Colors.grey,),
-              title: Container(
-                width: 250.0,
-                child: TextField(
-                  enabled: false,
-                  keyboardType: TextInputType.number,
-                  style: TextStyle(color: Colors.deepPurple),
-                 // controller: _itemSizeInfoController,
-                  decoration: InputDecoration(
-                    hintText: 'size not applicable',
-                    hintStyle: TextStyle(color: Colors.grey),
                     border: InputBorder.none,
                   ),
                 ),
               ),
             ),
             Divider(color: Colors.deepPurple,),
-          (specialCategories.contains(_itemCategoryEditingController.text)) ?
           ListTile(
             leading: Icon(
               Icons.format_paint_rounded,
@@ -434,24 +399,6 @@ class _UploadPageState extends State<UploadPage>
                 decoration: InputDecoration(
                   hintText: 'blue, black, green...',
                   hintStyle: TextStyle(color: Colors.deepPurpleAccent),
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-          )
-              : ListTile(
-            leading: Icon(
-              Icons.format_paint_rounded,
-              color: Colors.grey,),
-            title: Container(
-              width: 250.0,
-              child: TextField(
-                enabled: false,
-                style: TextStyle(color: Colors.deepPurple),
-               // controller: _itemColourController,
-                decoration: InputDecoration(
-                  hintText: 'colour not applicable...',
-                  hintStyle: TextStyle(color: Colors.grey),
                   border: InputBorder.none,
                 ),
               ),
@@ -512,7 +459,6 @@ class _UploadPageState extends State<UploadPage>
     _itemSizeInfoController.clear();
     _itemColourController.clear();
     _discountController.clear();
-   // _qtyEditingController.clear();
   }
 
   uploadAndSaveItem() async {
@@ -540,7 +486,6 @@ class _UploadPageState extends State<UploadPage>
       "longDescription": _itemDescEditingController.text.trim(),
       "dimensions": _itemSizeInfoController.text.trim(),
       "colour": _itemColourController.text.trim(),
-      //"quantity": int.parse(_qtyEditingController.text),
       "price": int.parse(_itemPriceEditingController.text),
       "discount": int.parse(_discountController.text),
       "publishedDate": DateTime.now(),
@@ -560,7 +505,6 @@ class _UploadPageState extends State<UploadPage>
         _itemColourController.clear();
         _discountController.clear();
         _searchInfoEditingController.clear();
-      //  _qtyEditingController.clear();
       });
     }).catchError((e) => print("Error: $e"));
 

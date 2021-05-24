@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/rendering.dart';
 import 'package:mirus_global/counters/item_colour.dart';
 import 'package:mirus_global/counters/item_quantity.dart';
 import 'package:mirus_global/counters/item_size.dart';
@@ -21,7 +22,6 @@ import 'package:url_launcher/url_launcher.dart';
 const _mailUrl = 'mailto:mirusglobalimportation@gmail.com?subject=Concerning my order placement';
 var sizeOfItem = " ";
 var colourOfItem = " ";
-bool isItemSpecial;
 
 class OrderPayment extends StatefulWidget {
 
@@ -56,9 +56,10 @@ class _OrderPaymentState extends State<OrderPayment> {
 
   @override
   Widget build(BuildContext context) {
+
     sizeOfItem = Provider.of<ItemSize>(context).getSizeOfItem;
     colourOfItem = Provider.of<ItemColour>(context).colorOfItems;
-    isItemSpecial = Provider.of<ItemSpecial>(context).getIsItemSpecial;
+
     return Material(
       child: Container(
         decoration: BoxDecoration(
@@ -81,6 +82,15 @@ class _OrderPaymentState extends State<OrderPayment> {
                 padding: EdgeInsets.all(10.0),
                 child: Column(
                   children: [
+                    Text(
+                      'READ CAREFULLY',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 23.0,
+                      ),
+                    ),
+                    SizedBox(height: 12.0,),
                     Text(
                       'Questions or Complaints?',
                       style: TextStyle(color: Colors.white, fontSize: 17.0),
@@ -125,12 +135,6 @@ class _OrderPaymentState extends State<OrderPayment> {
                       ),
                     ),
                     SizedBox(height: 7.0,),
-                    // Text(
-                    //     'Bank Transfer Details',
-                    // style: TextStyle(
-                    //   fontSize: 21.0,
-                    //   color: Colors.white,
-                    // ),),
                     Text(
                         'AJAYI IRETIOGO ESTHER',
                     style: TextStyle(
@@ -147,6 +151,15 @@ class _OrderPaymentState extends State<OrderPayment> {
                       'Payment must be confirmed BEFORE delivery.',
                       style: TextStyle(color: Colors.yellow, fontSize: 16.0),
                     ),
+                    SizedBox(height: 12.0,),
+                    Text(
+                      'Delivery fees: ₦2, 500 (Lagos), ₦3, 500 (Otherwise)',
+                      style: TextStyle(
+                          fontFamily: 'Roboto',
+                          color: Colors.yellow,
+                          fontSize: 16.0),
+                    ),
+                    SizedBox(height: 12.0,),
                     Text(
                       'NO RETURN policy on already shipped orders.',
                       style: TextStyle(color: Colors.yellow, fontSize: 16.0),
@@ -156,6 +169,7 @@ class _OrderPaymentState extends State<OrderPayment> {
                       'Click I ACCEPT to place order',
                       style: TextStyle(color: Colors.yellow, fontSize: 16.0),
                     ),
+                    SizedBox(height: 12.0,),
                     Text(
                       'Click CANCEL to go back',
                       style: TextStyle(color: Colors.yellow, fontSize: 16.0),
@@ -165,15 +179,7 @@ class _OrderPaymentState extends State<OrderPayment> {
               ),
               SizedBox(height: 7.0,),
               OutlinedButton(
-                onPressed: () {
-                  // telephony.sendSms(
-                  //     to: "09088018515",
-                  //     message: "Customer accepted order T & C");
-                  (isItemSpecial == true) ?
-                  addSpecialOrderDetails()
-                      : addOrderDetails();
-                 // addOrderDetails();
-                },
+                onPressed: () => addOrderDetails(),
                 child: Text(
                   'I Accept',
                   style: TextStyle(
@@ -246,8 +252,8 @@ class _OrderPaymentState extends State<OrderPayment> {
       EshopApp.addressID: widget.addressId,
       EshopApp.totalAmount: widget.totalAmount,
       EshopApp.itemQuantity: widget.itemQty,
-     // EshopApp.itemSize: sizeOfItem,
-     // EshopApp.itemColour: colourOfItem,
+      EshopApp.itemSize: sizeOfItem,
+      EshopApp.itemColour: colourOfItem,
       "orderBy": EshopApp.sharedPreferences.getString(EshopApp.userUID),
       EshopApp.itemID: EshopApp.sharedPreferences.getStringList(EshopApp.userOrderList),
       EshopApp.paymentDetails: "Bank Transfer",
@@ -259,8 +265,8 @@ class _OrderPaymentState extends State<OrderPayment> {
       EshopApp.addressID: widget.addressId,
       EshopApp.totalAmount: widget.totalAmount,
       EshopApp.itemQuantity: widget.itemQty,
-     // EshopApp.itemSize: sizeOfItem,
-    //  EshopApp.itemColour: colourOfItem,
+      EshopApp.itemSize: sizeOfItem,
+      EshopApp.itemColour: colourOfItem,
       "orderBy": EshopApp.sharedPreferences.getString(EshopApp.userUID),
       EshopApp.itemID: EshopApp.sharedPreferences.getStringList(EshopApp.userOrderList),
       EshopApp.paymentDetails: "Bank Transfer",
@@ -272,39 +278,5 @@ class _OrderPaymentState extends State<OrderPayment> {
        }).whenComplete(() => clearOrder());
 
   } // add order details
-
-  addSpecialOrderDetails() {
-    writeOrderDetailsUser({
-      EshopApp.addressID: widget.addressId,
-      EshopApp.totalAmount: widget.totalAmount,
-      EshopApp.itemQuantity: widget.itemQty,
-      EshopApp.itemSize: sizeOfItem,
-      EshopApp.itemColour: colourOfItem,
-      // EshopApp.itemColour: c,
-      "orderBy": EshopApp.sharedPreferences.getString(EshopApp.userUID),
-      EshopApp.itemID: EshopApp.sharedPreferences.getStringList(EshopApp.userOrderList),
-      EshopApp.paymentDetails: "Bank Transfer",
-      EshopApp.orderTime: DateTime.now().millisecondsSinceEpoch.toString(),
-      EshopApp.isSuccess: true,
-    });
-
-    writeOrderDetailsAdmin({
-      EshopApp.addressID: widget.addressId,
-      EshopApp.totalAmount: widget.totalAmount,
-      EshopApp.itemQuantity: widget.itemQty,
-      EshopApp.itemSize: sizeOfItem,
-      EshopApp.itemColour: colourOfItem,
-      "orderBy": EshopApp.sharedPreferences.getString(EshopApp.userUID),
-      EshopApp.itemID: EshopApp.sharedPreferences.getStringList(EshopApp.userOrderList),
-      EshopApp.paymentDetails: "Bank Transfer",
-      EshopApp.orderTime: DateTime
-          .now()
-          .millisecondsSinceEpoch
-          .toString(),
-      EshopApp.isSuccess: true,
-    }).whenComplete(() => clearOrder());
-
-  } // add special order details
-
 
 } // class
