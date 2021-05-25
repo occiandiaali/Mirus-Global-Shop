@@ -95,7 +95,7 @@ class OrderDetails extends StatelessWidget {
                           child: Align(
                             alignment: Alignment.center,
                             child: Text(
-                              'Total: ₦ ${cCy.format(
+                              'PAY: ₦ ${cCy.format(
                                   dataMap[EshopApp.totalAmount])}',
                               style: TextStyle(
                                 fontSize: 23.0,
