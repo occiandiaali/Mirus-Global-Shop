@@ -153,10 +153,11 @@ class _OrderPaymentState extends State<OrderPayment> {
                     ),
                     SizedBox(height: 12.0,),
                     Text(
-                      'Delivery fees: ₦2, 500 (Lagos), ₦3, 500 (Otherwise)',
+                      'DELIVERY: ₦2, 000 (Lagos), ₦3, 500 (Otherwise)',
                       style: TextStyle(
                           fontFamily: 'Roboto',
-                          color: Colors.yellow,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
                           fontSize: 16.0),
                     ),
                     SizedBox(height: 12.0,),
