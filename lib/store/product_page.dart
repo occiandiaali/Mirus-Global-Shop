@@ -156,7 +156,7 @@ class _ProductPageState extends State<ProductPage> {
                                 onChanged: (value) {
                                   setState(() {
                                     selectedItemSize = value;
-                                    debugPrint('Size: $selectedItemSize');
+                                   // debugPrint('Size: $selectedItemSize');
                                     Provider.of<ItemSize>(
                                       context,
                                       listen: false,
@@ -186,7 +186,7 @@ class _ProductPageState extends State<ProductPage> {
                                 onChanged: (c) {
                                   setState(() {
                                     selectedItemColour = c;
-                                    debugPrint('Colour: $selectedItemColour');
+                                   // debugPrint('Colour: $selectedItemColour');
                                     Provider.of<ItemColour>(
                                       context,
                                       listen: false,
