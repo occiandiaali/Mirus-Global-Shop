@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mirus_global/admin/admin_manage.dart';
 import 'package:mirus_global/authentication/auth_screen.dart';
@@ -298,6 +299,7 @@ class _UploadPageState extends State<UploadPage>
             title: Container(
               width: 250.0,
               child: TextField(
+                maxLength: 12,
                 textCapitalization: TextCapitalization.none,
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _itemCategoryEditingController,
@@ -317,6 +319,8 @@ class _UploadPageState extends State<UploadPage>
             title: Container(
               width: 250.0,
               child: TextField(
+                maxLength: 20,
+                maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _searchInfoEditingController,
                 decoration: InputDecoration(
@@ -336,6 +340,8 @@ class _UploadPageState extends State<UploadPage>
             title: Container(
               width: 250.0,
               child: TextField(
+                maxLength: 16,
+                maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _itemNameEditingController,
                 decoration: InputDecoration(
@@ -355,6 +361,7 @@ class _UploadPageState extends State<UploadPage>
             title: Container(
               width: 250.0,
               child: TextField(
+                maxLines: 3,
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _itemDescEditingController,
                 decoration: InputDecoration(

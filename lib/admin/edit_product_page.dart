@@ -329,6 +329,7 @@ class _EditProductPageState extends State<EditProductPage> {
             title: Container(
               width: 250.0,
                 child: TextField(
+                  maxLength: 12,
                   style: TextStyle(color: Colors.deepPurple),
                   controller: _itemCategoryEditingController,
                   decoration: InputDecoration(
@@ -348,6 +349,7 @@ class _EditProductPageState extends State<EditProductPage> {
             title: Container(
               width: 250.0,
               child: TextField(
+                maxLength: 20,
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _searchInfoEditingController,
                 decoration: InputDecoration(
@@ -372,6 +374,7 @@ class _EditProductPageState extends State<EditProductPage> {
             title: Container(
               width: 250.0,
               child: TextField(
+                maxLength: 16,
                 style: TextStyle(color: Colors.deepPurple),
                 controller: _itemNameEditingController,
                 decoration: InputDecoration(
@@ -396,6 +399,7 @@ class _EditProductPageState extends State<EditProductPage> {
             title: Container(
                 width: 250.0,
                   child: TextField(
+                    maxLines: 3,
                     style: TextStyle(color: Colors.deepPurple),
                     controller: _itemDescEditingController,
                     decoration: InputDecoration(
