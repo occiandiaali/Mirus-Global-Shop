@@ -251,7 +251,10 @@ class _UploadPageState extends State<UploadPage>
           ),
           TextButton(
             child: Icon(Icons.cancel_rounded, color: Colors.white,),
-            onPressed: () => clearFormInfo(),
+            onPressed: () {
+              clearFormInfo();
+              Navigator.pop(context);
+            },
           ),
         ],
       ),
